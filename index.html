@@ -1,2099 +1,319 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Autumn Nature Expedition | Ford Mondeo Roadtrips</title>
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
-    <!-- FontAwesome icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
-    <!-- Style for Leaflet buttons and markers adjustment -->
-    <style>
-        /* LEAFLET ZOOM BUTTON OVERRIDE (!important) */
-        .leaflet-touch .leaflet-bar a,
-        .leaflet-bar a,
-        .leaflet-control-zoom-in,
-        .leaflet-control-zoom-out {
-          min-width: 36px !important;
-          min-height: 36px !important;
-          width: 36px !important;
-          height: 36px !important;
-          padding: 0 !important;
-          color: #2C221E !important;
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-          font-size: 18px !important;
-          font-weight: 700 !important;
-          line-height: 36px !important;
-          text-decoration: none !important;
-          background-color: #ffffff !important;
-          border: 1px solid rgba(200, 125, 67, 0.3) !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
-          transition: background-color 0.2s ease, color 0.2s ease !important;
-          border-radius: 8px !important;
-        }
-
-        .leaflet-bar a:hover,
-        .leaflet-control-zoom-in:hover,
-        .leaflet-control-zoom-out:hover {
-          background-color: #C87D43 !important;
-          color: #ffffff !important;
-        }
-
-        .leaflet-bar {
-          border: none !important;
-          display: flex !important;
-          flex-direction: column !important;
-          gap: 6px !important;
-          box-shadow: none !important;
-        }
-
-        /* Custom map pin icon without title (with hover details) */
-        .custom-pin-marker {
-          background: #C87D43;
-          color: #ffffff;
-          width: 32px;
-          height: 32px;
-          border-radius: 50% 50% 50% 0;
-          transform: rotate(-45deg);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          box-shadow: 0 3px 8px rgba(0,0,0,0.3);
-          border: 2px solid #ffffff;
-          cursor: pointer;
-          transition: transform 0.2s ease, background-color 0.2s ease;
-        }
-
-        /* Dark pin for starting position (Prague) */
-        .custom-pin-marker.start-pin {
-          background: #2C221E;
-          border-color: #C87D43;
-        }
-
-        .custom-pin-marker:hover {
-          transform: rotate(-45deg) scale(1.15);
-          background: #B85032;
-        }
-
-        .custom-pin-marker i {
-          transform: rotate(45deg);
-          font-size: 14px;
-        }
-
-        /* Transparency fix for custom DivIcon on the map */
-        .custom-pin, .custom-pin-prague {
-          background: transparent !important;
-          border: none !important;
-        }
-    </style>
-
-    <style>
-        :root {
-            --bg-cream: #FAF6EE;
-            --bg-beige: #F3ECE1;
-            --card-bg: rgba(255, 253, 249, 0.82);
-            --card-glass: rgba(255, 255, 255, 0.65);
-            --caramel: #C87D43;
-            --caramel-dark: #A45C28;
-            --terracotta: #B85032;
-            --brown-dark: #2C221E;
-            --brown-medium: #4A3A34;
-            --text-main: #2C221E;
-            --text-muted: #6B5C54;
-            --sage-green: #5B7059;
-            --sage-dark: #3F503E;
-            --sage-light: #E8EFE7;
-            --gold-autumn: #D99B26;
-            --border-light: rgba(200, 125, 67, 0.18);
-            --shadow-subtle: 0 10px 30px rgba(44, 34, 30, 0.06);
-            --shadow-hover: 0 20px 40px rgba(44, 34, 30, 0.12);
-            --radius-lg: 24px;
-            --radius-md: 16px;
-            --radius-sm: 10px;
-            --font-heading: 'Playfair Display', Georgia, serif;
-            --font-body: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: var(--font-body);
-            background-color: var(--bg-cream);
-            color: var(--text-main);
-            line-height: 1.6;
-            overflow-x: hidden;
-            background-image: radial-gradient(circle at 10% 20%, rgba(200, 125, 67, 0.03) 0%, transparent 40%),
-                              radial-gradient(circle at 90% 80%, rgba(91, 112, 89, 0.04) 0%, transparent 40%);
-        }
-
-        /* Glassmorphism Classes */
-        .glass {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border-light);
-            box-shadow: var(--shadow-subtle);
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: var(--radius-lg);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .glass-card:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-hover);
-            border-color: rgba(200, 125, 67, 0.3);
-        }
-
-        /* Container */
-        .container {
-            max-width: 1320px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* Sticky Navigation */
-        header {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 48px);
-            max-width: 1280px;
-            z-index: 1000;
-            border-radius: 40px;
-            padding: 12px 28px;
-            transition: all 0.3s ease;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-family: var(--font-heading);
-            font-weight: 800;
-            font-size: 1.25rem;
-            color: var(--brown-dark);
-            text-decoration: none;
-        }
-
-        .logo i {
-            color: var(--caramel);
-            font-size: 1.4rem;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 8px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--brown-medium);
-            font-weight: 600;
-            font-size: 0.92rem;
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: all 0.25s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            background-color: var(--caramel);
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(200, 125, 67, 0.25);
-        }
-
-        /* Hamburger Menu Button */
-        .menu-toggle {
-            display: none;
-            background: transparent;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--brown-dark);
-            cursor: pointer;
-            padding: 4px;
-        }
-
-        /* Hero Section */
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 140px 24px 80px;
-            background: linear-gradient(180deg, rgba(44, 34, 30, 0.4) 0%, rgba(44, 34, 30, 0.75) 100%),
-                        url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat fixed;
-            color: #fff;
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .hero-content {
-            max-width: 900px;
-            z-index: 2;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            margin-bottom: 24px;
-        }
-
-        .hero h1 {
-            font-family: var(--font-heading);
-            font-size: clamp(2.5rem, 5.5vw, 4.5rem);
-            line-height: 1.15;
-            margin-bottom: 20px;
-            font-weight: 800;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-
-        .hero-specs {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 36px;
-        }
-
-        .spec-item {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-
-        .hero-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--caramel);
-            color: #fff;
-            padding: 16px 36px;
-            border-radius: 40px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.1rem;
-            box-shadow: 0 10px 25px rgba(200, 125, 67, 0.4);
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-
-        .hero-btn:hover {
-            background: var(--terracotta);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(184, 80, 50, 0.4);
-        }
-
-        /* Vehicle Info Bar */
-        .info-bar {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            margin-top: -80px;
-            position: relative;
-            z-index: 10;
-            box-shadow: var(--shadow-subtle);
-            border: 1px solid var(--border-light);
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-        }
-
-        .info-bar-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .info-bar-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
-            background: var(--sage-light);
-            color: var(--sage-dark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            flex-shrink: 0;
-        }
-
-        .info-bar-text label {
-            display: block;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-        }
-
-        .info-bar-text span {
-            font-weight: 700;
-            color: var(--brown-dark);
-            font-size: 1.05rem;
-        }
-
-        /* Section Styling */
-        section {
-            padding: 70px 0;
-        }
-
-        .section-header {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 40px;
-        }
-
-        .section-subtitle {
-            color: var(--caramel);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-size: 0.85rem;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .section-title {
-            font-family: var(--font-heading);
-            font-size: clamp(2rem, 3.5vw, 2.75rem);
-            color: var(--brown-dark);
-            line-height: 1.25;
-            margin-bottom: 12px;
-        }
-
-        .section-desc {
-            color: var(--text-muted);
-            font-size: 1.05rem;
-        }
-
-        /* Map Section */
-        #map-container {
-            height: 520px;
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-subtle);
-            border: 1px solid var(--border-light);
-            z-index: 1;
-        }
-
-        /* Destination Overview Grid */
-        .destination-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-        }
-
-        .dest-card {
-            flex: 0 1 calc(33.333% - 30px);
-            min-width: 320px;
-            max-width: 380px;
-            background: var(--card-bg);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            border: 1px solid var(--border-light);
-            transition: all 0.35s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .dest-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .dest-img-box {
-            position: relative;
-            height: 240px;
-            overflow: hidden;
-        }
-
-        .dest-img-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .dest-card:hover .dest-img-box img {
-            transform: scale(1.06);
-        }
-
-        .dest-badge {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            background: rgba(44, 34, 30, 0.75);
-            backdrop-filter: blur(8px);
-            color: #fff;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .dest-budget-tag {
-            position: absolute;
-            bottom: 16px;
-            right: 16px;
-            background: var(--caramel);
-            color: #fff;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-weight: 800;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .dest-content {
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .dest-title {
-            font-family: var(--font-heading);
-            font-size: 1.6rem;
-            color: var(--brown-dark);
-            margin-bottom: 8px;
-        }
-
-        .dest-stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 16px 0;
-            padding: 12px;
-            background: rgba(243, 236, 225, 0.6);
-            border-radius: var(--radius-md);
-            font-size: 0.88rem;
-        }
-
-        .dest-stat-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--brown-medium);
-        }
-
-        .dest-stat-item i {
-            color: var(--caramel);
-            width: 16px;
-        }
-
-        .rating-bars {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .rating-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--brown-medium);
-        }
-
-        .rating-bar-bg {
-            width: 55%;
-            height: 7px;
-            background: #E5DDD3;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .rating-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--caramel), var(--gold-autumn));
-            border-radius: 4px;
-        }
-
-        .btn-detail {
-            margin-top: auto;
-            width: 100%;
-            padding: 12px;
-            background: var(--brown-dark);
-            color: #fff;
-            border: none;
-            border-radius: var(--radius-sm);
-            font-weight: 700;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            transition: background 0.3s;
-            display: block;
-        }
-
-        .btn-detail:hover {
-            background: var(--caramel);
-        }
-
-        /* Destination Detailed Sections */
-        .destination-detail-block {
-            background: rgba(255, 253, 249, 0.9);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border-light);
-            padding: 36px;
-            margin-bottom: 60px;
-            box-shadow: var(--shadow-subtle);
-        }
-
-        .detail-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            gap: 20px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--border-light);
-            margin-bottom: 30px;
-        }
-
-        .detail-header-left h2 {
-            font-family: var(--font-heading);
-            font-size: 2.2rem;
-            color: var(--brown-dark);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .detail-pills {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .pill {
-            padding: 6px 14px;
-            border-radius: 20px;
-            background: var(--sage-light);
-            color: var(--sage-dark);
-            font-weight: 700;
-            font-size: 0.85rem;
-        }
-
-        .pill-caramel {
-            background: #FDF0E6;
-            color: var(--caramel-dark);
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 30px;
-            height: 280px;
-        }
-
-        .gallery-grid img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: var(--radius-md);
-            transition: opacity 0.3s ease;
-        }
-
-        .gallery-grid img:hover {
-            opacity: 0.9;
-        }
-
-        .route-map-box {
-            height: 350px;
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            margin-bottom: 30px;
-            border: 1px solid var(--border-light);
-        }
-
-        .info-tab-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            margin-bottom: 30px;
-        }
-
-        .info-box {
-            background: #FDFBF7;
-            padding: 20px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-light);
-        }
-
-        .info-box h3 {
-            font-size: 1.15rem;
-            color: var(--brown-dark);
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 1px dashed var(--border-light);
-            padding-bottom: 8px;
-        }
-
-        .info-box h3 i {
-            color: var(--caramel);
-        }
-
-        .route-steps {
-            list-style: none;
-            position: relative;
-            padding-left: 20px;
-        }
-
-        .route-steps::before {
-            content: '';
-            position: absolute;
-            left: 6px;
-            top: 6px;
-            bottom: 6px;
-            width: 2px;
-            background: var(--caramel);
-            opacity: 0.4;
-        }
-
-        .route-steps li {
-            position: relative;
-            margin-bottom: 8px;
-            font-size: 0.92rem;
-            color: var(--brown-medium);
-        }
-
-        .route-steps li::before {
-            content: '';
-            position: absolute;
-            left: -18px;
-            top: 7px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--caramel);
-        }
-
-        .budget-list, .program-list, .stellplatz-list {
-            list-style: none;
-        }
-
-        .budget-list li {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 0;
-            border-bottom: 1px solid #F0E8DF;
-            font-size: 0.92rem;
-        }
-
-        .budget-list li.total {
-            font-weight: 800;
-            color: var(--terracotta);
-            border-top: 2px solid var(--caramel);
-            border-bottom: none;
-            padding-top: 10px;
-            font-size: 1.05rem;
-        }
-
-        .program-day {
-            margin-bottom: 12px;
-        }
-
-        .program-day strong {
-            color: var(--sage-dark);
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .program-day ul {
-            padding-left: 18px;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        /* Wildlife Bars */
-        .wildlife-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-
-        .wildlife-card {
-            background: #fff;
-            padding: 12px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-light);
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .wildlife-title {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            font-weight: 700;
-        }
-
-        /* Dog Friendly Section */
-        .dog-info-box {
-            background: #F4F7F4;
-            border-left: 4px solid var(--sage-green);
-            padding: 20px;
-            border-radius: 0 var(--radius-md) var(--radius-md) 0;
-            margin-top: 20px;
-        }
-
-        .dog-info-box h4 {
-            color: var(--sage-dark);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .dog-info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 12px;
-            font-size: 0.88rem;
-        }
-
-        /* Charts Section */
-        .charts-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 28px;
-        }
-
-        .chart-card {
-            background: var(--card-bg);
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            border: 1px solid var(--border-light);
-            box-shadow: var(--shadow-subtle);
-        }
-
-        .chart-card h3 {
-            font-family: var(--font-heading);
-            font-size: 1.25rem;
-            color: var(--brown-dark);
-            margin-bottom: 16px;
-            text-align: center;
-        }
-
-        .chart-card.full-width {
-            grid-column: 1 / -1;
-        }
-
-        /* Scroll Top Button */
-        #scrollTopBtn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--caramel);
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.2);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 999;
-        }
-
-        #scrollTopBtn.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        #scrollTopBtn:hover {
-            background: var(--terracotta);
-            transform: translateY(-4px);
-        }
-
-        /* Footer */
-        footer {
-            background: var(--brown-dark);
-            color: var(--bg-beige);
-            padding: 50px 0 30px;
-            margin-top: 80px;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 30px;
-            margin-bottom: 20px;
-        }
-
-        .footer-text {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.6);
-        }
-
-        /* Responsive */
-        @media (max-width: 992px) {
-            .gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
-                height: 380px;
-            }
-            .menu-toggle {
-                display: block;
-            }
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: var(--card-bg);
-                backdrop-filter: blur(12px);
-                -webkit-backdrop-filter: blur(12px);
-                flex-direction: column;
-                padding: 16px;
-                border-radius: var(--radius-md);
-                border: 1px solid var(--border-light);
-                box-shadow: var(--shadow-subtle);
-                margin-top: 10px;
-            }
-            .nav-links.active {
-                display: flex;
-            }
-            .dest-card {
-                flex: 0 1 100%;
-                max-width: 100%;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .charts-container {
-                grid-template-columns: 1fr;
-            }
-            .gallery-grid {
-                grid-template-columns: 1fr;
-                height: auto;
-            }
-            .gallery-grid img {
-                height: 180px;
-            }
-            .detail-header-left h2 {
-                font-size: 1.6rem;
-            }
-        }
-        /* Back-to-hub link */
-        .hub-back-link {
-            position: fixed;
-            bottom: 24px;
-            left: 24px;
-            z-index: 999;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(8px);
-            color: var(--brown-dark);
-            text-decoration: none;
-            font-family: var(--font-heading);
-            font-weight: 700;
-            font-size: 0.85rem;
-            padding: 10px 18px;
-            border-radius: 30px;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.25s ease;
-        }
-
-        .hub-back-link:hover {
-            background-color: var(--caramel);
-            color: #fff;
-        }
-
-        @media (max-width: 600px) {
-            .hub-back-link {
-                font-size: 0.75rem;
-                padding: 8px 14px;
-                bottom: 16px;
-                left: 16px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ford Mondeo Roadtrips</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧭</text></svg>">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+<!-- FontAwesome icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    :root {
+        --bg-deep: #0b0d12;
+        --bg-panel: #14171f;
+        --line: rgba(255, 255, 255, 0.08);
+        --amber: #D99B26;
+        --amber-soft: #C87D43;
+        --text-main: #F3EFE7;
+        --text-muted: #A7A39B;
+        --radius-lg: 28px;
+        --radius-md: 18px;
+        --font-heading: 'Playfair Display', serif;
+        --font-body: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+        font-family: var(--font-body);
+        background-color: var(--bg-deep);
+        color: var(--text-main);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    /* Ambient background glow */
+    .bg-glow {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(60% 50% at 15% 0%, rgba(217, 155, 38, 0.18) 0%, rgba(217, 155, 38, 0) 60%),
+            radial-gradient(50% 40% at 90% 15%, rgba(200, 125, 67, 0.12) 0%, rgba(200, 125, 67, 0) 60%),
+            linear-gradient(180deg, #0b0d12 0%, #12141b 55%, #0b0d12 100%);
+    }
+
+    /* Decorative dashed "road" line */
+    .road-line {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        z-index: 1;
+        background-image: repeating-linear-gradient(90deg, var(--amber) 0px, var(--amber) 28px, transparent 28px, transparent 56px);
+        opacity: 0.55;
+    }
+
+    main {
+        position: relative;
+        z-index: 2;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 90px 24px 60px;
+    }
+
+    .hero {
+        text-align: center;
+        max-width: 720px;
+        margin: 0 auto 64px;
+    }
+
+    .kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--amber);
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        margin-bottom: 20px;
+    }
+
+    .kicker::before, .kicker::after {
+        content: '';
+        width: 24px;
+        height: 1px;
+        background: var(--amber-soft);
+        opacity: 0.7;
+    }
+
+    h1 {
+        font-family: var(--font-heading);
+        font-weight: 800;
+        font-size: clamp(2.2rem, 5vw, 3.4rem);
+        line-height: 1.15;
+        margin-bottom: 22px;
+    }
+
+    h1 em {
+        font-style: italic;
+        color: var(--amber);
+    }
+
+    .hero p {
+        color: var(--text-muted);
+        font-size: 1.05rem;
+        line-height: 1.7;
+    }
+
+    /* Trip cards */
+    .trips {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 26px;
+    }
+
+    .trip-card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        background: var(--bg-panel);
+        border: 1px solid var(--line);
+        transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    }
+
+    .trip-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+        border-color: rgba(217, 155, 38, 0.4);
+    }
+
+    .card-media {
+        height: 220px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+
+    .card-media::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(11, 13, 18, 0) 30%, rgba(11, 13, 18, 0.85) 100%);
+    }
+
+    .soon-media {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.6rem;
+        color: rgba(255, 255, 255, 0.35);
+    }
+
+    .soon-media.winter { background: linear-gradient(150deg, #1c2733, #10151d); }
+    .soon-media.summer { background: linear-gradient(150deg, #1f2a1e, #10151d); }
+
+    .card-body {
+        padding: 26px 26px 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        flex: 1;
+    }
+
+    .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        width: fit-content;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        padding: 5px 12px;
+        border-radius: 20px;
+        margin-bottom: 10px;
+    }
+
+    .tag-live {
+        background: rgba(217, 155, 38, 0.15);
+        color: var(--amber);
+    }
+
+    .tag-live::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--amber);
+        box-shadow: 0 0 0 3px rgba(217, 155, 38, 0.25);
+    }
+
+    .tag-soon {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text-muted);
+    }
+
+    .card-body h2 {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.35rem;
+    }
+
+    .card-body .region {
+        color: var(--text-muted);
+        font-size: 0.92rem;
+        margin-bottom: 12px;
+    }
+
+    .cta {
+        margin-top: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: var(--text-main);
+    }
+
+    .trip-card:hover .cta {
+        color: var(--amber);
+    }
+
+    .trip-card:hover .cta i {
+        transform: translateX(4px);
+    }
+
+    .cta i {
+        transition: transform 0.25s ease;
+        font-size: 0.8rem;
+    }
+
+    .trip-card.soon .card-body { opacity: 0.85; }
+
+    footer {
+        text-align: center;
+        margin-top: 70px;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+    }
+
+    footer i { color: var(--amber-soft); }
+
+    @media (max-width: 900px) {
+        .trips { grid-template-columns: 1fr; }
+    }
+</style>
 </head>
 <body>
 
-    <a href="../index.html" class="hub-back-link" title="Back to all roadtrips">
-        <i class="fa-solid fa-arrow-left"></i> All Roadtrips
-    </a>
+<div class="bg-glow"></div>
+<div class="road-line"></div>
 
-    <!-- Sticky Navigation -->
-    <header class="glass">
-        <nav>
-            <a href="#" class="logo">
-                <i class="fa-solid fa-compass"></i>
-                <span>LovelyAutumnExpedition</span>
-            </a>
-            <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#soca">🇸🇮 Soča</a></li>
-                <li><a href="#logarska">🇸🇮 Logarska Dolina</a></li>
-                <li><a href="#gesaeuse">🇦🇹 Gesäuse</a></li>
-                <li><a href="#hochschwab">🇦🇹 Hochschwab</a></li>
-                <li><a href="#orseg">🇭🇺 Őrség</a></li>
-                <li><a href="#grafy"><i class="fa-solid fa-chart-pie"></i> Comparison</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-badge">
-                <i class="fa-solid fa-leaf"></i> Autumn • Roadtrips from Prague
-            </div>
-            <h1>Go Wild With Me In Nature</h1>
-            <p style="font-size: 1.25rem; opacity: 0.95; margin-bottom: 28px; font-weight: 300;">
-                Just discover the most beautiful mountain valleys, crystal-clear rivers, and deep forests away from annyoing people and noise.
-            </p>
-            <div class="hero-specs">
-                <span class="spec-item"><i class="fa-regular fa-clock"></i> 4 days</span>
-                <span class="spec-item"><i class="fa-solid fa-car"></i> Nadyho autik</span>
-                <span class="spec-item"><i class="fa-solid fa-users"></i> dos chicas</span>
-                <span class="spec-item"><i class="fa-solid fa-dog"></i> dos perras</span>
-                <span class="spec-item"><i class="fa-solid fa-bed"></i> car camping</span>
-                <span class="spec-item"><i class="fa-solid fa-tree"></i> away from city</span>
-            </div>
-            <a href="#destinace" class="hero-btn">
-                <i class="fa-solid fa-location-dot"></i> Show me what u got!
-            </a>
-        </div>
-    </section>
-
-    <div class="container">
-        <!-- Vehicle & Base Info Bar -->
-        <div class="info-bar">
-            <div class="info-bar-item">
-                <div class="info-bar-icon"><i class="fa-solid fa-house-user"></i></div>
-                <div class="info-bar-text">
-                    <label>Starting Address</label>
-                    <span>Na Petynce 716/48, Prague</span>
-                </div>
-            </div>
-            <div class="info-bar-item">
-                <div class="info-bar-icon"><i class="fa-solid fa-car-side"></i></div>
-                <div class="info-bar-text">
-                    <label>Vehicle & Engine</label>
-                    <span>Ford Mondeo 2.0 TDCi (2013)</span>
-                </div>
-            </div>
-            <div class="info-bar-item">
-                <div class="info-bar-icon"><i class="fa-solid fa-gas-pump"></i></div>
-                <div class="info-bar-text">
-                    <label>Average Fuel Consumption</label>
-                    <span>5.4 - 5.5 l / 100 km</span>
-                </div>
-            </div>
-            <div class="info-bar-item">
-                <div class="info-bar-icon"><i class="fa-solid fa-paw"></i></div>
-                <div class="info-bar-text">
-                    <label>Travel Buddies</label>
-                    <span>2 little licky staffy</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Main Interactive Map Section -->
-        <section id="mapa-sekce">
-            <div class="section-header">
-                <span class="section-subtitle">Map Overview</span>
-                <h2 class="section-title">Map of all 5 locations from Prague</h2>
-                <p class="section-desc">Hover over a pin to display las route details.</p>
-            </div>
-            <div id="map-container"></div>
-        </section>
-
-        <!-- Destination Cards Overview -->
-        <section id="destinace">
-            <div class="section-header">
-                <span class="section-subtitle">Overview Cards</span>
-                <h2 class="section-title">Choose Your Autumn Route</h2>
-            </div>
-            <div class="destination-grid" id="destGrid">
-                <!-- JS filled cards -->
-            </div>
-        </section>
-
-        <!-- Detailed Destination Section Start -->
-        <section id="detailne">
-            <div class="section-header">
-                <span class="section-subtitle">Complete Itineraries & Details</span>
-                <h2 class="section-title">Detailed Guide for Each Route</h2>
-                <p class="section-desc">Budgetino, day-by-day schedulesimo, waypointisimo, campingato, and rulo fo ar doggos.</p>
-            </div>
-                <div style="margin-top:10px; margin-bottom: 30px; background: #FFF8F2; padding: 16px; border-radius: var(--radius-sm); font-size: 0.9rem; color: var(--brown-dark);">
-                    <strong><i class="fa-solid fa-suitcase"></i> What to bring:</strong> ID cards, vehicle registration, green card (print out!), pet passports, muzzles, power bank, tissues + toilet paper, headlamp, collapsible bowls, plenty of water.
-                </div>
-
-            <!-- 1. SOCA -->
-            <div class="destination-detail-block" id="soca">
-                <div class="detail-header">
-                    <div class="detail-header-left">
-                        <h2>🇸🇮 Soča — Valley of the Emerald River</h2>
-                        <div class="detail-pills">
-                            <span class="pill"><i class="fa-solid fa-route"></i> 670 km</span>
-                            <span class="pill"><i class="fa-regular fa-clock"></i> 7-8 hrs drive</span>
-                            <span class="pill pill-caramel"><i class="fa-solid fa-wallet"></i> approx. 8,000 CZK</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="gallery-grid">
-                    <img src="images/soca2.jpg" alt="Soča 2">
-                    <img src="images/soca3.jpg" alt="Soča 3">
-                    <img src="images/soca4.jpg" alt="Soča 4">
-                    <img src="images/soca5.jpg" alt="Soča 5">
-                </div>
-
-                <div class="route-map-box" id="map-soca"></div>
-
-                <div class="info-tab-grid">
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-diamond-turn-right"></i> Route from Prague</h3>
-                        <ul class="route-steps">
-                            <li>Prague (Na Petynce)</li>
-                            <li>Tábor</li>
-                            <li>České Budějovice</li>
-                            <li>Dolní Dvořiště</li>
-                            <li><strong>AUSTRIA:</strong> Linz → Salzburg (bypass) → Villach</li>
-                            <li><strong>SLOVENIA:</strong> Jesenice → Kranjska Gora → Vršič Pass → Trenta → Soča</li>
-                        </ul>
-                    </div>
-
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-calculator"></i> Budget & Fees</h3>
-                        <ul class="budget-list">
-                            <li><span>Austria Vignette (10 days)</span> <span>300 CZK (12 €)</span></li>
-                            <li><span>Slovenia Vignette (1 week)</span> <span>400 CZK (16 €)</span></li>
-                            <li><span>Diesel (1450 km, 78 l)</span> <span>3,800 CZK</span></li>
-                            <li><span>Camping / Stellplatz</span> <span>1,200 CZK</span></li>
-                            <li><span>Food & Supplies</span> <span>1,800 CZK</span></li>
-                            <li><span>Parking</span> <span>500 CZK</span></li>
-                            <li class="total"><span>TOTAL</span> <span>approx. 8,000 CZK</span></li>
-                        </ul>
-                    </div>
-
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-calendar-days"></i> Day-by-Day Program</h3>
-                        <div class="program-day">
-                            <strong>Sep 17 (Day 1)</strong>
-                            <ul><li>Drive to Slovenia, Kranjska Gora, iconic Vršič Pass, descent to Trenta, sleep in the car.</li></ul>
-                        </div>
-                        <div class="program-day">
-                            <strong>Sep 18 (Day 2)</strong>
-                            <ul><li>Great Soča Gorge (Velika Korita), Small Soča Gorge (Mala Korita), hiking along the emerald river, overnight stay.</li></ul>
-                        </div>
-                        <div class="program-day">
-                            <strong>Sep 19 (Day 3)</strong>
-                            <ul><li>Mangart Saddle or Planina Blato, views of the alpine ridges, start the return journey in the evening.</li></ul>
-                        </div>
-                        <div class="program-day">
-                            <strong>Sep 20 (Day 4)</strong>
-                            <ul><li>Arrival home at night / early morning, unpacking, and resting.</li></ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Wildlife & Stellplatz -->
-                <div class="info-tab-grid">
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-campground"></i> Stellplätze & Car Sleeping</h3>
-                        <ul class="stellplatz-list" style="font-size: 0.9rem; line-height: 1.8; color: var(--brown-medium);">
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Camp Trenta Area:</strong> Quiet official parking by the river.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Kamp Klin (Lepena):</strong> Confluence of Soča and Lepenjice, tree shade.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Vršič Pass Parking:</strong> Option to sleep before the ascent on designated platforms.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>PZZ Bovec:</strong> Caravan parking with water and electricity hookup.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Below Mangart Saddle:</strong> Wilder spots at mountain rest areas.</li>
-                        </ul>
-                    </div>
-
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-paw"></i> Wildlife in the Area</h3>
-                        <div class="wildlife-grid">
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Deer</span> <span>4/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 80%;"></div></div>
-                            </div>
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Chamois (jumpy mountain goat)</span> <span>5/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 100%;"></div></div>
-                            </div>
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Wild Boars</span> <span>2/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 40%;"></div></div>
-                            </div>
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Birds of Prey</span> <span>4/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 80%;"></div></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dog-info-box">
-                    <h4><i class="fa-solid fa-shield-dog"></i> Information for Dogs (Staffbull friendly)</h4>
-                    <div class="dog-info-grid">
-                        <div><strong>Entry Requirements:</strong> Valid Pet Passport, microchip, rabies vaccination.</div>
-                        <div><strong>Movement in the Park:</strong> Dogs must be kept on a leash in Triglav National Park.</div>
-                        <div><strong>Muzzle:</strong> Have one ready in your backpack (narrow footbridges).</div>
-                        <div><strong>Recommendation:</strong> Water from the Soča River is drinkable but very cold. Keep a towel in the car!</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 2. LOGARSKA DOLINA -->
-            <div class="destination-detail-block" id="logarska">
-                <div class="detail-header">
-                    <div class="detail-header-left">
-                        <h2>🇸🇮 Logarska Dolina — Solčavsko & The Alps</h2>
-                        <div class="detail-pills">
-                            <span class="pill"><i class="fa-solid fa-route"></i> 580 km</span>
-                            <span class="pill"><i class="fa-regular fa-clock"></i> 6-7 hrs drive</span>
-                            <span class="pill pill-caramel"><i class="fa-solid fa-wallet"></i> approx. 7,500 CZK</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="gallery-grid">
-                    <img src="images/logarskadolina2.jpg" alt="Logarska 2">
-                    <img src="images/logarskadolina3.jpg" alt="Logarska 3">
-                    <img src="images/logarskadolina4.jpg" alt="Logarska 4">
-                    <img src="images/logarskadolina5.jpg" alt="Logarska 5">
-                </div>
-
-                <div class="route-map-box" id="map-logarska"></div>
-
-                <div class="info-tab-grid">
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-diamond-turn-right"></i> Route from Prague</h3>
-                        <ul class="route-steps">
-                            <li>Prague (Na Petynce) → Tábor → České Budějovice → Dolní Dvořiště</li>
-                            <li><strong>AUSTRIA:</strong> Linz → Steyr → Liezen → Leoben → Graz</li>
-                            <li><strong>SLOVENIA:</strong> Maribor → Celje → Solčava → Logarska Dolina</li>
-                        </ul>
-                    </div>
-
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-calculator"></i> Budget & Fees</h3>
-                        <ul class="budget-list">
-                            <li><span>Austria Vignette</span> <span>300 CZK</span></li>
-                            <li><span>Slovenia Vignette</span> <span>400 CZK</span></li>
-                            <li><span>Diesel (1250 km, 68 l)</span> <span>3,500 CZK</span></li>
-                            <li><span>Camping / Stellplatz</span> <span>1,200 CZK</span></li>
-                            <li><span>Food & Supplies</span> <span>1,800 CZK</span></li>
-                            <li><span>Parking & Valley Entry</span> <span>300 CZK</span></li>
-                            <li class="total"><span>TOTAL</span> <span>approx. 7,500 CZK</span></li>
-                        </ul>
-                    </div>
-
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-calendar-days"></i> Day-by-Day Program</h3>
-                        <div class="program-day">
-                            <strong>Sep 17 (Day 1)</strong>
-                            <ul><li>Drive to Slovenia, pass through Solčava, entry into Logarska Dolina, Rinka Waterfall, overnight stay.</li></ul>
-                        </div>
-                        <div class="program-day">
-                            <strong>Sep 18 (Day 2)</strong>
-                            <ul><li>Hiking through the valley to Okrešelj, mountain meadows, observing deer rutting, overnight stay.</li></ul>
-                        </div>
-                        <div class="program-day">
-                            <strong>Sep 19 (Day 3)</strong>
-                            <ul><li>Solčava Panoramic Road, views of the Kamnik-Savinja Alps, relaxing by the Savinja River, evening departure.</li></ul>
-                        </div>
-                        <div class="program-day">
-                            <strong>Sep 20 (Day 4)</strong>
-                            <ul><li>Arrival home at night or early morning.</li></ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="info-tab-grid">
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-campground"></i> Stellplätze & Car Sleeping</h3>
-                        <ul class="stellplatz-list" style="font-size:0.9rem; line-height:1.8; color: var(--brown-medium);">
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>PZZ Logarska Dolina:</strong> Designated parking at the beginning of the valley.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Eko Kmetija Povšnar:</strong> Quiet farmyard for a small fee.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Solčava Panoramic Road:</strong> Scenic rest areas.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Camper Stop Luče:</strong> Just below the valley by the Savinja River.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Kamp Šmica:</strong> Option to park near the forest.</li>
-                        </ul>
-                    </div>
-
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-paw"></i> Wildlife in the Area</h3>
-                        <div class="wildlife-grid">
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Deer</span> <span>5/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 100%;"></div></div>
-                            </div>
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Chamois (jumpy mountain goat)</span> <span>4/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 80%;"></div></div>
-                            </div>
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Wild Boars</span> <span>3/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 60%;"></div></div>
-                            </div>
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Birds of Prey</span> <span>4/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 80%;"></div></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dog-info-box">
-                    <h4><i class="fa-solid fa-shield-dog"></i> Information for Dogs (Staffbull friendly)</h4>
-                    <div class="dog-info-grid">
-                        <div><strong>Entry Requirements:</strong> Pet Passport, microchip, valid rabies vaccination. No breed bans.</div>
-                        <div><strong>Movement in the Park:</strong> Keep dogs on a leash in the nature reserve due to the deer f**king season (they're angry and horny).</div>
-                        <div><strong>Recommendation:</strong> Wonderful gentle valley trails without sharp stones. Gentle on paws.</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3. GESÄUSE -->
-            <div class="destination-detail-block" id="gesaeuse">
-                <div class="detail-header">
-                    <div class="detail-header-left">
-                        <h2>🇦🇹 Gesäuse — Enns River Gorge</h2>
-                        <div class="detail-pills">
-                            <span class="pill"><i class="fa-solid fa-route"></i> 420 km</span>
-                            <span class="pill"><i class="fa-regular fa-clock"></i> 5 hrs drive</span>
-                            <span class="pill pill-caramel"><i class="fa-solid fa-wallet"></i> approx. 6,500 CZK</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="gallery-grid">
-                    <img src="images/gesause2.jpg" alt="Gesäuse 2">
-                    <img src="images/gesause3.jpg" alt="Gesäuse 3">
-                    <img src="images/gesause4.jpg" alt="Gesäuse 4">
-                    <img src="images/gesause5.jpg" alt="Gesäuse 5">
-                </div>
-
-                <div class="route-map-box" id="map-gesaeuse"></div>
-
-                <div class="info-tab-grid">
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-diamond-turn-right"></i> Route from Prague</h3>
-                        <ul class="route-steps">
-                            <li>Prague (Na Petynce) → Tábor → České Budějovice → Dolní Dvořiště</li>
-                            <li><strong>AUSTRIA:</strong> Linz → Steyr → Nationalpark Gesäuse</li>
-                        </ul>
-                    </div>
-
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-calculator"></i> Budget & Fees</h3>
-                        <ul class="budget-list">
-                            <li><span>Austria Vignette</span> <span>300 CZK</span></li>
-                            <li><span>Diesel (950 km, 51 l)</span> <span>2,700 CZK</span></li>
-                            <li><span>Camping / Stellplatz</span> <span>1,200 CZK</span></li>
-                            <li><span>Food & Supplies</span> <span>1,800 CZK</span></li>
-                            <li><span>Parking</span> <span>500 CZK</span></li>
-                            <li class="total"><span>TOTAL</span> <span>approx. 6,500 CZK</span></li>
-                        </ul>
-                    </div>
-
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-calendar-days"></i> Day-by-Day Program</h3>
-                        <div class="program-day">
-                            <strong>Sep 17 (Day 1)</strong>
-                            <ul><li>Arrival in the region, drive through the Enns Gorge, light evening hike around the river, overnight stay.</li></ul>
-                        </div>
-                        <div class="program-day">
-                            <strong>Sep 18 (Day 2)</strong>
-                            <ul><li>Hiking in Gesäuse National Park, climbing through mountain forests, observing chamois (jumpy mountain goat), overnight stay.</li></ul>
-                        </div>
-                        <div class="program-day">
-                            <strong>Sep 19 (Day 3)</strong>
-                            <ul><li>Johnsbach, mountain meadows, iconic views of the limestone walls of Hochtor, evening return.</li></ul>
-                        </div>
-                        <div class="program-day">
-                            <strong>Sep 20 (Day 4)</strong>
-                            <ul><li>Relaxed drive back to the Czech Republic.</li></ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="info-tab-grid">
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-campground"></i> Stellplätze & Car Sleeping</h3>
-                        <ul class="stellplatz-list" style="font-size:0.9rem; line-height:1.8; color: var(--brown-medium);">
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Wohnmobilstellplatz Gstatterboden:</strong> Heart of the national park.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Parkplatz Weidendom:</strong> Visitor center, quiet overnight parking.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Johnsbach Ebnerkreuz:</strong> Parking below trailheads.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Camping Forstgarten:</strong> Nature campsite right by the Enns riverbed.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Admont Parkplatz:</strong> Alternative near the monastery to refill water.</li>
-                        </ul>
-                    </div>
-
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-paw"></i> Wildlife in the Area</h3>
-                        <div class="wildlife-grid">
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Deer</span> <span>3/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 60%;"></div></div>
-                            </div>
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Chamois (jumpy mountain goat)</span> <span>5/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 100%;"></div></div>
-                            </div>
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Wild Boars</span> <span>2/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 40%;"></div></div>
-                            </div>
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Birds of Prey (Eagles)</span> <span>5/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 100%;"></div></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dog-info-box">
-                    <h4><i class="fa-solid fa-shield-dog"></i> Information for Dogs (Staffbull friendly)</h4>
-                    <div class="dog-info-grid">
-                        <div><strong>Entry Requirements:</strong> Austria has no nationwide restrictions for Staffbulls. Pet Passport required.</div>
-                        <div><strong>Movement in the Park:</strong> Strict ban on roaming off-leash. Leash is a must.</div>
-                        <div><strong>Recommendation:</strong> Beware of steep climbs in scree fields - protect paw pads.</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4. HOCHSCHWAB -->
-            <div class="destination-detail-block" id="hochschwab">
-                <div class="detail-header">
-                    <div class="detail-header-left">
-                        <h2>🇦🇹 Hochschwab — Kingdom of the Chamois (jumpy mountain goat)</h2>
-                        <div class="detail-pills">
-                            <span class="pill"><i class="fa-solid fa-route"></i> 470 km</span>
-                            <span class="pill"><i class="fa-regular fa-clock"></i> 5-5.5 hrs drive</span>
-                            <span class="pill pill-caramel"><i class="fa-solid fa-wallet"></i> approx. 6,800 CZK</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="gallery-grid">
-                    <img src="images/hochschwab2.jpg" alt="Hochschwab 2">
-                    <img src="images/hochschwab3.jpg" alt="Hochschwab 3">
-                    <img src="images/hochschwab4.jpg" alt="Hochschwab 4">
-                    <img src="images/hochschwab5.jpg" alt="Hochschwab 5">
-                </div>
-
-                <div class="route-map-box" id="map-hochschwab"></div>
-
-                <div class="info-tab-grid">
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-diamond-turn-right"></i> Route from Prague</h3>
-                        <ul class="route-steps">
-                            <li>Prague (Na Petynce) → Tábor → České Budějovice → Dolní Dvořiště</li>
-                            <li><strong>AUSTRIA:</strong> Linz → Ybbs → Mariazell → Hochschwab</li>
-                        </ul>
-                    </div>
-
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-calculator"></i> Budget & Fees</h3>
-                        <ul class="budget-list">
-                            <li><span>Austria Vignette</span> <span>300 CZK</span></li>
-                            <li><span>Diesel (1050 km, 57 l)</span> <span>2,900 CZK</span></li>
-                            <li><span>Camping / Stellplatz</span> <span>1,300 CZK</span></li>
-                            <li><span>Food & Supplies</span> <span>1,800 CZK</span></li>
-                            <li><span>Parking</span> <span>500 CZK</span></li>
-                            <li class="total"><span>TOTAL</span> <span>approx. 6,800 CZK</span></li>
-                        </ul>
-                    </div>
-
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-calendar-days"></i> Day-by-Day Program</h3>
-                        <div class="program-day">
-                            <strong>Sep 17 (Day 1)</strong>
-                            <ul><li>Arrival in Seewiesen area, light hiking along the foothills of the limestone mountain range, overnight stay.</li></ul>
-                        </div>
-                        <div class="program-day">
-                            <strong>Sep 18 (Day 2)</strong>
-                            <ul><li>Ridge mountain meadows, scenic routes, guaranteed observation of chamois (jumpy mountain goat) herds, overnight stay.</li></ul>
-                        </div>
-                        <div class="program-day">
-                            <strong>Sep 19 (Day 3)</strong>
-                            <ul><li>Emerald mountain lakes, alpine pastures, autumn landscape photography, evening departure.</li></ul>
-                        </div>
-                        <div class="program-day">
-                            <strong>Sep 20 (Day 4)</strong>
-                            <ul><li>Arrival home.</li></ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="info-tab-grid">
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-campground"></i> Stellplätze & Car Sleeping</h3>
-                        <ul class="stellplatz-list" style="font-size:0.9rem; line-height:1.8; color: var(--brown-medium);">
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Bodenbauer Parkplatz:</strong> Iconic starting point for ascents.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Seewiesen Seebergsattel:</strong> Mountain pass, flat parking spots.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Tragöß Grüner See Area:</strong> Close to the famous lake.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Wohnmobilstellplatz Aflenz:</strong> Quiet municipal parking.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Wildalpen Camping:</strong> On the northern side by the Salza River.</li>
-                        </ul>
-                    </div>
-
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-paw"></i> Wildlife in the Area</h3>
-                        <div class="wildlife-grid">
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Deer</span> <span>4/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 80%;"></div></div>
-                            </div>
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Chamois (jumpy mountain goat)</span> <span>5/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 100%;"></div></div>
-                            </div>
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Wild Boars</span> <span>2/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 40%;"></div></div>
-                            </div>
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Birds of Prey</span> <span>4/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 80%;"></div></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dog-info-box">
-                    <h4><i class="fa-solid fa-shield-dog"></i> Information for Dogs (Staffbull friendly)</h4>
-                    <div class="dog-info-grid">
-                        <div><strong>Entry Requirements:</strong> Pet Passport, microchip, vaccination. Styria has no restrictions for SBT.</div>
-                        <div><strong>Movement on Pastures:</strong> Attention! Wild free grazing cows. Watch out for free-grazing cows.</div>
-                        <div><strong>Recommendation:</strong> Attention! No woa! Woa sources are missing on the ridge plateaus — bring plenty of woa.</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 5. ŐRSÉG -->
-            <div class="destination-detail-block" id="orseg">
-                <div class="detail-header">
-                    <div class="detail-header-left">
-                        <h2>🇭🇺 Őrség — Quiet Forests & Wetlands</h2>
-                        <div class="detail-pills">
-                            <span class="pill"><i class="fa-solid fa-route"></i> 470 km</span>
-                            <span class="pill"><i class="fa-regular fa-clock"></i> 5-5.5 hrs drive</span>
-                            <span class="pill pill-caramel"><i class="fa-solid fa-wallet"></i> approx. 5,800 CZK</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="gallery-grid">
-                    <img src="images/orseg2.jpg" alt="Őrség 2">
-                    <img src="images/orseg3.jpg" alt="Őrség 3">
-                    <img src="images/orseg4.jpg" alt="Őrség 4">
-                    <img src="images/orseg5.jpg" alt="Őrség 5">
-                </div>
-
-                <div class="route-map-box" id="map-orseg"></div>
-
-                <div class="info-tab-grid">
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-diamond-turn-right"></i> Route from Prague</h3>
-                        <ul class="route-steps">
-                            <li>Prague (Na Petynce) → Jihlava → Brno → Břeclav</li>
-                            <li><strong>AUSTRIA:</strong> Vienna (bypass)</li>
-                            <li><strong>HUNGARY:</strong> Szombathely → Őriszentpéter → Őrség</li>
-                        </ul>
-                    </div>
-
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-calculator"></i> Budget & Fees</h3>
-                        <ul class="budget-list">
-                            <li><span>Hungary Vignette (10 days)</span> <span>400 CZK (16 €)</span></li>
-                            <li><span>Diesel (1000 km, 54 l)</span> <span>2,800 CZK</span></li>
-                            <li><span>Camping / Stellplatz</span> <span>1,000 CZK</span></li>
-                            <li><span>Food & Supplies</span> <span>1,300 CZK</span></li>
-                            <li><span>Parking</span> <span>300 CZK</span></li>
-                            <li class="total"><span>TOTAL</span> <span>approx. 5,800 CZK (Cheapest)</span></li>
-                        </ul>
-                    </div>
-
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-calendar-days"></i> Day-by-Day Program</h3>
-                        <div class="program-day">
-                            <strong>Sep 17 (Day 1)</strong>
-                            <ul><li>Arrival in Őrség National Park, quiet forest trails, meadows, and wetlands, overnight stay.</li></ul>
-                        </div>
-                        <div class="program-day">
-                            <strong>Sep 18 (Day 2)</strong>
-                            <ul><li>Cycle paths and hiking trails through dense pine forests, intense observation of deer rutting, overnight stay.</li></ul>
-                        </div>
-                        <div class="program-day">
-                            <strong>Sep 19 (Day 3)</strong>
-                            <ul><li>Quietest remote parts of the park, autumn nature photography, late afternoon departure.</li></ul>
-                        </div>
-                        <div class="program-day">
-                            <strong>Sep 20 (Day 4)</strong>
-                            <ul><li>Return home. Cuddle. Rest.</li></ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="info-tab-grid">
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-campground"></i> Stellplätze & Car Sleeping</h3>
-                        <ul class="stellplatz-list" style="font-size:0.9rem; line-height:1.8; color: var(--brown-medium);">
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Őriszentpéter Forest Spot:</strong> Quiet forest rest area.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Szalafő Pityerszer Parking:</strong> Near the folk architecture skansen.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Vadása-tó Camping:</strong> By the forest lake.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Velemér Forest Edge:</strong> Absolute peace at the forest edge.</li>
-                            <li><i class="fa-solid fa-location-dot" style="color:var(--caramel)"></i> <strong>Magyarszombatfa Spot:</strong> Near the border forests.</li>
-                        </ul>
-                    </div>
-
-                    <div class="info-box">
-                        <h3><i class="fa-solid fa-paw"></i> Wildlife in the Area</h3>
-                        <div class="wildlife-grid">
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Deer (they wanna f**k)</span> <span>5/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 100%;"></div></div>
-                            </div>
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Chamois (jumpy mountain goat)</span> <span>1/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 20%;"></div></div>
-                            </div>
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Wild Boars (help, i'm afraid, pooping)</span> <span>5/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 100%;"></div></div>
-                            </div>
-                            <div class="wildlife-card">
-                                <div class="wildlife-title"><span>Birds of Prey</span> <span>3/5</span></div>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: 60%;"></div></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dog-info-box">
-                    <h4><i class="fa-solid fa-shield-dog"></i> Information for Dogs (Staffbull friendly)</h4>
-                    <div class="dog-info-grid">
-                        <div><strong>Entry Requirements:</strong> Pet Passport, microchip, valid vaccination. No specific breed restrictions.</div>
-                        <div><strong>Terrain:</strong> Flat terrain and pine needles — absolutely ideal for long, relaxing walks (good for ur pelvis).</div>
-                        <div><strong>Warning:</strong> September is the peak of the deer rut and wild boar activity — be careful babe (NO YOLO)!</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Charts Comparison Section -->
-        <section id="grafy">
-            <div class="section-header">
-                <span class="section-subtitle">Visualization & Analysis</span>
-                <h2 class="section-title">Comparison of All Destinations</h2>
-                <p class="section-desc">Charts that won't change your decision, but look good.</p>
-            </div>
-
-            <div class="charts-container">
-                <div class="chart-card">
-                    <h3>How much will we pay?</h3>
-                    <canvas id="chartBudget"></canvas>
-                </div>
-
-                <div class="chart-card">
-                    <h3>Is it bubiful here?</h3>
-                    <canvas id="chartNature"></canvas>
-                </div>
-
-                <div class="chart-card">
-                    <h3>Are there people?</h3>
-                    <canvas id="chartQuiet"></canvas>
-                </div>
-
-                <div class="chart-card">
-                    <h3>Can we see raw wild?</h3>
-                    <canvas id="chartWildlife"></canvas>
-                </div>
-
-                <div class="chart-card">
-                    <h3>Autumn atmosphere</h3>
-                    <canvas id="chartAutumn"></canvas>
-                </div>
-
-                <div class="chart-card">
-                    <h3>Tourist Congestion</h3>
-                    <canvas id="chartTourists"></canvas>
-                </div>
-            </div>
-        </section>
+<main>
+    <div class="hero">
+        <span class="kicker"><i class="fa-solid fa-compass"></i> Ford Mondeo Roadtrips</span>
+        <h1>Chasing horizons,<br><em>one tank at a time.</em></h1>
+        <p>A growing collection of road trips across Europe — every route mapped, every stop photographed, and every camp spot noted for next time. Pick a trip below to start exploring.</p>
     </div>
 
-    <!-- Scroll To Top Button -->
-    <button id="scrollTopBtn" onclick="scrollToTop()"><i class="fa-solid fa-arrow-up"></i></button>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="logo" style="color: #fff;">
-                    <i class="fa-solid fa-compass"></i>
-                    <span>AutumnExpedition</span>
-                </div>
-                <div class="footer-text">
-                    Prepared for car trip • dos chicas • dos doggos • in nice weather
-                </div>
+    <section class="trips">
+        <a class="trip-card" href="autumn-2026/">
+            <div class="card-media" style="background-image: url('autumn-2026/images/logarskadolina2.jpg');"></div>
+            <div class="card-body">
+                <span class="tag tag-live">Live</span>
+                <h2>Autumn Roadtrip 2026</h2>
+                <p class="region">Slovenia · Austria · Hungary</p>
+                <span class="cta">Explore the trip <i class="fa-solid fa-arrow-right"></i></span>
             </div>
-            <p style="text-align: center; font-size: 0.85rem; color: rgba(255,255,255,0.4);">
-                © Let's be free with me, my love.
-            </p>
-        </div>
+        </a>
+
+        <a class="trip-card soon" href="roadtrip-2/">
+            <div class="card-media soon-media winter"><i class="fa-solid fa-snowflake"></i></div>
+            <div class="card-body">
+                <span class="tag tag-soon">In progress</span>
+                <h2>Winter Roadtrip</h2>
+                <p class="region">Coming soon</p>
+                <span class="cta">Take a peek <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+        </a>
+
+        <a class="trip-card soon" href="roadtrip-3/">
+            <div class="card-media soon-media summer"><i class="fa-solid fa-sun"></i></div>
+            <div class="card-body">
+                <span class="tag tag-soon">In progress</span>
+                <h2>Next Roadtrip</h2>
+                <p class="region">Coming soon</p>
+                <span class="cta">Take a peek <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+        </a>
+    </section>
+
+    <footer>
+        <span><i class="fa-solid fa-car-side"></i> Ford Mondeo Roadtrips · built one trip at a time</span>
+        <span>© 2026</span>
     </footer>
+</main>
 
-    <!-- Scripts -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script>
-        // MOBILE MENU TOGGLE
-        const menuToggle = document.getElementById('menuToggle');
-        const navLinks = document.getElementById('navLinks');
-
-        menuToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
-
-        // Close menu on click link for mobile
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-            });
-        });
-
-        // DATA SET - Upraveno na obrázky s číslem 1 pro náhledy na dlaždicích a mapě
-        const destinations = [
-            {
-                id: 'soca',
-                flag: '🇸🇮',
-                name: 'Soča',
-                country: 'Slovenia',
-                dist: 670,
-                time: '7-8h',
-                budget: 8000,
-                nature: 5,
-                quiet: 4,
-                wildlife: 4,
-                autumn: 5,
-                tourists: 2,
-                carSleep: 5,
-                dogFriendly: 5,
-                img: 'images/soca1.jpg',
-                lat: 46.3333,
-                lng: 13.6000,
-                routeCoords: [[50.0875, 14.4214], [48.3064, 14.2858], [46.6156, 13.8444], [46.3333, 13.6000]]
-            },
-            {
-                id: 'logarska',
-                flag: '🇸🇮',
-                name: 'Logarska Dolina',
-                country: 'Slovenia',
-                dist: 580,
-                time: '6-7h',
-                budget: 7500,
-                nature: 5,
-                quiet: 5,
-                wildlife: 5,
-                autumn: 5,
-                tourists: 1,
-                carSleep: 4,
-                dogFriendly: 5,
-                img: 'images/logarskadolina1.jpg',
-                lat: 46.3833,
-                lng: 14.6333,
-                routeCoords: [[50.0875, 14.4214], [48.3064, 14.2858], [47.0707, 15.4395], [46.3833, 14.6333]]
-            },
-            {
-                id: 'gesaeuse',
-                flag: '🇦🇹',
-                name: 'Gesäuse',
-                country: 'Austria',
-                dist: 420,
-                time: '5h',
-                budget: 6500,
-                nature: 5,
-                quiet: 5,
-                wildlife: 4,
-                autumn: 4,
-                tourists: 1,
-                carSleep: 5,
-                dogFriendly: 4,
-                img: 'images/gesause1.jpg',
-                lat: 47.5833,
-                lng: 14.6333,
-                routeCoords: [[50.0875, 14.4214], [48.9745, 14.4743], [48.3064, 14.2858], [47.5833, 14.6333]]
-            },
-            {
-                id: 'hochschwab',
-                flag: '🇦🇹',
-                name: 'Hochschwab',
-                country: 'Austria',
-                dist: 470,
-                time: '5-5.5h',
-                budget: 6800,
-                nature: 5,
-                quiet: 4,
-                wildlife: 5,
-                autumn: 4,
-                tourists: 2,
-                carSleep: 4,
-                dogFriendly: 4,
-                img: 'images/hochschwab1.jpg',
-                lat: 47.6167,
-                lng: 15.1500,
-                routeCoords: [[50.0875, 14.4214], [48.9745, 14.4743], [48.1812, 15.0877], [47.6167, 15.1500]]
-            },
-            {
-                id: 'orseg',
-                flag: '🇭🇺',
-                name: 'Őrség',
-                country: 'Hungary',
-                dist: 470,
-                time: '5-5.5h',
-                budget: 5800,
-                nature: 4,
-                quiet: 5,
-                wildlife: 5,
-                autumn: 5,
-                tourists: 1,
-                carSleep: 5,
-                dogFriendly: 5,
-                img: 'images/orseg1.jpg',
-                lat: 46.8500,
-                lng: 16.3167,
-                routeCoords: [[50.0875, 14.4214], [49.1951, 16.6068], [48.2082, 16.3738], [46.8500, 16.3167]]
-            }
-        ];
-
-        // RENDER DESTINATION CARDS
-        function renderCards(data) {
-            const grid = document.getElementById('destGrid');
-            grid.innerHTML = '';
-            
-            data.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'dest-card';
-                card.innerHTML = `
-                    <div class="dest-img-box">
-                        <img src="${item.img}" alt="${item.name}">
-                        <div class="dest-badge">${item.flag} ${item.country}</div>
-                        <div class="dest-budget-tag">${item.budget.toLocaleString()} CZK</div>
-                    </div>
-                    <div class="dest-content">
-                        <h3 class="dest-title">${item.flag} ${item.name}</h3>
-                        <div class="dest-stats-grid">
-                            <div class="dest-stat-item"><i class="fa-solid fa-route"></i> ${item.dist} km</div>
-                            <div class="dest-stat-item"><i class="fa-regular fa-clock"></i> ${item.time}</div>
-                            <div class="dest-stat-item"><i class="fa-solid fa-bed"></i> Sleeping: ${item.carSleep}/5</div>
-                            <div class="dest-stat-item"><i class="fa-solid fa-paw"></i> Dogs: ${item.dogFriendly}/5</div>
-                        </div>
-
-                        <div class="rating-bars">
-                            <div class="rating-row">
-                                <span>Nature</span>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: ${item.nature * 20}%"></div></div>
-                            </div>
-                            <div class="rating-row">
-                                <span>Quiet (few people)</span>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: ${item.quiet * 20}%"></div></div>
-                            </div>
-                            <div class="rating-row">
-                                <span>Wildlife Chance</span>
-                                <div class="rating-bar-bg"><div class="rating-bar-fill" style="width: ${item.wildlife * 20}%"></div></div>
-                            </div>
-                        </div>
-
-                        <a href="#${item.id}" class="btn-detail">View Route Detail <i class="fa-solid fa-arrow-right"></i></a>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        // INITIALIZE MAIN LEAFLET MAP
-        function initMainMap() {
-            const map = L.map('map-container').setView([48.2, 14.8], 6);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(map);
-
-            // Prague start pin (custom pin)
-            const pragueIcon = L.divIcon({
-                className: 'custom-pin-prague',
-                html: `<div class="custom-pin-marker start-pin"><i class="fa-solid fa-house"></i></div>`,
-                iconSize: [32, 32],
-                iconAnchor: [16, 32]
-            });
-            const pragueMarker = L.marker([50.0875, 14.4214], {icon: pragueIcon}).addTo(map)
-                .bindPopup('<b>Start: Prague</b><br>Na Petynce 716/48');
-
-            pragueMarker.on('mouseover', function () {
-                this.openPopup();
-            });
-
-            // Destinations – replaced with pins without permanent title, hover details via mouseover
-            destinations.forEach(item => {
-                const pinIcon = L.divIcon({
-                    className: 'custom-pin',
-                    html: `<div class="custom-pin-marker"><i class="fa-solid fa-location-dot"></i></div>`,
-                    iconSize: [32, 32],
-                    iconAnchor: [16, 32]
-                });
-
-                const marker = L.marker([item.lat, item.lng], {icon: pinIcon}).addTo(map);
-                
-                const popupContent = `
-                    <div style="font-family:sans-serif; width:200px;">
-                        <img src="${item.img}" style="width:100%; height:100px; object-fit:cover; border-radius:8px; margin-bottom:8px;">
-                        <h4 style="margin:0 0 4px; font-size:16px;">${item.flag} ${item.name}</h4>
-                        <p style="margin:0 0 6px; font-size:12px; color:#666;"><i class="fa-solid fa-route"></i> ${item.dist} km • <i class="fa-solid fa-wallet"></i> ${item.budget} CZK</p>
-                        <a href="#${item.id}" style="display:inline-block; background:#C87D43; color:#fff; text-decoration:none; padding:4px 10px; border-radius:12px; font-size:11px; font-weight:bold;">SHOW ME!</a>
-                    </div>
-                `;
-                marker.bindPopup(popupContent);
-
-                // Show details on mouseover
-                marker.on('mouseover', function () {
-                    this.openPopup();
-                });
-            });
-        }
-
-        // INITIALIZE INDIVIDUAL ROUTE MAPS
-        function initRouteMaps() {
-            destinations.forEach(dest => {
-                const mapId = 'map-' + dest.id;
-                const container = document.getElementById(mapId);
-                if (!container) return;
-
-                const rMap = L.map(mapId, { scrollWheelZoom: false }).setView([48.5, 14.8], 6);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '© OpenStreetMap'
-                }).addTo(rMap);
-
-                // Add route line
-                const polyline = L.polyline(dest.routeCoords, {
-                    color: '#C87D43',
-                    weight: 4,
-                    opacity: 0.8,
-                    dashArray: '8, 8'
-                }).addTo(rMap);
-
-                // Start Marker - Prague Pin
-                const startPinIcon = L.divIcon({
-                    className: 'custom-pin-prague',
-                    html: `<div class="custom-pin-marker start-pin"><i class="fa-solid fa-house"></i></div>`,
-                    iconSize: [32, 32],
-                    iconAnchor: [16, 32]
-                });
-                L.marker(dest.routeCoords[0], { icon: startPinIcon }).addTo(rMap).bindPopup('Prague (Start)');
-
-                // End Marker - Destination Pin
-                const endPinIcon = L.divIcon({
-                    className: 'custom-pin',
-                    html: `<div class="custom-pin-marker"><i class="fa-solid fa-location-dot"></i></div>`,
-                    iconSize: [32, 32],
-                    iconAnchor: [16, 32]
-                });
-                L.marker(dest.routeCoords[dest.routeCoords.length - 1], { icon: endPinIcon }).addTo(rMap).bindPopup(dest.name);
-
-                rMap.fitBounds(polyline.getBounds(), { padding: [30, 30] });
-            });
-        }
-
-        // CHARTS SETUP (CHART.JS)
-        function initCharts() {
-            const labels = destinations.map(d => `${d.flag} ${d.name}`);
-            const colors = ['#C87D43', '#5B7059', '#B85032', '#D99B26', '#4A3A34'];
-
-            // 1. Budget
-            new Chart(document.getElementById('chartBudget'), {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Budget in CZK',
-                        data: destinations.map(d => d.budget),
-                        backgroundColor: colors,
-                        borderRadius: 8
-                    }]
-                },
-                options: { responsive: true, plugins: { legend: { display: false } } }
-            });
-
-            // 2. Nature Score
-            new Chart(document.getElementById('chartNature'), {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Nature Score (1-5)',
-                        data: destinations.map(d => d.nature),
-                        backgroundColor: '#5B7059',
-                        borderRadius: 8
-                    }]
-                },
-                options: { responsive: true, scales: { y: { max: 5, min: 0 } }, plugins: { legend: { display: false } } }
-            });
-
-            // 3. Quiet Score
-            new Chart(document.getElementById('chartQuiet'), {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Quiet Score (1-5)',
-                        data: destinations.map(d => d.quiet),
-                        backgroundColor: '#C87D43',
-                        borderRadius: 8
-                    }]
-                },
-                options: { responsive: true, scales: { y: { max: 5, min: 0 } }, plugins: { legend: { display: false } } }
-            });
-
-            // 4. Wildlife Score
-            new Chart(document.getElementById('chartWildlife'), {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Wildlife Chance (1-5)',
-                        data: destinations.map(d => d.wildlife),
-                        backgroundColor: '#D99B26',
-                        borderRadius: 8
-                    }]
-                },
-                options: { responsive: true, scales: { y: { max: 5, min: 0 } }, plugins: { legend: { display: false } } }
-            });
-
-            // 5. Autumn Atmosphere
-            new Chart(document.getElementById('chartAutumn'), {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Autumn Atmosphere (1-5)',
-                        data: destinations.map(d => d.autumn),
-                        backgroundColor: '#B85032',
-                        borderRadius: 8
-                    }]
-                },
-                options: { responsive: true, scales: { y: { max: 5, min: 0 } }, plugins: { legend: { display: false } } }
-            });
-
-            // 6. Tourists (Lower is better)
-            new Chart(document.getElementById('chartTourists'), {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Tourist Congestion (1=Lowest)',
-                        data: destinations.map(d => d.tourists),
-                        backgroundColor: '#4A3A34',
-                        borderRadius: 8
-                    }]
-                },
-                options: { responsive: true, scales: { y: { max: 5, min: 0 } }, plugins: { legend: { display: false } } }
-            });
-        }
-
-        // SCROLL TOP BUTTON LOGIC (> 400px)
-        window.addEventListener('scroll', () => {
-            const btn = document.getElementById('scrollTopBtn');
-            if (window.scrollY > 400) {
-                btn.classList.add('visible');
-            } else {
-                btn.classList.remove('visible');
-            }
-        });
-
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-
-        // INIT ON LOAD
-        window.addEventListener('DOMContentLoaded', () => {
-            renderCards(destinations);
-            initMainMap();
-            initRouteMaps();
-            initCharts();
-        });
-    </script>
 </body>
 </html>
