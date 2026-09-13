@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Winter Roadtrip — Coming Soon | Ford Mondeo Roadtrips</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❄️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    :root {
+        --accent: #6FA8D8;
+        --bg-deep: #0b0d12;
+        --text-main: #F3EFE7;
+        --text-muted: #A7A39B;
+        --font-heading: 'Playfair Display', serif;
+        --font-body: 'Plus Jakarta Sans', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: var(--font-body);
+        background:
+            radial-gradient(55% 45% at 80% 0%, rgba(111, 168, 216, 0.16) 0%, rgba(111, 168, 216, 0) 60%),
+            linear-gradient(180deg, #0b0d12 0%, #10151d 100%);
+        color: var(--text-main);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        text-align: center;
+    }
+    .wrap { max-width: 560px; }
+    .icon {
+        font-size: 2.6rem;
+        color: var(--accent);
+        margin-bottom: 22px;
+    }
+    .tag {
+        display: inline-block;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--accent);
+        background: rgba(111, 168, 216, 0.12);
+        padding: 6px 14px;
+        border-radius: 20px;
+        margin-bottom: 20px;
+    }
+    h1 {
+        font-family: var(--font-heading);
+        font-weight: 800;
+        font-size: clamp(1.8rem, 5vw, 2.6rem);
+        margin-bottom: 16px;
+    }
+    p {
+        color: var(--text-muted);
+        line-height: 1.7;
+        margin-bottom: 34px;
+    }
+    .back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: var(--text-main);
+        font-weight: 700;
+        font-size: 0.92rem;
+        padding: 12px 24px;
+        border-radius: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        transition: all 0.25s ease;
+    }
+    .back:hover {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #0b0d12;
+    }
+</style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="icon"><i class="fa-solid fa-snowflake"></i></div>
+        <span class="tag">In progress</span>
+        <h1>Winter Roadtrip is on the way</h1>
+        <p>The route is still being planned — maps, stops and photos will land here once the trip is ready. Check back soon.</p>
+        <a class="back" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Back to all roadtrips</a>
+    </div>
+</body>
+</html>
