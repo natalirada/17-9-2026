@@ -1,93 +1,1244 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cs">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Winter Roadtrip — Coming Soon | Ford Mondeo Roadtrips</title>
+<title>Zimní Roadtrip | Ford Mondeo Roadtrips</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❄️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
-    :root {
-        --accent: #6FA8D8;
-        --bg-deep: #0b0d12;
-        --text-main: #F3EFE7;
-        --text-muted: #A7A39B;
-        --font-heading: 'Playfair Display', serif;
-        --font-body: 'Plus Jakarta Sans', sans-serif;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-        font-family: var(--font-body);
-        background:
-            radial-gradient(55% 45% at 80% 0%, rgba(111, 168, 216, 0.16) 0%, rgba(111, 168, 216, 0) 60%),
-            linear-gradient(180deg, #0b0d12 0%, #10151d 100%);
-        color: var(--text-main);
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 24px;
-        text-align: center;
-    }
-    .wrap { max-width: 560px; }
-    .icon {
-        font-size: 2.6rem;
-        color: var(--accent);
-        margin-bottom: 22px;
-    }
-    .tag {
-        display: inline-block;
-        font-size: 0.72rem;
-        font-weight: 700;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        color: var(--accent);
-        background: rgba(111, 168, 216, 0.12);
-        padding: 6px 14px;
-        border-radius: 20px;
-        margin-bottom: 20px;
-    }
-    h1 {
-        font-family: var(--font-heading);
-        font-weight: 800;
-        font-size: clamp(1.8rem, 5vw, 2.6rem);
-        margin-bottom: 16px;
-    }
-    p {
-        color: var(--text-muted);
-        line-height: 1.7;
-        margin-bottom: 34px;
-    }
-    .back {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        text-decoration: none;
-        color: var(--text-main);
-        font-weight: 700;
-        font-size: 0.92rem;
-        padding: 12px 24px;
-        border-radius: 30px;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        transition: all 0.25s ease;
-    }
-    .back:hover {
-        background: var(--accent);
-        border-color: var(--accent);
-        color: #0b0d12;
-    }
+
+/* ============ PALETTE (svetlo svicek, snih, polarni zare) ============ */
+:root {
+    --navy: #1F2A3A;
+    --navy-deep: #161f2b;
+    --navy-card: #24324a;
+    --card-bg: linear-gradient(160deg, #26364f 0%, #1a2433 100%);
+    --ink: #F7F5F2;
+    --ink-muted: #ADBAC7;
+    --snow: #F7F5F2;
+    --ice: #E4EDF2;
+    --amber: #E8A94A;
+    --amber-deep: #C97B3D;
+    --aurora-green: #5FBF95;
+    --aurora-teal: #4FB2C4;
+    --aurora-violet: #9B7FC7;
+    --border-soft: rgba(232, 169, 74, 0.18);
+    --border-soft2: rgba(228, 237, 242, 0.12);
+    --shadow-soft: 0 14px 34px rgba(0,0,0,0.35);
+    --shadow-hover: 0 20px 44px rgba(0,0,0,0.48);
+    --radius-lg: 26px;
+    --radius-md: 16px;
+    --font-head: 'Cormorant Garamond', serif;
+    --font-body: 'Nunito Sans', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-x: hidden; max-width: 100%; }
+body {
+    font-family: var(--font-body);
+    background:
+        radial-gradient(50% 40% at 12% 0%, rgba(95,191,149,0.07) 0%, transparent 60%),
+        radial-gradient(45% 35% at 88% 8%, rgba(155,127,199,0.08) 0%, transparent 60%),
+        var(--navy);
+    color: var(--ink);
+    line-height: 1.65;
+    overflow-x: hidden;
+}
+h1, h2, h3, .font-head { font-family: var(--font-head); font-weight: 500; color: var(--snow); }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+
+/* ============ LEAFLET OVERRIDE ============ */
+.leaflet-bar a, .leaflet-control-zoom-in, .leaflet-control-zoom-out {
+    color: var(--navy) !important; background: #fff !important; border: 1px solid var(--border-soft) !important;
+}
+.leaflet-bar a:hover { background: var(--amber) !important; color: #fff !important; }
+
+/* ============ BACK TO HUB: red snowy Mondeo, snow falls off as it drives ============ */
+.mondeo-back {
+    position: fixed;
+    top: 22px;
+    left: 22px;
+    z-index: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: rgba(22, 31, 43, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-soft);
+    color: var(--ice);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 8px 16px 8px 10px;
+    border-radius: 30px;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.mondeo-back:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+.mondeo-back .car-wrap { position: relative; display: flex; align-items: center; }
+.mondeo-back .car-svg { width: 34px; height: 22px; overflow: visible; }
+.mondeo-back:hover .car-svg .wheel { animation: mondeoWheel 0.35s linear infinite; transform-origin: center; }
+.mondeo-back:hover .car-svg .car-body-shape { animation: mondeoWiggle 0.45s ease-in-out infinite; }
+.mondeo-back .snow-cap { transition: opacity 0.3s ease; }
+.mondeo-back.driving .snow-cap { opacity: 0; transition: opacity 0.25s ease; }
+@keyframes mondeoWiggle { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-1.2px); } }
+@keyframes mondeoWheel { to { transform: rotate(360deg); } }
+.mondeo-back .trail { position: absolute; left: 18px; top: 40%; width: 0; height: 0; pointer-events: none; }
+.mondeo-back .snow-particle { position: absolute; width: 10px; height: 10px; opacity: 0; }
+.mondeo-back.driving { pointer-events: none; }
+.mondeo-back.driving .car-wrap { animation: mondeoEscape 0.7s ease-in forwards; }
+.mondeo-back.driving .label { animation: fadeOutQuick 0.4s ease forwards; }
+@keyframes mondeoEscape { to { transform: translateX(-80px); opacity: 0; } }
+@keyframes fadeOutQuick { to { opacity: 0; } }
+.mondeo-back.driving .snow-particle {
+    animation: snowFallOff 0.85s cubic-bezier(.45,0,.55,1) forwards !important;
+    opacity: 1 !important;
+}
+.mondeo-back.driving .snow-particle.s2 { animation-delay: 0.1s !important; }
+.mondeo-back.driving .snow-particle.s3 { animation-delay: 0.22s !important; }
+@keyframes snowFallOff {
+    0% { transform: translate(0,-4px) scale(1) rotate(0deg); opacity: 1; }
+    100% { transform: translate(var(--bx,-8px), var(--by,26px)) scale(0.4) rotate(180deg); opacity: 0; }
+}
+
+/* ============ SCROLL TOP (floating snowflake) ============ */
+@keyframes snowflakeSpin { to { transform: rotate(360deg); } }
+@keyframes snowflakeGlow { 0%,100% { filter: drop-shadow(0 0 2px rgba(232,169,74,0.3)); } 50% { filter: drop-shadow(0 0 7px rgba(232,169,74,0.65)); } }
+#scrollTopBtn {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 54px;
+    height: 54px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    z-index: 500;
+}
+#scrollTopBtn.visible { opacity: 1; visibility: visible; }
+#scrollTopBtn svg {
+    width: 44px;
+    height: 44px;
+    animation: snowflakeSpin 9s linear infinite, snowflakeGlow 3s ease-in-out infinite;
+    transform-origin: 50% 50%;
+}
+#scrollTopBtn:hover { transform: translateY(-4px) scale(1.08); }
+#scrollTopBtn:hover svg { animation-play-state: paused; }
+@media (max-width: 600px) {
+    #scrollTopBtn { bottom: 18px; right: 18px; width: 46px; height: 46px; }
+    #scrollTopBtn svg { width: 36px; height: 36px; }
+}
+
+/* ============ NAV ============ */
+.nav { display: flex; justify-content: center; align-items: center; padding: 26px 24px 6px; text-align: center; }
+.nav-logo { font-family: var(--font-head); font-size: 1.3rem; letter-spacing: 0.5px; color: var(--amber); }
+.nav-logo span { color: var(--aurora-teal); }
+
+/* ============ HERO ============ */
+.hero { padding: 30px 24px 20px; max-width: 1200px; margin: 0 auto; text-align: center; }
+.hero-kicker {
+    display: inline-block; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--aurora-teal); font-weight: 700; background: rgba(79,178,196,0.12);
+    padding: 7px 18px; border-radius: 20px; margin-bottom: 18px;
+}
+.hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); max-width: 820px; margin: 0 auto 16px; line-height: 1.2; }
+.hero h1 em { font-style: italic; color: var(--amber); }
+.hero p.lede { max-width: 580px; margin: 0 auto; color: var(--ink-muted); font-size: 1.02rem; }
+.hero-hint { margin-top: 18px; font-size: 0.85rem; color: var(--ink-muted); font-style: italic; }
+.hero-hint i { color: var(--amber); margin-right: 6px; }
+
+/* ============ MOUNTAIN FIELD ============ */
+.mountain-field {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: clamp(6px, 2.4vw, 22px);
+    max-width: 1180px;
+    margin: 48px auto 6px;
+    padding: 0 10px 22px;
+    min-height: 300px;
+}
+.peak {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    height: var(--peak-h, 160px);
+    width: auto;
+    padding: 0;
+    flex-shrink: 0;
+    transition: transform 0.4s cubic-bezier(.34,1.56,.64,1), filter 0.35s ease;
+    transform-origin: bottom center;
+}
+.mountain-field.has-hover .peak { filter: saturate(0.55) brightness(0.8); }
+.mountain-field.has-hover .peak.is-hovered { filter: none; }
+.peak.is-hovered { transform: scale(1.07); z-index: 20; }
+.peak-svg { height: 100%; width: auto; display: block; overflow: visible; }
+.skier-pos { transform: translate(96px,58px); transition: transform 0.25s ease; }
+.peak.is-hovered .skier-pos { animation: skiHoverWiggle 0.5s ease-in-out infinite; }
+@keyframes skiHoverWiggle {
+    0%,100% { transform: translate(96px,58px) rotate(0deg); }
+    50% { transform: translate(93px,55px) rotate(-7deg); }
+}
+.peak.is-skiing .skier-pos { animation: skiDown 0.9s cubic-bezier(.5,.02,.55,.95) forwards; }
+@keyframes skiDown {
+    0% { transform: translate(96px,58px) rotate(0deg); opacity: 1; }
+    70% { transform: translate(44px,188px) rotate(10deg); opacity: 1; }
+    100% { transform: translate(28px,214px) rotate(14deg) scale(0.68); opacity: 0; }
+}
+.snow-spray { opacity: 0; transform-origin: center; }
+.peak.is-skiing .snow-spray {
+    animation: snowSpray 0.65s ease-out forwards;
+    animation-delay: 0.55s;
+}
+.peak.is-skiing .snow-spray.sp2 { animation-delay: 0.62s; }
+.peak.is-skiing .snow-spray.sp3 { animation-delay: 0.69s; }
+@keyframes snowSpray {
+    0% { transform: translate(0,0) scale(0); opacity: 0; }
+    45% { transform: translate(var(--sx), var(--sy)) scale(1); opacity: 0.95; }
+    100% { transform: translate(calc(var(--sx) * 1.7), calc(var(--sy) * 1.7)) scale(0.3); opacity: 0; }
+}
+.peak-label {
+    position: absolute;
+    left: 50%;
+    bottom: 8%;
+    transform: translateX(-58%) rotate(-27deg);
+    transform-origin: left center;
+    font-family: var(--font-head);
+    font-size: 0.82rem;
+    color: var(--ice);
+    white-space: nowrap;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    pointer-events: none;
+}
+
+/* ski popup (hover bubble) */
+.ski-popup {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translate(-50%, 10px);
+    width: 240px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
+    box-shadow: var(--shadow-hover);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    margin-bottom: 16px;
+    text-align: left;
+    z-index: 30;
+}
+.peak.is-hovered .ski-popup { opacity: 1; transform: translate(-50%, 0); }
+.ski-popup::after {
+    content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    border: 8px solid transparent; border-top-color: #1a2433;
+}
+.peak:first-child .ski-popup { left: 0; transform: translate(0, 10px); }
+.peak:first-child.is-hovered .ski-popup { transform: translate(0, 0); }
+.peak:first-child .ski-popup::after { left: 30px; }
+.peak:last-child .ski-popup { left: auto; right: 0; transform: translate(0, 10px); }
+.peak:last-child.is-hovered .ski-popup { transform: translate(0, 0); }
+.peak:last-child .ski-popup::after { left: auto; right: 30px; transform: none; }
+.ski-name { display: block; font-family: var(--font-head); font-size: 1.05rem; color: var(--amber); margin-bottom: 6px; }
+.ski-text { display: block; font-size: 0.8rem; color: var(--ink-muted); line-height: 1.55; margin-bottom: 10px; }
+.ski-cta {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 0.72rem; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.5px; color: var(--navy);
+    background: var(--amber); padding: 6px 12px; border-radius: 20px;
+}
+
+/* ============ SECTION SHELLS ============ */
+section { max-width: 1180px; margin: 0 auto; padding: 70px 24px; }
+.section-head { text-align: center; max-width: 640px; margin: 0 auto 40px; }
+.section-kicker { display: inline-block; font-size: 0.72rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--aurora-teal); font-weight: 700; margin-bottom: 10px; }
+.section-head h2 { font-size: clamp(1.6rem, 3.5vw, 2.3rem); }
+
+/* ============ MAP ============ */
+.map-section { padding-top: 20px; }
+#map-container { height: 480px; border-radius: var(--radius-lg); box-shadow: var(--shadow-soft); border: 1px solid var(--border-soft); overflow: hidden; }
+.custom-pin-marker {
+    background: var(--amber-deep); color: #fff; width: 32px; height: 32px; border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg); display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4); border: 2px solid #fff;
+}
+.custom-pin-marker.start-pin { background: var(--navy-deep); border-color: var(--amber); }
+.custom-pin-marker i { transform: rotate(45deg); font-size: 13px; }
+.custom-pin, .custom-pin-prague { background: transparent !important; border: none !important; }
+.route-map-box { height: 220px; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-soft); margin-top: 22px; }
+
+/* ============ INTRO BLURB ============ */
+.intro-blurb { padding-top: 20px; padding-bottom: 20px; }
+.intro-blurb .box {
+    max-width: 780px; margin: 0 auto; text-align: center; background: var(--card-bg);
+    border: 1px solid var(--border-soft); border-radius: var(--radius-lg); padding: 40px 44px; box-shadow: var(--shadow-soft);
+}
+.intro-blurb p { font-size: 1.05rem; color: var(--ink-muted); }
+.intro-blurb .signoff { margin-top: 14px; font-family: var(--font-head); color: var(--amber); font-size: 1.05rem; }
+
+/* ============ CARDS ============ */
+.cards-section .section-head { margin-bottom: 20px; }
+.cards-group { margin-bottom: 54px; }
+.cards-group:last-child { margin-bottom: 0; }
+.cards-group-title { display: flex; align-items: center; gap: 10px; font-family: var(--font-head); font-size: 1.3rem; color: var(--amber); margin-bottom: 24px; justify-content: center; }
+.cards-group-title i { color: var(--aurora-teal); }
+.cards-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 26px; }
+.dest-card {
+    background: var(--card-bg); border: 1px solid var(--border-soft); border-radius: var(--radius-lg);
+    overflow: hidden; box-shadow: var(--shadow-soft); transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex; flex-direction: column; flex: 1 1 250px; max-width: 270px;
+}
+.dest-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+.dest-img-box { position: relative; height: 170px; background: linear-gradient(135deg, #2c3e54, #1a2433); }
+.dest-img-box img { width: 100%; height: 100%; object-fit: cover; }
+.dest-flag-badge { position: absolute; top: 12px; left: 12px; background: rgba(22,31,43,0.85); font-size: 0.72rem; font-weight: 700; padding: 5px 11px; border-radius: 20px; color: var(--ice); }
+.dest-budget-tag { position: absolute; bottom: 12px; right: 12px; background: var(--amber); color: var(--navy); font-size: 0.74rem; font-weight: 800; padding: 5px 11px; border-radius: 20px; }
+.dest-content { padding: 20px 22px 24px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
+.dest-title { font-size: 1.2rem; }
+.dest-stats-row { display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.78rem; color: var(--ink-muted); }
+.dest-stats-row span i { color: var(--amber); margin-right: 5px; }
+.dest-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 14px; font-size: 0.76rem; color: var(--ink-muted); }
+.dest-stats-grid span i { color: var(--amber); margin-right: 5px; width: 14px; text-align: center; }
+.dest-card p { font-size: 0.86rem; color: var(--ink-muted); }
+.rating-bars { display: flex; flex-direction: column; gap: 7px; }
+.rating-row { display: flex; align-items: center; gap: 9px; font-size: 0.72rem; color: var(--ink-muted); }
+.rating-row .rlabel { width: 84px; flex-shrink: 0; }
+.rating-bar-bg { flex: 1; height: 6px; background: rgba(228,237,242,0.12); border-radius: 4px; overflow: hidden; }
+.rating-bar-fill { height: 100%; background: var(--aurora-green); border-radius: 4px; }
+.btn-detail { display: inline-flex; align-items: center; gap: 7px; font-size: 0.8rem; font-weight: 700; color: var(--amber); margin-top: auto; }
+
+/* ============ DESTINATION FULL SECTIONS ============ */
+.destination { scroll-margin-top: 30px; }
+.dest-eyebrow { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--amber); font-weight: 700; margin-bottom: 8px; }
+.destination h2 { font-size: 2rem; margin-bottom: 14px; }
+.destination .dest-stats-row { margin-bottom: 18px; font-size: 0.85rem; }
+.destination p.lead-text { color: var(--ink-muted); margin-bottom: 0; max-width: 760px; }
+
+.gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; height: 280px; margin: 28px 0 32px; }
+.dest-photo { position: relative; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-soft); }
+.dest-photo .ph {
+    position: absolute; inset: 0; background: linear-gradient(135deg, #2c3e54, #1a2433);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 5px; color: var(--ink-muted); font-size: 0.68rem; text-align: center; padding: 6px;
+}
+.dest-photo .ph i { font-size: 1.05rem; color: var(--amber); }
+.dest-photo img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.dest-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px; margin-bottom: 26px; }
+.info-block { margin-bottom: 0; }
+.info-block h4 { font-family: var(--font-body); font-weight: 800; font-size: 0.92rem; color: var(--snow); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.info-block h4 i { color: var(--aurora-teal); width: 18px; }
+.info-block ul { list-style: none; padding-left: 26px; }
+.info-block li { position: relative; font-size: 0.88rem; color: var(--ink-muted); margin-bottom: 6px; }
+.info-block li::before { content: '·'; position: absolute; left: -16px; color: var(--amber); font-weight: 700; font-size: 1.2rem; }
+.info-block p { font-size: 0.88rem; color: var(--ink-muted); }
+
+.safety-box {
+    display: flex; gap: 12px; align-items: flex-start; background: rgba(201,123,61,0.1);
+    border: 1px solid rgba(201,123,61,0.35); border-radius: var(--radius-md); padding: 16px 20px; margin-bottom: 26px;
+}
+.safety-box i { color: var(--amber-deep); font-size: 1.1rem; margin-top: 2px; flex-shrink: 0; }
+.safety-box p { font-size: 0.86rem; color: var(--ice); margin: 0; }
+.safety-box strong { color: var(--amber); }
+
+.lodging-box {
+    display: flex; gap: 12px; align-items: flex-start; background: rgba(95,191,149,0.08);
+    border: 1px solid rgba(95,191,149,0.3); border-radius: var(--radius-md); padding: 16px 20px; margin-bottom: 26px;
+}
+.lodging-box i { color: var(--aurora-green); font-size: 1.1rem; margin-top: 2px; flex-shrink: 0; }
+.lodging-box p { font-size: 0.86rem; color: var(--ice); margin: 0; }
+.lodging-box strong { color: var(--aurora-green); }
+
+.budget-chip { display: inline-flex; align-items: baseline; gap: 6px; background: rgba(232,169,74,0.1); border-radius: 14px; padding: 10px 18px; margin-bottom: 26px; }
+.budget-chip .num { font-family: var(--font-head); font-size: 1.3rem; color: var(--amber); }
+.budget-chip .lbl { font-size: 0.76rem; color: var(--ink-muted); }
+.destination .route-map-box { height: 340px; margin-top: 0; }
+.dest-divider { border: none; border-top: 1px solid var(--border-soft2); margin: 70px auto 0; max-width: 1180px; }
+
+/* ============ FOOTER ============ */
+.site-footer { padding: 60px 24px 40px; text-align: center; min-height: 40px; }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) {
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); height: 380px; }
+}
+@media (max-width: 640px) {
+    .mondeo-back { top: 12px; left: 12px; padding: 6px 13px 6px 8px; font-size: 0.75rem; }
+    .mondeo-back .car-svg { width: 28px; height: 18px; }
+    .nav { margin-top: 44px; }
+    .mountain-field { gap: 3px; min-height: 220px; }
+    .ski-popup { width: 178px; padding: 12px 14px; }
+    section { padding: 50px 18px; }
+    .gallery-grid { grid-template-columns: 1fr; height: auto; }
+    .gallery-grid .dest-photo { height: 180px; }
+}
 </style>
 </head>
 <body>
-    <div class="wrap">
-        <div class="icon"><i class="fa-solid fa-snowflake"></i></div>
-        <span class="tag">In progress</span>
-        <h1>Winter Roadtrip is on the way</h1>
-        <p>The route is still being planned — maps, stops and photos will land here once the trip is ready. Check back soon.</p>
-        <a class="back" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Back to all roadtrips</a>
+
+<a href="../index.html" class="mondeo-back" id="mondeoBack" title="Back to all roadtrips">
+    <span class="car-wrap">
+        <span class="trail" aria-hidden="true">
+            <svg class="snow-particle s1" style="--bx:-10px; --by:24px;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4.5" fill="#F7F5F2"/></svg>
+            <svg class="snow-particle s2" style="--bx:-2px; --by:30px;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3.6" fill="#E4EDF2"/></svg>
+            <svg class="snow-particle s3" style="--bx:6px; --by:22px;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3" fill="#F7F5F2"/></svg>
+        </span>
+        <svg class="car-svg" viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg">
+            <path class="car-body-shape" d="M4 22 C4 14 10 12 16 12 L22 6 L44 6 L50 12 C56 12 60 14 60 22 L60 24 L4 24 Z" fill="#B7332E" stroke="#7A1F1C" stroke-width="1.5"/>
+            <path d="M23 8 L28 12 L40 12 L43 8 Z" fill="#E4EDF2" opacity="0.9"/>
+            <circle class="wheel" cx="16" cy="24" r="5" fill="#20242a"/>
+            <circle class="wheel" cx="48" cy="24" r="5" fill="#20242a"/>
+            <circle cx="16" cy="24" r="2" fill="#E4EDF2"/>
+            <circle cx="48" cy="24" r="2" fill="#E4EDF2"/>
+            <g class="snow-cap">
+                <path d="M4 22 C4 14 10 12 16 12 L22 6 L28 6 L26 12 L16 13 C11 13 6 15 5 21 Z" fill="#F7F5F2" opacity="0.92"/>
+                <ellipse cx="30" cy="6.5" rx="7" ry="2" fill="#F7F5F2" opacity="0.92"/>
+                <ellipse cx="53" cy="12.5" rx="5" ry="1.6" fill="#F7F5F2" opacity="0.85"/>
+            </g>
+        </svg>
+    </span>
+    <span class="label">All Roadtrips</span>
+</a>
+<script>
+    document.getElementById('mondeoBack').addEventListener('click', function(e) {
+        if (this.classList.contains('driving')) return;
+        e.preventDefault();
+        const href = this.getAttribute('href');
+        this.classList.add('driving');
+        setTimeout(() => { window.location.href = href; }, 650);
+    });
+</script>
+
+<button id="scrollTopBtn" onclick="scrollToTop()" aria-label="Zpět nahoru" title="Zpět nahoru">
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="#E4EDF2" stroke-width="3" stroke-linecap="round">
+            <line x1="32" y1="8" x2="32" y2="56"/>
+            <line x1="8" y1="32" x2="56" y2="32"/>
+            <line x1="14" y1="14" x2="50" y2="50"/>
+            <line x1="14" y1="50" x2="50" y2="14"/>
+        </g>
+        <g stroke="#E8A94A" stroke-width="2.4" stroke-linecap="round">
+            <path d="M32 8 L27 15 M32 8 L37 15"/>
+            <path d="M32 56 L27 49 M32 56 L37 49"/>
+            <path d="M8 32 L15 27 M8 32 L15 37"/>
+            <path d="M56 32 L49 27 M56 32 L49 37"/>
+            <path d="M14 14 L21 16 M14 14 L16 21"/>
+            <path d="M50 50 L43 48 M50 50 L48 43"/>
+            <path d="M14 50 L21 48 M14 50 L16 43"/>
+            <path d="M50 14 L43 16 M50 14 L48 21"/>
+        </g>
+        <circle cx="32" cy="32" r="5" fill="#4FB2C4"/>
+    </svg>
+</button>
+
+<nav class="nav">
+    <div class="nav-logo">Sníh, ticho a naše dvě zimní čumáky, <span>tak jedem&hellip;</span></div>
+</nav>
+
+<header class="hero" id="hero">
+    <span class="hero-kicker">Zimní trip autem za svíčkovým světlem a sněhem</span>
+    <h1>Kam vyrazit, když <em>zamrzne</em> první vodopád</h1>
+    <p class="lede">Šest zimních destinací pro nás — tři na jeden den, tři s přespáním v soukromé chaloupce s krbem. Jen mráz, ticho a psí packy pokryté jinovatkou.</p>
+
+    <div class="mountain-field" id="mountainField">
+        <button class="peak" data-target="kokorinsko" aria-label="Mšenské Pokličky" style="--peak-h: 100px;">
+            <svg class="peak-svg" viewBox="0 0 160 220" xmlns="http://www.w3.org/2000/svg">
+    <path d="M-5 214 L40 96 L58 118 L78 44 L96 78 L120 30 L168 214 Z" fill="#28394d" opacity="0.55"/>
+    <path d="M4 214 L52 84 L70 106 L100 40 L150 214 Z" fill="#324862" stroke="#3d5570" stroke-width="2"/>
+    <path d="M85 55 L94 66 L100 46 L109 62 L117 49 L124 68" fill="none" stroke="#F7F5F2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M100 46 C 90 90, 68 132, 32 208" fill="none" stroke="#E4EDF2" stroke-width="2.4" stroke-dasharray="5 7" stroke-linecap="round" opacity="0.85"/>
+    <g class="skier-pos">
+        <g>
+            <circle r="4.2" cx="0" cy="-9" fill="#E8A94A"/>
+            <line x1="0" y1="-5" x2="0" y2="8" stroke="#B7332E" stroke-width="3.2" stroke-linecap="round"/>
+            <line x1="-7" y1="12" x2="7" y2="12" stroke="#1F2A3A" stroke-width="2.2" stroke-linecap="round"/>
+            <line x1="0" y1="-1" x2="-7" y2="6" stroke="#1F2A3A" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="0" y1="-1" x2="7" y2="6" stroke="#1F2A3A" stroke-width="1.8" stroke-linecap="round"/>
+        </g>
+    </g>
+    <g class="snow-spray sp1" style="--sx:-14px; --sy:10px;"><circle cx="30" cy="210" r="4" fill="#F7F5F2"/></g>
+    <g class="snow-spray sp2" style="--sx:6px; --sy:14px;"><circle cx="30" cy="210" r="3.2" fill="#E4EDF2"/></g>
+    <g class="snow-spray sp3" style="--sx:-4px; --sy:16px;"><circle cx="30" cy="210" r="3" fill="#F7F5F2"/></g>
+</svg>
+            <span class="peak-label">Mšenské Pokličky</span>
+            <div class="ski-popup">
+                <strong class="ski-name">🇨🇿 Mšenské Pokličky</strong>
+                <span class="ski-text">Zasněžené homolovité skály kousek od Prahy. (60 km, ~1:00)</span>
+                <span class="ski-cta">Ski Down Anyway <i class="fa-solid fa-mountain-sun"></i></span>
+            </div>
+        </button>
+
+        <button class="peak" data-target="milesovka" aria-label="Milešovka" style="--peak-h: 111px;">
+            <svg class="peak-svg" viewBox="0 0 160 220" xmlns="http://www.w3.org/2000/svg">
+    <path d="M-5 214 L36 90 L60 122 L82 50 L104 84 L128 36 L168 214 Z" fill="#28394d" opacity="0.55"/>
+    <path d="M2 214 L50 88 L72 112 L100 46 L152 214 Z" fill="#324862" stroke="#3d5570" stroke-width="2"/>
+    <path d="M83 60 L92 70 L100 52 L108 68 L116 55 L122 70" fill="none" stroke="#F7F5F2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M100 52 C 88 92, 66 134, 32 208" fill="none" stroke="#E4EDF2" stroke-width="2.4" stroke-dasharray="5 7" stroke-linecap="round" opacity="0.85"/>
+    <g class="skier-pos">
+        <g>
+            <circle r="4.2" cx="0" cy="-9" fill="#E8A94A"/>
+            <line x1="0" y1="-5" x2="0" y2="8" stroke="#B7332E" stroke-width="3.2" stroke-linecap="round"/>
+            <line x1="-7" y1="12" x2="7" y2="12" stroke="#1F2A3A" stroke-width="2.2" stroke-linecap="round"/>
+            <line x1="0" y1="-1" x2="-7" y2="6" stroke="#1F2A3A" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="0" y1="-1" x2="7" y2="6" stroke="#1F2A3A" stroke-width="1.8" stroke-linecap="round"/>
+        </g>
+    </g>
+    <g class="snow-spray sp1" style="--sx:-14px; --sy:10px;"><circle cx="30" cy="210" r="4" fill="#F7F5F2"/></g>
+    <g class="snow-spray sp2" style="--sx:6px; --sy:14px;"><circle cx="30" cy="210" r="3.2" fill="#E4EDF2"/></g>
+    <g class="snow-spray sp3" style="--sx:-4px; --sy:16px;"><circle cx="30" cy="210" r="3" fill="#F7F5F2"/></g>
+</svg>
+            <span class="peak-label">Milešovka</span>
+            <div class="ski-popup">
+                <strong class="ski-name">🇨🇿 Milešovka</strong>
+                <span class="ski-text">Moře mraků pod vrcholem, pokud bude štěstí. (80 km, ~1:00)</span>
+                <span class="ski-cta">Send It, I Guess <i class="fa-solid fa-mountain-sun"></i></span>
+            </div>
+        </button>
+
+        <button class="peak" data-target="podtrosecko" aria-label="Podtrosecká údolí" style="--peak-h: 122px;">
+            <svg class="peak-svg" viewBox="0 0 160 220" xmlns="http://www.w3.org/2000/svg">
+    <path d="M-5 214 L40 96 L58 118 L78 44 L96 78 L120 30 L168 214 Z" fill="#28394d" opacity="0.55"/>
+    <path d="M4 214 L52 84 L70 106 L100 40 L150 214 Z" fill="#324862" stroke="#3d5570" stroke-width="2"/>
+    <path d="M85 55 L94 66 L100 46 L109 62 L117 49 L124 68" fill="none" stroke="#F7F5F2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M100 46 C 90 90, 68 132, 32 208" fill="none" stroke="#E4EDF2" stroke-width="2.4" stroke-dasharray="5 7" stroke-linecap="round" opacity="0.85"/>
+    <g class="skier-pos">
+        <g>
+            <circle r="4.2" cx="0" cy="-9" fill="#E8A94A"/>
+            <line x1="0" y1="-5" x2="0" y2="8" stroke="#B7332E" stroke-width="3.2" stroke-linecap="round"/>
+            <line x1="-7" y1="12" x2="7" y2="12" stroke="#1F2A3A" stroke-width="2.2" stroke-linecap="round"/>
+            <line x1="0" y1="-1" x2="-7" y2="6" stroke="#1F2A3A" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="0" y1="-1" x2="7" y2="6" stroke="#1F2A3A" stroke-width="1.8" stroke-linecap="round"/>
+        </g>
+    </g>
+    <g class="snow-spray sp1" style="--sx:-14px; --sy:10px;"><circle cx="30" cy="210" r="4" fill="#F7F5F2"/></g>
+    <g class="snow-spray sp2" style="--sx:6px; --sy:14px;"><circle cx="30" cy="210" r="3.2" fill="#E4EDF2"/></g>
+    <g class="snow-spray sp3" style="--sx:-4px; --sy:16px;"><circle cx="30" cy="210" r="3" fill="#F7F5F2"/></g>
+</svg>
+            <span class="peak-label">Podtrosecká údolí</span>
+            <div class="ski-popup">
+                <strong class="ski-name">🇨🇿 Podtrosecká údolí</strong>
+                <span class="ski-text">Rovinatá procházka kolem zamrzlých rybníků. (100 km, ~1:20)</span>
+                <span class="ski-cta">Actually Safe, Let's Go <i class="fa-solid fa-mountain-sun"></i></span>
+            </div>
+        </button>
+
+        <button class="peak" data-target="krkonose" aria-label="Krkonoše — Harrachov" style="--peak-h: 140px;">
+            <svg class="peak-svg" viewBox="0 0 160 220" xmlns="http://www.w3.org/2000/svg">
+    <path d="M-5 214 L36 90 L60 122 L82 50 L104 84 L128 36 L168 214 Z" fill="#28394d" opacity="0.55"/>
+    <path d="M2 214 L50 88 L72 112 L100 46 L152 214 Z" fill="#324862" stroke="#3d5570" stroke-width="2"/>
+    <path d="M83 60 L92 70 L100 52 L108 68 L116 55 L122 70" fill="none" stroke="#F7F5F2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M100 52 C 88 92, 66 134, 32 208" fill="none" stroke="#E4EDF2" stroke-width="2.4" stroke-dasharray="5 7" stroke-linecap="round" opacity="0.85"/>
+    <g class="skier-pos">
+        <g>
+            <circle r="4.2" cx="0" cy="-9" fill="#E8A94A"/>
+            <line x1="0" y1="-5" x2="0" y2="8" stroke="#B7332E" stroke-width="3.2" stroke-linecap="round"/>
+            <line x1="-7" y1="12" x2="7" y2="12" stroke="#1F2A3A" stroke-width="2.2" stroke-linecap="round"/>
+            <line x1="0" y1="-1" x2="-7" y2="6" stroke="#1F2A3A" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="0" y1="-1" x2="7" y2="6" stroke="#1F2A3A" stroke-width="1.8" stroke-linecap="round"/>
+        </g>
+    </g>
+    <g class="snow-spray sp1" style="--sx:-14px; --sy:10px;"><circle cx="30" cy="210" r="4" fill="#F7F5F2"/></g>
+    <g class="snow-spray sp2" style="--sx:6px; --sy:14px;"><circle cx="30" cy="210" r="3.2" fill="#E4EDF2"/></g>
+    <g class="snow-spray sp3" style="--sx:-4px; --sy:16px;"><circle cx="30" cy="210" r="3" fill="#F7F5F2"/></g>
+</svg>
+            <span class="peak-label">Krkonoše — Harrachov</span>
+            <div class="ski-popup">
+                <strong class="ski-name">🇨🇿 Krkonoše — Harrachov</strong>
+                <span class="ski-text">Mumlavský vodopád zamrzlý v soše. (133 km, ~1:45)</span>
+                <span class="ski-cta">Ski Down Anyway <i class="fa-solid fa-mountain-sun"></i></span>
+            </div>
+        </button>
+
+        <button class="peak" data-target="jeseniky" aria-label="Jeseníky — Praděd" style="--peak-h: 258px;">
+            <svg class="peak-svg" viewBox="0 0 160 220" xmlns="http://www.w3.org/2000/svg">
+    <path d="M-5 214 L40 96 L58 118 L78 44 L96 78 L120 30 L168 214 Z" fill="#28394d" opacity="0.55"/>
+    <path d="M4 214 L52 84 L70 106 L100 40 L150 214 Z" fill="#324862" stroke="#3d5570" stroke-width="2"/>
+    <path d="M85 55 L94 66 L100 46 L109 62 L117 49 L124 68" fill="none" stroke="#F7F5F2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M100 46 C 90 90, 68 132, 32 208" fill="none" stroke="#E4EDF2" stroke-width="2.4" stroke-dasharray="5 7" stroke-linecap="round" opacity="0.85"/>
+    <g class="skier-pos">
+        <g>
+            <circle r="4.2" cx="0" cy="-9" fill="#E8A94A"/>
+            <line x1="0" y1="-5" x2="0" y2="8" stroke="#B7332E" stroke-width="3.2" stroke-linecap="round"/>
+            <line x1="-7" y1="12" x2="7" y2="12" stroke="#1F2A3A" stroke-width="2.2" stroke-linecap="round"/>
+            <line x1="0" y1="-1" x2="-7" y2="6" stroke="#1F2A3A" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="0" y1="-1" x2="7" y2="6" stroke="#1F2A3A" stroke-width="1.8" stroke-linecap="round"/>
+        </g>
+    </g>
+    <g class="snow-spray sp1" style="--sx:-14px; --sy:10px;"><circle cx="30" cy="210" r="4" fill="#F7F5F2"/></g>
+    <g class="snow-spray sp2" style="--sx:6px; --sy:14px;"><circle cx="30" cy="210" r="3.2" fill="#E4EDF2"/></g>
+    <g class="snow-spray sp3" style="--sx:-4px; --sy:16px;"><circle cx="30" cy="210" r="3" fill="#F7F5F2"/></g>
+</svg>
+            <span class="peak-label">Jeseníky — Praděd</span>
+            <div class="ski-popup">
+                <strong class="ski-name">🇨🇿 Jeseníky — Praděd</strong>
+                <span class="ski-text">Kamzíci na sněhu a ledová homole. (352 km, ~3:50)</span>
+                <span class="ski-cta">Do I Really Have To? <i class="fa-solid fa-mountain-sun"></i></span>
+            </div>
+        </button>
+
+        <button class="peak" data-target="beskydy" aria-label="Beskydy — Pustevny" style="--peak-h: 260px;">
+            <svg class="peak-svg" viewBox="0 0 160 220" xmlns="http://www.w3.org/2000/svg">
+    <path d="M-5 214 L36 90 L60 122 L82 50 L104 84 L128 36 L168 214 Z" fill="#28394d" opacity="0.55"/>
+    <path d="M2 214 L50 88 L72 112 L100 46 L152 214 Z" fill="#324862" stroke="#3d5570" stroke-width="2"/>
+    <path d="M83 60 L92 70 L100 52 L108 68 L116 55 L122 70" fill="none" stroke="#F7F5F2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M100 52 C 88 92, 66 134, 32 208" fill="none" stroke="#E4EDF2" stroke-width="2.4" stroke-dasharray="5 7" stroke-linecap="round" opacity="0.85"/>
+    <g class="skier-pos">
+        <g>
+            <circle r="4.2" cx="0" cy="-9" fill="#E8A94A"/>
+            <line x1="0" y1="-5" x2="0" y2="8" stroke="#B7332E" stroke-width="3.2" stroke-linecap="round"/>
+            <line x1="-7" y1="12" x2="7" y2="12" stroke="#1F2A3A" stroke-width="2.2" stroke-linecap="round"/>
+            <line x1="0" y1="-1" x2="-7" y2="6" stroke="#1F2A3A" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="0" y1="-1" x2="7" y2="6" stroke="#1F2A3A" stroke-width="1.8" stroke-linecap="round"/>
+        </g>
+    </g>
+    <g class="snow-spray sp1" style="--sx:-14px; --sy:10px;"><circle cx="30" cy="210" r="4" fill="#F7F5F2"/></g>
+    <g class="snow-spray sp2" style="--sx:6px; --sy:14px;"><circle cx="30" cy="210" r="3.2" fill="#E4EDF2"/></g>
+    <g class="snow-spray sp3" style="--sx:-4px; --sy:16px;"><circle cx="30" cy="210" r="3" fill="#F7F5F2"/></g>
+</svg>
+            <span class="peak-label">Beskydy — Pustevny</span>
+            <div class="ski-popup">
+                <strong class="ski-name">🇨🇿 Beskydy — Pustevny</strong>
+                <span class="ski-text">Hřebenovka na Radhošť, sáňky vítány. (355 km, ~3:50)</span>
+                <span class="ski-cta">Fine, Let's Send It <i class="fa-solid fa-mountain-sun"></i></span>
+            </div>
+        </button>
     </div>
+    <div class="hero-hint"><i class="fa-solid fa-hand-pointer"></i>Najeď myší na lyžaře a přečti si o place, klikni a nech ho sjet dolů.</div>
+</header>
+
+<section class="map-section" id="mapa">
+    <div class="section-head">
+        <span class="section-kicker">Kam to vlastně jedeme?</span>
+        <h2>Koukni na všech 6 míst</h2>
+    </div>
+    <div id="map-container"><p style="padding:200px 20px 0;text-align:center;color:var(--ink-muted);font-size:0.85rem;">Mapa se načítá&hellip;</p></div>
+</section>
+
+<section class="intro-blurb">
+    <div class="box">
+        <p>V zimě zpomalíme. Žádný závod s kvetoucími loukami jako na jaře — tady je hlavní hvězdou ticho, jinovatka na větvích a pár hodin denního světla, které je potřeba pořádně využít. Tři místa zvládneme na jeden den a vrátíme se spát domů, tři si zaslouží přespání v soukromé chaloupce s krbem, mimo civilizaci. Žádná města, žádné fronty — jen auto, deky, termoska svařáku a dvě psí čumáky obalené v jinovatce.</p>
+        <div class="signoff">Doporučuje 10/10 Ozzyu, kterým na zmrzlé tlapky pořídíme botičky.</div>
+    </div>
+</section>
+
+<section class="cards-section">
+    <div class="section-head">
+        <span class="section-kicker">Šest zastávek</span>
+        <h2>Vyber si, kam pojedeme</h2>
+    </div>
+    <div class="cards-group">
+        <div class="cards-group-title"><i class="fa-solid fa-sun"></i>Denní výlety</div>
+        <div class="cards-grid" id="cardsGridDay"></div>
+    </div>
+    <div class="cards-group">
+        <div class="cards-group-title"><i class="fa-solid fa-fire"></i>S přespáním</div>
+        <div class="cards-grid" id="cardsGridNight"></div>
+    </div>
+</section>
+
+
+<!-- ============ DESTINATIONS ============ -->
+<section class="destination" id="kokorinsko">
+    <div class="dest-eyebrow">🇨🇿 Kokořínsko</div>
+            <h2>Mšenské Pokličky</h2>
+            <div class="dest-stats-row">
+                <span><i class="fa-solid fa-route"></i>60 km z Prahy</span>
+                <span><i class="fa-regular fa-clock"></i>~1:00</span>
+                <span><i class="fa-solid fa-paw"></i>psí ráj</span>
+                <span><i class="fa-solid fa-sun"></i>jednodenní výlet</span>
+            </div>
+            <p class="lead-text">Homolovité pískovcové věže, které po sněžení vypadají jako z pohádky. Ke skalám vede přes 200 schodů — v zimě raději s hůlkami.</p>
+
+    <div class="gallery-grid">
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 1</div>
+                <img src="images/kokorinsko1.jpg" alt="Mšenské Pokličky" onerror="this.style.display='none'">
+            </div>
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 2</div>
+                <img src="images/kokorinsko2.jpg" alt="Mšenské Pokličky" onerror="this.style.display='none'">
+            </div>
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 3</div>
+                <img src="images/kokorinsko3.jpg" alt="Mšenské Pokličky" onerror="this.style.display='none'">
+            </div>
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 4</div>
+                <img src="images/kokorinsko4.jpg" alt="Mšenské Pokličky" onerror="this.style.display='none'">
+            </div>
+    </div>
+
+    <div class="dest-info-grid">
+<div class="info-block">
+                <h4><i class="fa-solid fa-snowflake"></i>Co tu v zimě uvidíš</h4>
+                <ul>
+                    <li>Sníh mění pískovcové „pokličky“ (homolovité skalní věže s tvrdou železitou čepičkou) v pohádkovou scenérii — cesty i skály zůstávají zasněžené celou zimu</li>
+                    <li>K hlavním útvarům vede přes 200 kamenných schodů — v mrazu a náledí je potřeba opatrnost, klidně s mačkami</li>
+                    <li>Nedaleké Jestřebické pokličky nabízí podobné, ale mnohem klidnější a méně navštěvované skalní útvary</li>
+                    <li>NPR Kokořínský důl — přes 2 000 hektarů chráněného zasněženého lesa a údolí</li>
+                </ul>
+            </div>
+            <div class="info-block">
+                <h4><i class="fa-solid fa-paw"></i>Psí packy</h4>
+                <p>CHKO Kokořínsko nemá pro psy zvlášť vypsané pravidlo, ale v chráněné krajinné oblasti platí obecně: na vodítko, ať nikoho nepřekvapíte na kluzké pěšině.</p>
+            </div>
+            <div class="info-block">
+                <h4><i class="fa-solid fa-map-location-dot"></i>Výlety v okolí</h4>
+                <ul>
+                    <li>Jestřebické pokličky — tišší sesterská lokalita kousek odsud</li>
+                    <li>Cinibulkova naučná stezka — 9 km pískovcovou krajinou CHKO</li>
+                    <li>NPR Kokořínský důl — rozlehlé chráněné lesní údolí</li>
+                </ul>
+            </div>
+            </div>
+
+    <div class="budget-chip"><span class="num">≈ 317 Kč</span><span class="lbl">palivo tam a zpět (nafta ČR, odhad)</span></div>
+            <div class="route-map-box" id="map-kokorinsko"></div>
+</section>
+
+<hr class="dest-divider">
+
+
+<section class="destination" id="milesovka">
+    <div class="dest-eyebrow">🇨🇿 České středohoří</div>
+            <h2>Milešovka</h2>
+            <div class="dest-stats-row">
+                <span><i class="fa-solid fa-route"></i>80 km z Prahy</span>
+                <span><i class="fa-regular fa-clock"></i>~1:00</span>
+                <span><i class="fa-solid fa-paw"></i>psí ráj</span>
+                <span><i class="fa-solid fa-sun"></i>jednodenní výlet</span>
+            </div>
+            <p class="lead-text">Nejvyšší hora Českého středohoří a jedna z největrnějších míst v zemi — v zimě nabízí inverze a moře mraků pod vrcholem.</p>
+
+    <div class="gallery-grid">
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 1</div>
+                <img src="images/milesovka1.jpg" alt="Milešovka" onerror="this.style.display='none'">
+            </div>
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 2</div>
+                <img src="images/milesovka2.jpg" alt="Milešovka" onerror="this.style.display='none'">
+            </div>
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 3</div>
+                <img src="images/milesovka3.jpg" alt="Milešovka" onerror="this.style.display='none'">
+            </div>
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 4</div>
+                <img src="images/milesovka4.jpg" alt="Milešovka" onerror="this.style.display='none'">
+            </div>
+    </div>
+
+    <div class="dest-info-grid">
+<div class="info-block">
+                <h4><i class="fa-solid fa-snowflake"></i>Co tu v zimě uvidíš</h4>
+                <ul>
+                    <li>Milešovka je pověstná inverzním počasím — z rozhledny se za jasna díváte na moře mraků pod sebou, za dobré viditelnosti prý i na Alpy</li>
+                    <li>Na vrcholu byly naměřeny nárazy větru přes 200 km/h — v zimě je nutná pevná obuv s protiskluzem, na kamenech bývá led</li>
+                    <li>Rozhledna je v provozu jen za příznivého počasí — počítejte s tím, že se v silném větru/mlze může zavřít</li>
+                    <li>Kousek odsud je „kouřící kopec“ Boreč — puklinami z něj i v tuhém mrazu (kde teplota nikdy neklesne pod cca 9 °C) uniká teplý vzduch, takže se kolem trhlin kouří a sníh se tam ani nedrží</li>
+                </ul>
+            </div>
+            <div class="info-block">
+                <h4><i class="fa-solid fa-paw"></i>Psí packy</h4>
+                <p>Se psem na Milešovku můžete, jen počítejte s tím, že silný vítr na vrcholu umí i většího psa pěkně potrápit.</p>
+            </div>
+            <div class="info-block">
+                <h4><i class="fa-solid fa-map-location-dot"></i>Výlety v okolí</h4>
+                <ul>
+                    <li>Boreč — geotermální „kouřící kopec“, který v mrazu doslova dýmá</li>
+                    <li>Lovoš — sesterský čedičový vrch s vlastní vyhlídkou nad Středohořím</li>
+                    <li>Porta Bohemica — kaňon Labe, scenérie na celou cestu zpátky</li>
+                </ul>
+            </div>
+            </div>
+
+    <div class="safety-box">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <p><strong>Pozor na led/sníh:</strong> Silný vítr a namrzlé kameny na přístupové cestě — pevná obuv s protiskluzem je nutnost, rozhledna může být za špatného počasí zavřená.</p>
+    </div>
+    <div class="budget-chip"><span class="num">≈ 422 Kč</span><span class="lbl">palivo tam a zpět (nafta ČR, odhad)</span></div>
+            <div class="route-map-box" id="map-milesovka"></div>
+</section>
+
+<hr class="dest-divider">
+
+
+<section class="destination" id="podtrosecko">
+    <div class="dest-eyebrow">🇨🇿 Český ráj</div>
+            <h2>Podtrosecká údolí</h2>
+            <div class="dest-stats-row">
+                <span><i class="fa-solid fa-route"></i>100 km z Prahy</span>
+                <span><i class="fa-regular fa-clock"></i>~1:20</span>
+                <span><i class="fa-solid fa-paw"></i>psí ráj</span>
+                <span><i class="fa-solid fa-sun"></i>jednodenní výlet</span>
+            </div>
+            <p class="lead-text">Rovinaté údolí rybníků mezi skalními stěnami Českého ráje — bez schodů a soutěsek, jen procházka podél zamrzlé hladiny.</p>
+
+    <div class="gallery-grid">
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 1</div>
+                <img src="images/podtrosecko1.jpg" alt="Podtrosecká údolí" onerror="this.style.display='none'">
+            </div>
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 2</div>
+                <img src="images/podtrosecko2.jpg" alt="Podtrosecká údolí" onerror="this.style.display='none'">
+            </div>
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 3</div>
+                <img src="images/podtrosecko3.jpg" alt="Podtrosecká údolí" onerror="this.style.display='none'">
+            </div>
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 4</div>
+                <img src="images/podtrosecko4.jpg" alt="Podtrosecká údolí" onerror="this.style.display='none'">
+            </div>
+    </div>
+
+    <div class="dest-info-grid">
+<div class="info-block">
+                <h4><i class="fa-solid fa-snowflake"></i>Co tu v zimě uvidíš</h4>
+                <ul>
+                    <li>Na rozdíl od skalních měst je tohle rovinatá procházka — naučná stezka má na 8 km jen asi 89 výškových metrů, vede se to i s kočárkem</li>
+                    <li>Věžický rybník (Věžák) — nejfotogeničtější rybník údolí, na jednom břehu s pískovcovou stěnou, v zimě s mrazivými odlesky</li>
+                    <li>Rokytnický rybník — nedávno opravená hráz s hnízdní podložkou pro čápy a ptačí naučnou tabulí</li>
+                    <li>V údolí je i rašeliniště Vidlák a pár starých mlýnů (např. Vlkův mlýn z roku 1445) — v zimním tichu působí úplně jinak než v létě</li>
+                </ul>
+            </div>
+            <div class="info-block">
+                <h4><i class="fa-solid fa-paw"></i>Psí packy</h4>
+                <p>Konkrétní pravidlo pro psy jsem k této lokalitě nedohledala — jako v každé přírodní rezervaci ale platí mít je pod kontrolou/na vodítku.</p>
+            </div>
+            <div class="info-block">
+                <h4><i class="fa-solid fa-map-location-dot"></i>Výlety v okolí</h4>
+                <ul>
+                    <li>Údolí Žehrovky — sousední chráněné údolí s potokem a starými mlýny</li>
+                    <li>Sedmihorky — rovinatý parkový areál se starými stromy a rybníkem</li>
+                </ul>
+            </div>
+            </div>
+
+    <div class="safety-box">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <p><strong>Pozor na led/sníh:</strong> Zamrzlé rybníky vypadají lákavě, ale led bývá zrádně tenký — obdivujte je z břehu, na led nechoďte.</p>
+    </div>
+    <div class="budget-chip"><span class="num">≈ 528 Kč</span><span class="lbl">palivo tam a zpět (nafta ČR, odhad)</span></div>
+            <div class="route-map-box" id="map-podtrosecko"></div>
+</section>
+
+<hr class="dest-divider">
+
+
+<section class="destination" id="krkonose">
+    <div class="dest-eyebrow">🇨🇿 Harrachov</div>
+            <h2>Krkonoše — Harrachov</h2>
+            <div class="dest-stats-row">
+                <span><i class="fa-solid fa-route"></i>133 km z Prahy</span>
+                <span><i class="fa-regular fa-clock"></i>~1:45</span>
+                <span><i class="fa-solid fa-paw"></i>psí ráj</span>
+                <span><i class="fa-solid fa-moon"></i>přespání 1-2 noci</span>
+            </div>
+            <p class="lead-text">Mumlavský vodopád, který mráz mění v mohutnou ledovou sochu, a klidná rašeliništní rezervace Jizerky pár kroků od parkoviště.</p>
+
+    <div class="gallery-grid">
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 1</div>
+                <img src="images/krkonose1.jpg" alt="Krkonoše — Harrachov" onerror="this.style.display='none'">
+            </div>
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 2</div>
+                <img src="images/krkonose2.jpg" alt="Krkonoše — Harrachov" onerror="this.style.display='none'">
+            </div>
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 3</div>
+                <img src="images/krkonose3.jpg" alt="Krkonoše — Harrachov" onerror="this.style.display='none'">
+            </div>
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 4</div>
+                <img src="images/krkonose4.jpg" alt="Krkonoše — Harrachov" onerror="this.style.display='none'">
+            </div>
+    </div>
+
+    <div class="dest-info-grid">
+<div class="info-block">
+                <h4><i class="fa-solid fa-snowflake"></i>Co tu v zimě uvidíš</h4>
+                <ul>
+                    <li>Mumlavský vodopád — v zimě z něj mráz „udělá mohutné dílo přírody“, part vody zamrzne do velkých ledových útvarů, a je to krátká procházka od parkoviště</li>
+                    <li>NPR Rašeliniště Jizerky — chráněné rašeliniště kousek od osady Jizerka, v zimě liduprázdné a tiché</li>
+                    <li>Harrachovská naučná stezka provede okolím vodopádu i historií zdejšího sklářství</li>
+                    <li>KRNAP v zimě = spolehlivá sněhová pokrývka díky nadmořské výšce</li>
+                </ul>
+            </div>
+            <div class="info-block">
+                <h4><i class="fa-solid fa-fire"></i>Ubytování</h4>
+                <p>V plánu je soukromá chatička s krbem, mimo civilizaci — ne hotel, ne penzion se sdílenou budovou. V celém KRNAP musí být pes na vodítku (doporučen i náhubek, hlavně blízko pasoucích se zvířat) — jinak vítán. Inspiraci na konkrétní chalupu hledáme na <a href="https://www.echalupy.cz" target="_blank" rel="noopener" style="color:var(--aurora-green); text-decoration:underline;">eChalupy.cz</a> a <a href="https://www.booking.com" target="_blank" rel="noopener" style="color:var(--aurora-green); text-decoration:underline;">Bookingu</a>.</p>
+            </div>
+            <div class="info-block">
+                <h4><i class="fa-solid fa-map-location-dot"></i>Výlety v okolí</h4>
+                <ul>
+                    <li>Mumlavský vodopád + Harrachovská naučná stezka</li>
+                    <li>NPR Rašeliniště Jizerky</li>
+                </ul>
+            </div>
+            </div>
+
+    <div class="safety-box">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <p><strong>Pozor na led/sníh:</strong> Horská služba ČR vydává pro Krkonoše oficiální lavinové hlášení (stupnice 1-5) — týká se hlavně terénu nad hranicí lesa (např. Kotelní jámy), na procházku k vodopádu v údolí nemá vliv. Před túrou do vyšších partií se ale vyplatí mrknout na aktuální stupeň.</p>
+    </div>
+    <div class="budget-chip"><span class="num">≈ 702 Kč</span><span class="lbl">palivo tam a zpět (nafta ČR, odhad)</span></div>
+            <div class="route-map-box" id="map-krkonose"></div>
+</section>
+
+<hr class="dest-divider">
+
+
+<section class="destination" id="jeseniky">
+    <div class="dest-eyebrow">🇨🇿 Malá Morávka</div>
+            <h2>Jeseníky — Praděd</h2>
+            <div class="dest-stats-row">
+                <span><i class="fa-solid fa-route"></i>352 km z Prahy</span>
+                <span><i class="fa-regular fa-clock"></i>~3:50</span>
+                <span><i class="fa-solid fa-paw"></i>psí ráj</span>
+                <span><i class="fa-solid fa-moon"></i>přespání 1-2 noci</span>
+            </div>
+            <p class="lead-text">Nejdrsnější podnebí na Moravě, kamzíci na zasněžených svazích Pradědu a ledová homole, která roste, čím víc mrzne.</p>
+
+    <div class="gallery-grid">
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 1</div>
+                <img src="images/jeseniky1.jpg" alt="Jeseníky — Praděd" onerror="this.style.display='none'">
+            </div>
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 2</div>
+                <img src="images/jeseniky2.jpg" alt="Jeseníky — Praděd" onerror="this.style.display='none'">
+            </div>
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 3</div>
+                <img src="images/jeseniky3.jpg" alt="Jeseníky — Praděd" onerror="this.style.display='none'">
+            </div>
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 4</div>
+                <img src="images/jeseniky4.jpg" alt="Jeseníky — Praděd" onerror="this.style.display='none'">
+            </div>
+    </div>
+
+    <div class="dest-info-grid">
+<div class="info-block">
+                <h4><i class="fa-solid fa-snowflake"></i>Co tu v zimě uvidíš</h4>
+                <ul>
+                    <li>Praděd (1 491 m) má průměrnou roční teplotu jen 0,9 °C a dlouho vydržující sněhovou pokrývku — jedna z nejdrsnějších lokalit v Česku</li>
+                    <li>Na svazích Pradědu žije introdukovaná populace kamzíků horských — v zimě jsou dobře vidět na sněhu</li>
+                    <li>Karlova Studánka — „ledová homole“, ozdobná kašna, která v mrazu postupně namrzá do velkého ledového kužele a v noci bývá nasvícená</li>
+                    <li>Rejvíz — Velké mechové jezírko, rašeliniště s naučnou stezkou po dřevěných chodnících</li>
+                    <li>Bílá Opava — údolí vodopádů a kaskád kousek od Karlovy Studánky</li>
+                </ul>
+            </div>
+            <div class="info-block">
+                <h4><i class="fa-solid fa-fire"></i>Ubytování</h4>
+                <p>V plánu je soukromá chatička s krbem, mimo civilizaci — ne hotel, ne penzion se sdílenou budovou. Pro CHKO Jeseníky jsem nenašla vypsané pravidlo pro psy konkrétně — jako všude v chráněné krajinné oblasti ale raději na vodítku a na značených cestách. Inspiraci na konkrétní chalupu hledáme na <a href="https://www.echalupy.cz" target="_blank" rel="noopener" style="color:var(--aurora-green); text-decoration:underline;">eChalupy.cz</a> a <a href="https://www.booking.com" target="_blank" rel="noopener" style="color:var(--aurora-green); text-decoration:underline;">Bookingu</a>.</p>
+            </div>
+            <div class="info-block">
+                <h4><i class="fa-solid fa-map-location-dot"></i>Výlety v okolí</h4>
+                <ul>
+                    <li>Rejvíz — Velké mechové jezírko</li>
+                    <li>Karlova Studánka a údolí Bílé Opavy</li>
+                </ul>
+            </div>
+            </div>
+
+    <div class="safety-box">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <p><strong>Pozor na led/sníh:</strong> Velký Kotel na svahu Pradědu je zdokumentované lavinové místo (v minulosti tu došlo i k tragédii) a Horská služba pro Jeseníky vydává oficiální lavinové hlášení stejně jako pro Krkonoše — týká se hlavně túr mimo značené nižší cesty.</p>
+    </div>
+    <div class="budget-chip"><span class="num">≈ 1 859 Kč</span><span class="lbl">palivo tam a zpět (nafta ČR, odhad)</span></div>
+            <div class="route-map-box" id="map-jeseniky"></div>
+</section>
+
+<hr class="dest-divider">
+
+
+<section class="destination" id="beskydy">
+    <div class="dest-eyebrow">🇨🇿 Trojanovice</div>
+            <h2>Beskydy — Pustevny</h2>
+            <div class="dest-stats-row">
+                <span><i class="fa-solid fa-route"></i>355 km z Prahy</span>
+                <span><i class="fa-regular fa-clock"></i>~3:50</span>
+                <span><i class="fa-solid fa-paw"></i>psí ráj</span>
+                <span><i class="fa-solid fa-moon"></i>přespání 1-2 noci</span>
+            </div>
+            <p class="lead-text">Zasněžený hřeben od Pusteven k Radhošti, kam se chodí i sáňkovat, a starý bukový prales kousek pod ním.</p>
+
+    <div class="gallery-grid">
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 1</div>
+                <img src="images/beskydy1.jpg" alt="Beskydy — Pustevny" onerror="this.style.display='none'">
+            </div>
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 2</div>
+                <img src="images/beskydy2.jpg" alt="Beskydy — Pustevny" onerror="this.style.display='none'">
+            </div>
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 3</div>
+                <img src="images/beskydy3.jpg" alt="Beskydy — Pustevny" onerror="this.style.display='none'">
+            </div>
+            <div class="dest-photo">
+                <div class="ph"><i class="fa-solid fa-image"></i>foto 4</div>
+                <img src="images/beskydy4.jpg" alt="Beskydy — Pustevny" onerror="this.style.display='none'">
+            </div>
+    </div>
+
+    <div class="dest-info-grid">
+<div class="info-block">
+                <h4><i class="fa-solid fa-snowflake"></i>Co tu v zimě uvidíš</h4>
+                <ul>
+                    <li>Trasa Pustevny – Radegast – Radhošť (cca 8 km tam a zpět, mírné převýšení) sdílejí v zimě pěší, běžkaři i sáňkaři na udusaném sněhu</li>
+                    <li>Náledí na hřebeni bývá aktivně posypáváno štěrkem — i tak se psí botičky hodí</li>
+                    <li>Na hřebeni je citelně větrněji než v údolí, počítejte s tím při oblékání</li>
+                    <li>NPR Kněhyně – Čertův mlýn — kousek pod hřebenem, zachovalý starý bukový prales, opravdová divočina, ne turistická zóna</li>
+                </ul>
+            </div>
+            <div class="info-block">
+                <h4><i class="fa-solid fa-fire"></i>Ubytování</h4>
+                <p>V plánu je soukromá chatička s krbem, mimo civilizaci — ne hotel, ne penzion se sdílenou budovou. V CHKO Beskydy musí mít pes „trvalou kontrolu“, na frekventovaných úsecích a mimo běžkařské stopy se doporučuje vodítko; na lanovce na Pustevny se běžně vyžaduje náhubek. Inspiraci na konkrétní chalupu hledáme na <a href="https://www.echalupy.cz" target="_blank" rel="noopener" style="color:var(--aurora-green); text-decoration:underline;">eChalupy.cz</a> a <a href="https://www.booking.com" target="_blank" rel="noopener" style="color:var(--aurora-green); text-decoration:underline;">Bookingu</a>.</p>
+            </div>
+            <div class="info-block">
+                <h4><i class="fa-solid fa-map-location-dot"></i>Výlety v okolí</h4>
+                <ul>
+                    <li>NPR Kněhyně — Čertův mlýn (starý bukový prales)</li>
+                    <li>Hřebenovka Pustevny — Radhošť jako celodenní procházka</li>
+                </ul>
+            </div>
+            </div>
+
+    <div class="safety-box">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <p><strong>Pozor na led/sníh:</strong> Žádné lavinové hlášení pro Beskydy nevychází (nižší, méně alpský terén než Krkonoše/Jeseníky) — hlavním rizikem je zde náledí na hřebeni a vítr, ne laviny.</p>
+    </div>
+    <div class="budget-chip"><span class="num">≈ 1 874 Kč</span><span class="lbl">palivo tam a zpět (nafta ČR, odhad)</span></div>
+            <div class="route-map-box" id="map-beskydy"></div>
+</section>
+
+<footer class="site-footer"></footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const PRAGUE = [50.0875, 14.4214];
+
+const destinations = [
+    {
+        id: 'kokorinsko', cat: 'day', flag: '🇨🇿',
+        name: 'Mšenské Pokličky', country: 'Kokořínsko',
+        dist: 60, time: '~1:00', budget: 317,
+        blurb: 'Homolovité pískovcové věže, které po sněžení vypadají jako z pohádky. Ke skalám vede přes 200 schodů — v zimě raději s hůlkami.',
+        nature: 4, quiet: 4, wildlife: 3, dogFriendly: 4,
+        img: 'images/kokorinsko.jpg',
+        lat: 50.427, lng: 14.61,
+        routeCoords: [[50.0875, 14.4214], [50.351, 14.475], [50.427, 14.61]]
+    },
+    {
+        id: 'milesovka', cat: 'day', flag: '🇨🇿',
+        name: 'Milešovka', country: 'České středohoří',
+        dist: 80, time: '~1:00', budget: 422,
+        blurb: 'Nejvyšší hora Českého středohoří a jedna z největrnějších míst v zemi — v zimě nabízí inverze a moře mraků pod vrcholem.',
+        nature: 4, quiet: 3, wildlife: 2, dogFriendly: 4,
+        img: 'images/milesovka.jpg',
+        lat: 50.554, lng: 13.933,
+        routeCoords: [[50.0875, 14.4214], [50.45, 14.15], [50.554, 13.933]]
+    },
+    {
+        id: 'podtrosecko', cat: 'day', flag: '🇨🇿',
+        name: 'Podtrosecká údolí', country: 'Český ráj',
+        dist: 100, time: '~1:20', budget: 528,
+        blurb: 'Rovinaté údolí rybníků mezi skalními stěnami Českého ráje — bez schodů a soutěsek, jen procházka podél zamrzlé hladiny.',
+        nature: 4, quiet: 5, wildlife: 3, dogFriendly: 4,
+        img: 'images/podtrosecko.jpg',
+        lat: 50.517, lng: 15.211,
+        routeCoords: [[50.0875, 14.4214], [50.414, 14.903], [50.517, 15.211]]
+    },
+    {
+        id: 'krkonose', cat: 'overnight', flag: '🇨🇿',
+        name: 'Krkonoše — Harrachov', country: 'Harrachov',
+        dist: 133, time: '~1:45', budget: 702,
+        blurb: 'Mumlavský vodopád, který mráz mění v mohutnou ledovou sochu, a klidná rašeliništní rezervace Jizerky pár kroků od parkoviště.',
+        nature: 5, quiet: 4, wildlife: 3, dogFriendly: 4,
+        img: 'images/krkonose.jpg',
+        lat: 50.7639, lng: 15.4319,
+        routeCoords: [[50.0875, 14.4214], [50.5906, 15.1631], [50.7639, 15.4319]]
+    },
+    {
+        id: 'jeseniky', cat: 'overnight', flag: '🇨🇿',
+        name: 'Jeseníky — Praděd', country: 'Malá Morávka',
+        dist: 352, time: '~3:50', budget: 1859,
+        blurb: 'Nejdrsnější podnebí na Moravě, kamzíci na zasněžených svazích Pradědu a ledová homole, která roste, čím víc mrzne.',
+        nature: 5, quiet: 4, wildlife: 4, dogFriendly: 3,
+        img: 'images/jeseniky.jpg',
+        lat: 50.084, lng: 17.293,
+        routeCoords: [[50.0875, 14.4214], [49.5938, 17.2509], [50.084, 17.293]]
+    },
+    {
+        id: 'beskydy', cat: 'overnight', flag: '🇨🇿',
+        name: 'Beskydy — Pustevny', country: 'Trojanovice',
+        dist: 355, time: '~3:50', budget: 1874,
+        blurb: 'Zasněžený hřeben od Pusteven k Radhošti, kam se chodí i sáňkovat, a starý bukový prales kousek pod ním.',
+        nature: 4, quiet: 3, wildlife: 3, dogFriendly: 4,
+        img: 'images/beskydy.jpg',
+        lat: 49.49, lng: 18.392,
+        routeCoords: [[50.0875, 14.4214], [49.5944, 18.0122], [49.49, 18.392]]
+    }
+];
+
+// ============ RENDER PREVIEW CARDS (split day / overnight) ============
+function cardHtml(item) {
+    return `
+        <a href="#${item.id}" class="dest-card">
+            <div class="dest-img-box">
+                <img src="${item.img}" alt="${item.name}" onerror="this.style.display='none'">
+                <div class="dest-flag-badge">${item.flag} ${item.country}</div>
+                <div class="dest-budget-tag">\u2248 ${item.budget.toLocaleString('cs-CZ')} Kč</div>
+            </div>
+            <div class="dest-content">
+                <h3 class="dest-title">${item.name}</h3>
+                <p>${item.blurb}</p>
+                <div class="dest-stats-grid">
+                    <span><i class="fa-solid fa-route"></i>${item.dist} km</span>
+                    <span><i class="fa-regular fa-clock"></i>${item.time}</span>
+                    <span><i class="fa-solid fa-paw"></i>Psi: ${item.dogFriendly}/5</span>
+                    <span><i class="fa-solid fa-${item.cat === 'day' ? 'sun' : 'moon'}"></i>${item.cat === 'day' ? 'jeden den' : 'přespání'}</span>
+                </div>
+                <div class="rating-bars">
+                    <div class="rating-row"><span class="rlabel">Příroda</span><div class="rating-bar-bg"><div class="rating-bar-fill" style="width:${item.nature*20}%"></div></div></div>
+                    <div class="rating-row"><span class="rlabel">Klid</span><div class="rating-bar-bg"><div class="rating-bar-fill" style="width:${item.quiet*20}%"></div></div></div>
+                    <div class="rating-row"><span class="rlabel">Divoká zvěř</span><div class="rating-bar-bg"><div class="rating-bar-fill" style="width:${item.wildlife*20}%"></div></div></div>
+                </div>
+                <span class="btn-detail">Číst dál <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+        </a>
+    `;
+}
+function renderCards() {
+    document.getElementById('cardsGridDay').innerHTML = destinations.filter(d => d.cat === 'day').map(cardHtml).join('');
+    document.getElementById('cardsGridNight').innerHTML = destinations.filter(d => d.cat === 'overnight').map(cardHtml).join('');
+}
+renderCards();
+
+// ============ MAIN MAP ============
+function initMainMap() {
+    document.getElementById('map-container').innerHTML = '';
+    const map = L.map('map-container').setView([49.6, 15.8], 6.4);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const pragueIcon = L.divIcon({
+        className: 'custom-pin-prague',
+        html: `<div class="custom-pin-marker start-pin"><i class="fa-solid fa-house"></i></div>`,
+        iconSize: [32, 32], iconAnchor: [16, 32]
+    });
+    L.marker(PRAGUE, { icon: pragueIcon }).addTo(map).bindPopup('Praha (start)');
+
+    destinations.forEach(item => {
+        const pinIcon = L.divIcon({
+            className: 'custom-pin',
+            html: `<div class="custom-pin-marker"><i class="fa-solid fa-${item.cat === 'day' ? 'sun' : 'snowflake'}"></i></div>`,
+            iconSize: [32, 32], iconAnchor: [16, 32]
+        });
+        L.marker([item.lat, item.lng], { icon: pinIcon }).addTo(map)
+            .bindPopup(`${item.flag} <b>${item.name}</b><br>${item.dist} km / ${item.time}`);
+    });
+}
+
+// ============ PER-DESTINATION ROUTE MAPS ============
+function initRouteMaps() {
+    destinations.forEach(dest => {
+        const mapId = 'map-' + dest.id;
+        const container = document.getElementById(mapId);
+        if (!container) return;
+
+        const rMap = L.map(mapId, { scrollWheelZoom: false }).setView([49.6, 15.8], 6);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap'
+        }).addTo(rMap);
+
+        const polyline = L.polyline(dest.routeCoords, { color: '#E8A94A', weight: 4, dashArray: '2 10', lineCap: 'round' }).addTo(rMap);
+
+        const startIcon = L.divIcon({ className: 'custom-pin-prague', html: `<div class="custom-pin-marker start-pin"><i class="fa-solid fa-house"></i></div>`, iconSize: [26, 26], iconAnchor: [13, 26] });
+        const endIcon = L.divIcon({ className: 'custom-pin', html: `<div class="custom-pin-marker"><i class="fa-solid fa-${dest.cat === 'day' ? 'sun' : 'snowflake'}"></i></div>`, iconSize: [26, 26], iconAnchor: [13, 26] });
+
+        L.marker(dest.routeCoords[0], { icon: startIcon }).addTo(rMap).bindPopup('Praha (start)');
+        L.marker(dest.routeCoords[dest.routeCoords.length - 1], { icon: endIcon }).addTo(rMap).bindPopup(dest.name);
+
+        rMap.fitBounds(polyline.getBounds(), { padding: [24, 24] });
+    });
+}
+
+try {
+    initMainMap();
+    initRouteMaps();
+} catch (e) {
+    console.warn('Mapy se nepodařilo načíst (Leaflet/OSM nedostupné):', e);
+}
+
+// ============ MOUNTAIN HERO INTERACTIONS ============
+const mountainField = document.getElementById('mountainField');
+const peaks = document.querySelectorAll('.peak');
+
+peaks.forEach(peak => {
+    peak.addEventListener('mouseenter', () => {
+        mountainField.classList.add('has-hover');
+        peak.classList.add('is-hovered');
+    });
+    peak.addEventListener('mouseleave', () => {
+        mountainField.classList.remove('has-hover');
+        peak.classList.remove('is-hovered');
+    });
+    peak.addEventListener('focus', () => {
+        mountainField.classList.add('has-hover');
+        peak.classList.add('is-hovered');
+    });
+    peak.addEventListener('blur', () => {
+        mountainField.classList.remove('has-hover');
+        peak.classList.remove('is-hovered');
+    });
+    peak.addEventListener('click', () => {
+        if (peak.classList.contains('is-skiing')) return;
+        peak.classList.add('is-skiing');
+        const targetId = peak.getAttribute('data-target');
+        setTimeout(() => {
+            const target = document.getElementById(targetId);
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 750);
+        setTimeout(() => { peak.classList.remove('is-skiing'); }, 2200);
+    });
+});
+
+// ============ SCROLL TOP BUTTON (snowflake) ============
+window.addEventListener('scroll', () => {
+    const btn = document.getElementById('scrollTopBtn');
+    if (window.scrollY > 400) {
+        btn.classList.add('visible');
+    } else {
+        btn.classList.remove('visible');
+    }
+});
+
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
 </body>
 </html>
