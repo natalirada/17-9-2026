@@ -418,7 +418,21 @@ section { max-width: 1180px; margin: 0 auto; padding: 70px 24px; }
     .mondeo-back { top: 12px; left: 12px; padding: 6px 13px 6px 8px; font-size: 0.75rem; }
     .mondeo-back .car-svg { width: 28px; height: 18px; }
     .nav { margin-top: 44px; }
-    .mountain-field { gap: 3px; min-height: 220px; }
+    .mountain-field {
+        gap: 10px;
+        min-height: 220px;
+        justify-content: flex-start;
+        overflow-x: auto;
+        overflow-y: visible;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x proximity;
+        scroll-padding: 0 16px;
+        padding-left: 16px;
+        padding-right: 16px;
+        mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+    }
+    .peak { scroll-snap-align: center; }
     .peak-label { font-size: 0.7rem; }
     .ski-popup { width: 178px; padding: 12px 14px; }
     section { padding: 50px 18px; }
@@ -687,7 +701,7 @@ section { max-width: 1180px; margin: 0 auto; padding: 70px 24px; }
             </div>
         </button>
     </div>
-    <div class="hero-hint"><i class="fa-solid fa-hand-pointer"></i>Najeď myší na lyžaře a přečti si o place, klikni a nech toho chudáka sjet dolů.</div>
+    <div class="hero-hint"><i class="fa-solid fa-hand-pointer"></i>Najeď myší (nebo přejeď prstem přes všech 6 hor) na lyžaře a přečti si o place, klikni a nech toho chudáka sjet dolů.</div>
 </header>
 
 <section class="map-section" id="mapa">
