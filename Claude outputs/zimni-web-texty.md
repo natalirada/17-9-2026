@@ -1,0 +1,296 @@
+# ZIMNÍ ROADTRIP — VEŠKERÉ TEXTY NA WEBU
+
+*(pro společnou revizi — piš poznámky/úpravy přímo pod řádky, klidně i jen "OK")*
+
+---
+
+## NAV / LOGO
+
+Sníh, ticho a naše dvě zimní čumáky, tak jedem…
+
+---
+
+## HERO
+
+**Kicker (malý štítek):** Zimní trip autem za svíčkovým světlem a sněhem
+
+**Nadpis (H1):** Kam vyrazit, když zamrzne první vodopád
+
+**Podtext:** Šest zimních destinací pro nás — tři na jeden den, tři s přespáním v soukromé chaloupce s krbem. Jen mráz, ticho a psí packy pokryté jinovatkou.
+
+**Hint pod horami:** Najeď myší na lyžaře a přečti si o place, klikni a nech ho sjet dolů.
+
+**Štítky pod horami (v pořadí zleva doprava):** Poklice / Mileš / Trosky / Krakonoš / Praděda / Pustevník
+
+---
+
+## 6 HOR — BUBLINY PO NAJETÍ MYŠÍ
+
+*(český text + anglické tlačítko akce — tak jak jsi to chtěla)*
+
+**1) POKLICE** (Mšenské Pokličky / Kokořínsko)
+Text: Zasněžené homolovité skály kousek od Prahy.
+Tlačítko: *Ski Down Anyway*
+
+**2) MILEŠ** (Milešovka / České středohoří)
+Text: Moře mraků pod vrcholem, pokud bude štěstí.
+Tlačítko: *Send It, I Guess*
+
+**3) TROSKY** (Podtrosecká údolí / Český ráj)
+Text: Rovinatá procházka kolem zamrzlých rybníků.
+Tlačítko: *Actually Safe, Let's Go*
+
+**4) KRAKONOŠ** (Krkonoše — Harrachov)
+Text: Mumlavský vodopád zamrzlý v soše.
+Tlačítko: *Ski Down Anyway*
+
+**5) PRAĎEDA** (Jeseníky — Praděd)
+Text: Kamzíci na sněhu a ledová homole.
+Tlačítko: *Do I Really Have To?*
+
+**6) PUSTEVNÍK** (Beskydy — Pustevny)
+Text: Hřebenovka na Radhošť, sáňky vítány.
+Tlačítko: *Fine, Let's Send It*
+
+---
+
+## MAPA (nadpis sekce)
+
+**Kicker:** Kam to vlastně jedeme?
+**Nadpis:** Koukni na všech 6 míst
+
+---
+
+## KRÁTKÉ POVÍDÁNÍ
+
+V zimě zpomalíme. Žádný závod s kvetoucími loukami jako na jaře — tady je hlavní hvězdou ticho, jinovatka na větvích a pár hodin denního světla, které je potřeba pořádně využít. Tři místa zvládneme na jeden den a vrátíme se spát domů, tři si zaslouží přespání v soukromé chaloupce s krbem, mimo civilizaci. Žádná města, žádné fronty — jen auto, deky, termoska svařáku a dvě psí čumáky obalené v jinovatce.
+
+**Podpis:** Doporučuje 10/10 Ozzyu, kterým na zmrzlé tlapky pořídíme botičky.
+
+---
+
+## KARTY (nadpis sekce)
+
+**Kicker:** Šest zastávek
+**Nadpis:** Vyber si, kam pojedeme
+**Podnadpis (denní):** Denní výlety
+**Podnadpis (s přespáním):** S přespáním
+
+---
+
+## 6 NÁHLEDOVÝCH KARET
+
+**1) Mšenské Pokličky — Kokořínsko** *(den)*
+Popisek: Homolovité pískovcové věže, které po sněžení vypadají jako z pohádky. Ke skalám vede přes 200 schodů — v zimě raději s hůlkami.
+Štítky: 60 km · ~1:00 · Psi 4/5 · jeden den
+Cena: ≈ 317 Kč
+
+**2) Milešovka — České středohoří** *(den)*
+Popisek: Nejvyšší hora Českého středohoří a jedna z největrnějších míst v zemi — v zimě nabízí inverze a moře mraků pod vrcholem.
+Štítky: 80 km · ~1:00 · Psi 4/5 · jeden den
+Cena: ≈ 422 Kč
+
+**3) Podtrosecká údolí — Český ráj** *(den)*
+Popisek: Rovinaté údolí rybníků mezi skalními stěnami Českého ráje — bez schodů a soutěsek, jen procházka podél zamrzlé hladiny.
+Štítky: 100 km · ~1:20 · Psi 4/5 · jeden den
+Cena: ≈ 528 Kč
+
+**4) Krkonoše — Harrachov** *(s přespáním)*
+Popisek: Mumlavský vodopád, který mráz mění v mohutnou ledovou sochu, a klidná rašeliništní rezervace Jizerky pár kroků od parkoviště.
+Štítky: 133 km · ~1:45 · Psi 4/5 · přespání
+Cena: ≈ 702 Kč
+
+**5) Jeseníky — Praděd** *(s přespáním)*
+Popisek: Nejdrsnější podnebí na Moravě, kamzíci na zasněžených svazích Pradědu a ledová homole, která roste, čím víc mrzne.
+Štítky: 352 km · ~3:50 · Psi 3/5 · přespání
+Cena: ≈ 1 859 Kč
+
+**6) Beskydy — Pustevny** *(s přespáním)*
+Popisek: Zasněžený hřeben od Pusteven k Radhošti, kam se chodí i sáňkovat, a starý bukový prales kousek pod ním.
+Štítky: 355 km · ~3:50 · Psi 4/5 · přespání
+Cena: ≈ 1 874 Kč
+
+---
+
+# 6 PLNĚ ROZEPSANÝCH DESTINACÍ
+
+## 1) Mšenské Pokličky — Kokořínsko
+
+**Eyebrow:** 🇨🇿 Kokořínsko
+**Nadpis:** Mšenské Pokličky
+**Štítky:** 60 km z Prahy · ~1:00 · jednodenní výlet
+
+**Úvodní text:**
+Homolovité pískovcové věže, které po sněžení vypadají jako z pohádky. Ke skalám vede přes 200 schodů — v zimě raději s hůlkami.
+
+**Co tu v zimě uvidíš:**
+- Sníh mění pískovcové „pokličky" (homolovité skalní věže s tvrdou železitou čepičkou) v pohádkovou scenérii — cesty i skály zůstávají zasněžené celou zimu
+- K hlavním útvarům vede přes 200 kamenných schodů — v mrazu a náledí je potřeba opatrnost, klidně s mačkami
+- Nedaleké Jestřebické pokličky nabízí podobné, ale mnohem klidnější a méně navštěvované skalní útvary
+- NPR Kokořínský důl — přes 2 000 hektarů chráněného zasněženého lesa a údolí
+
+**Psí packy:**
+CHKO Kokořínsko nemá pro psy zvlášť vypsané pravidlo, ale v chráněné krajinné oblasti platí obecně: na vodítko, ať nikoho nepřekvapíte na kluzké pěšině.
+
+**Výlety v okolí:**
+- Jestřebické pokličky — tišší sesterská lokalita kousek odsud
+- Cinibulkova naučná stezka — 9 km pískovcovou krajinou CHKO
+- NPR Kokořínský důl — rozlehlé chráněné lesní údolí
+
+**Rozpočet:** ≈ 317 Kč (palivo tam a zpět, nafta ČR, odhad)
+
+---
+
+## 2) Milešovka — České středohoří
+
+**Eyebrow:** 🇨🇿 České středohoří
+**Nadpis:** Milešovka
+**Štítky:** 80 km z Prahy · ~1:00 · jednodenní výlet
+
+**Úvodní text:**
+Nejvyšší hora Českého středohoří a jedna z největrnějších míst v zemi — v zimě nabízí inverze a moře mraků pod vrcholem.
+
+**Co tu v zimě uvidíš:**
+- Milešovka je pověstná inverzním počasím — z rozhledny se za jasna díváte na moře mraků pod sebou, za dobré viditelnosti prý i na Alpy
+- Na vrcholu byly naměřeny nárazy větru přes 200 km/h — v zimě je nutná pevná obuv s protiskluzem, na kamenech bývá led
+- Rozhledna je v provozu jen za příznivého počasí — počítejte s tím, že se v silném větru/mlze může zavřít
+- Kousek odsud je „kouřící kopec" Boreč — puklinami z něj i v tuhém mrazu (kde teplota nikdy neklesne pod cca 9 °C) uniká teplý vzduch, takže se kolem trhlin kouří a sníh se tam ani nedrží
+
+**Psí packy:**
+Se psem na Milešovku můžete, jen počítejte s tím, že silný vítr na vrcholu umí i většího psa pěkně potrápit.
+
+**Výlety v okolí:**
+- Boreč — geotermální „kouřící kopec", který v mrazu doslova dýmá
+- Lovoš — sesterský čedičový vrch s vlastní vyhlídkou nad Středohořím
+- Porta Bohemica — kaňon Labe, scenérie na celou cestu zpátky
+
+**Bezpečnost (žlutý box):** Silný vítr a namrzlé kameny na přístupové cestě — pevná obuv s protiskluzem je nutnost, rozhledna může být za špatného počasí zavřená.
+
+**Rozpočet:** ≈ 422 Kč (palivo tam a zpět, nafta ČR, odhad)
+
+---
+
+## 3) Podtrosecká údolí — Český ráj
+
+**Eyebrow:** 🇨🇿 Český ráj
+**Nadpis:** Podtrosecká údolí
+**Štítky:** 100 km z Prahy · ~1:20 · jednodenní výlet
+
+**Úvodní text:**
+Rovinaté údolí rybníků mezi skalními stěnami Českého ráje — bez schodů a soutěsek, jen procházka podél zamrzlé hladiny.
+
+**Co tu v zimě uvidíš:**
+- Na rozdíl od skalních měst je tohle rovinatá procházka — naučná stezka má na 8 km jen asi 89 výškových metrů, vede se to i s kočárkem
+- Věžický rybník (Věžák) — nejfotogeničtější rybník údolí, na jednom břehu s pískovcovou stěnou, v zimě s mrazivými odlesky
+- Rokytnický rybník — nedávno opravená hráz s hnízdní podložkou pro čápy a ptačí naučnou tabulí
+- V údolí je i rašeliniště Vidlák a pár starých mlýnů (např. Vlkův mlýn z roku 1445) — v zimním tichu působí úplně jinak než v létě
+
+**Psí packy:**
+Konkrétní pravidlo pro psy jsem k této lokalitě nedohledala — jako v každé přírodní rezervaci ale platí mít je pod kontrolou/na vodítku.
+
+**Výlety v okolí:**
+- Údolí Žehrovky — sousední chráněné údolí s potokem a starými mlýny
+- Sedmihorky — rovinatý parkový areál se starými stromy a rybníkem
+
+**Bezpečnost (žlutý box):** Zamrzlé rybníky vypadají lákavě, ale led bývá zrádně tenký — obdivujte je z břehu, na led nechoďte.
+
+**Rozpočet:** ≈ 528 Kč (palivo tam a zpět, nafta ČR, odhad)
+
+---
+
+## 4) Krkonoše — Harrachov
+
+**Eyebrow:** 🇨🇿 Harrachov
+**Nadpis:** Krkonoše — Harrachov
+**Štítky:** 133 km z Prahy · ~1:45 · přespání 1-2 noci
+
+**Úvodní text:**
+Mumlavský vodopád, který mráz mění v mohutnou ledovou sochu, a klidná rašeliništní rezervace Jizerky pár kroků od parkoviště.
+
+**Co tu v zimě uvidíš:**
+- Mumlavský vodopád — v zimě z něj mráz „udělá mohutné dílo přírody", část vody zamrzne do velkých ledových útvarů, a je to krátká procházka od parkoviště
+- NPR Rašeliniště Jizerky — chráněné rašeliniště kousek od osady Jizerka, v zimě liduprázdné a tiché
+- Harrachovská naučná stezka provede okolím vodopádu i historií zdejšího sklářství
+- KRNAP v zimě = spolehlivá sněhová pokrývka díky nadmořské výšce
+
+**Ubytování** *(obecně, bez konkrétního výběru — necháváme na tobě):*
+V plánu je soukromá chatička s krbem, mimo civilizaci — ne hotel, ne penzion se sdílenou budovou. V celém KRNAP musí být pes na vodítku (doporučen i náhubek, hlavně blízko pasoucích se zvířat) — jinak vítán. Inspiraci na konkrétní chalupu hledáme na eChalupy.cz a Bookingu.
+
+**Výlety v okolí:**
+- Mumlavský vodopád + Harrachovská naučná stezka
+- NPR Rašeliniště Jizerky
+
+**Bezpečnost (žlutý box):** Pozor na led/sníh: Horská služba ČR vydává pro Krkonoše oficiální lavinové hlášení (stupnice 1-5) — týká se hlavně terénu nad hranicí lesa (např. Kotelní jámy), na procházku k vodopádu v údolí nemá vliv. Před túrou do vyšších partií se ale vyplatí mrknout na aktuální stupeň.
+
+**Rozpočet:** ≈ 702 Kč (palivo tam a zpět, nafta ČR, odhad)
+
+---
+
+## 5) Jeseníky — Praděd
+
+**Eyebrow:** 🇨🇿 Malá Morávka
+**Nadpis:** Jeseníky — Praděd
+**Štítky:** 352 km z Prahy · ~3:50 · přespání 1-2 noci
+
+**Úvodní text:**
+Nejdrsnější podnebí na Moravě, kamzíci na zasněžených svazích Pradědu a ledová homole, která roste, čím víc mrzne.
+
+**Co tu v zimě uvidíš:**
+- Praděd (1 491 m) má průměrnou roční teplotu jen 0,9 °C a dlouho vydržující sněhovou pokrývku — jedna z nejdrsnějších lokalit v Česku
+- Na svazích Pradědu žije introdukovaná populace kamzíků horských — v zimě jsou dobře vidět na sněhu
+- Karlova Studánka — „ledová homole", ozdobná kašna, která v mrazu postupně namrzá do velkého ledového kužele a v noci bývá nasvícená
+- Rejvíz — Velké mechové jezírko, rašeliniště s naučnou stezkou po dřevěných chodnících
+- Bílá Opava — údolí vodopádů a kaskád kousek od Karlovy Studánky
+
+**Ubytování** *(obecně, bez konkrétního výběru — necháváme na tobě):*
+V plánu je soukromá chatička s krbem, mimo civilizaci — ne hotel, ne penzion se sdílenou budovou. Pro CHKO Jeseníky jsem nenašla vypsané pravidlo pro psy konkrétně — jako všude v chráněné krajinné oblasti ale raději na vodítku a na značených cestách. Inspiraci na konkrétní chalupu hledáme na eChalupy.cz a Bookingu.
+
+**Výlety v okolí:**
+- Rejvíz — Velké mechové jezírko
+- Karlova Studánka a údolí Bílé Opavy
+
+**Bezpečnost (žlutý box):** Pozor na led/sníh: Velký Kotel na svahu Pradědu je zdokumentované lavinové místo (v minulosti tu došlo i k tragédii) a Horská služba pro Jeseníky vydává oficiální lavinové hlášení stejně jako pro Krkonoše — týká se hlavně túr mimo značené nižší cesty.
+
+**Rozpočet:** ≈ 1 859 Kč (palivo tam a zpět, nafta ČR, odhad)
+
+---
+
+## 6) Beskydy — Pustevny
+
+**Eyebrow:** 🇨🇿 Trojanovice
+**Nadpis:** Beskydy — Pustevny
+**Štítky:** 355 km z Prahy · ~3:50 · přespání 1-2 noci
+
+**Úvodní text:**
+Zasněžený hřeben od Pusteven k Radhošti, kam se chodí i sáňkovat, a starý bukový prales kousek pod ním.
+
+**Co tu v zimě uvidíš:**
+- Trasa Pustevny – Radegast – Radhošť (cca 8 km tam a zpět, mírné převýšení) sdílejí v zimě pěší, běžkaři i sáňkaři na udusaném sněhu
+- Náledí na hřebeni bývá aktivně posypáváno štěrkem — i tak se psí botičky hodí
+- Na hřebeni je citelně větrněji než v údolí, počítejte s tím při oblékání
+- NPR Kněhyně – Čertův mlýn — kousek pod hřebenem, zachovalý starý bukový prales, opravdová divočina, ne turistická zóna
+
+**Ubytování** *(obecně, bez konkrétního výběru — necháváme na tobě):*
+V plánu je soukromá chatička s krbem, mimo civilizaci — ne hotel, ne penzion se sdílenou budovou. V CHKO Beskydy musí mít pes „trvalou kontrolu", na frekventovaných úsecích a mimo běžkařské stopy se doporučuje vodítko; na lanovce na Pustevny se běžně vyžaduje náhubek. Inspiraci na konkrétní chalupu hledáme na eChalupy.cz a Bookingu.
+
+**Výlety v okolí:**
+- NPR Kněhyně — Čertův mlýn (starý bukový prales)
+- Hřebenovka Pustevny — Radhošť jako celodenní procházka
+
+**Bezpečnost (žlutý box):** Pozor na led/sníh: Žádné lavinové hlášení pro Beskydy nevychází (nižší, méně alpský terén než Krkonoše/Jeseníky) — hlavním rizikem je zde náledí na hřebeni a vítr, ne laviny.
+
+**Rozpočet:** ≈ 1 874 Kč (palivo tam a zpět, nafta ČR, odhad)
+
+---
+
+## Poznámky k fotkám
+
+*(pro tvoji orientaci, ne text webu — a už hotovo, fotky jsou nahrané)*
+
+Ke každé destinaci web má 4 fotky v galerii + 1 na náhledu karty, název souboru = slug + číslo 1-4:
+- images/kokorinsko1.jpg … kokorinsko4.jpg *(+ kokorinsko.jpg na kartu)*
+- images/milesovka1.jpg … milesovka4.jpg *(+ milesovka.jpg na kartu)*
+- images/podtrosecko1.jpg … podtrosecko4.jpg *(+ podtrosecko.jpg na kartu)*
+- images/krkonose1.jpg … krkonose4.jpg *(+ krkonose.jpg na kartu)*
+- images/jeseniky1.jpg … jeseniky4.jpg *(+ jeseniky.jpg na kartu)*
+- images/beskydy1.jpg … beskydy4.jpg *(+ beskydy.jpg na kartu)*
