@@ -146,7 +146,46 @@ img { max-width: 100%; display: block; }
 .nav-logo span { color: var(--aurora-teal); }
 
 /* ============ HERO ============ */
-.hero { padding: 30px 24px 20px; max-width: 1200px; margin: 0 auto; text-align: center; }
+.hero { position: relative; padding: 30px 24px 20px; max-width: 1200px; margin: 0 auto; text-align: center; }
+.hero > *:not(.aurora-layer) { position: relative; z-index: 2; }
+.aurora-layer { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; border-radius: var(--radius-lg); }
+.aurora-layer::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+        radial-gradient(1.4px 1.4px at 12% 14%, rgba(255,255,255,0.85), transparent),
+        radial-gradient(1px 1px at 76% 9%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1.2px 1.2px at 42% 6%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 92% 22%, rgba(255,255,255,0.55), transparent),
+        radial-gradient(1.3px 1.3px at 24% 28%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 60% 18%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1.4px 1.4px at 6% 40%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 88% 38%, rgba(255,255,255,0.45), transparent);
+    background-repeat: repeat;
+    background-size: 220px 170px;
+    opacity: 0.8;
+}
+.aurora-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.aurora-band {
+    mix-blend-mode: screen;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: auroraSway ease-in-out infinite alternate;
+    will-change: transform, opacity;
+}
+.aurora-band.band-a { animation-duration: 19s; }
+.aurora-band.band-b { animation-duration: 23s; animation-delay: -4s; }
+.aurora-band.band-c { animation-duration: 27s; animation-delay: -9s; }
+.aurora-pleats { mix-blend-mode: overlay; }
+@keyframes auroraSway {
+    0%   { transform: translateY(0) scaleY(1) skewX(-1.2deg); opacity: 0.82; }
+    50%  { transform: translateY(-9px) scaleY(1.035) skewX(0.8deg); opacity: 1; }
+    100% { transform: translateY(7px) scaleY(0.975) skewX(-0.5deg); opacity: 0.78; }
+}
+.aurora-fade {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(22,31,43,0.18) 0%, transparent 20%, transparent 78%, rgba(22,31,43,0.65) 92%, var(--navy) 100%);
+}
 .hero-kicker {
     display: inline-block; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase;
     color: var(--aurora-teal); font-weight: 700; background: rgba(79,178,196,0.12);
@@ -172,11 +211,12 @@ img { max-width: 100%; display: block; }
 }
 .peak {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background: none;
     border: none;
     cursor: pointer;
-    height: var(--peak-h, 160px);
-    width: auto;
     padding: 0;
     flex-shrink: 0;
     transition: transform 0.4s cubic-bezier(.34,1.56,.64,1), filter 0.35s ease;
@@ -185,7 +225,7 @@ img { max-width: 100%; display: block; }
 .mountain-field.has-hover .peak { filter: saturate(0.55) brightness(0.8); }
 .mountain-field.has-hover .peak.is-hovered { filter: none; }
 .peak.is-hovered { transform: scale(1.07); z-index: 20; }
-.peak-svg { height: 100%; width: auto; display: block; overflow: visible; }
+.peak-svg { height: var(--peak-h, 160px); width: auto; display: block; overflow: visible; }
 .skier-pos { transform: translate(96px,58px); transition: transform 0.25s ease; }
 .peak.is-hovered .skier-pos { animation: skiHoverWiggle 0.5s ease-in-out infinite; }
 @keyframes skiHoverWiggle {
@@ -211,14 +251,12 @@ img { max-width: 100%; display: block; }
     100% { transform: translate(calc(var(--sx) * 1.7), calc(var(--sy) * 1.7)) scale(0.3); opacity: 0; }
 }
 .peak-label {
-    position: absolute;
-    left: 50%;
-    bottom: 8%;
-    transform: translateX(-58%) rotate(-27deg);
-    transform-origin: left center;
+    margin-top: 10px;
     font-family: var(--font-head);
-    font-size: 0.82rem;
+    font-size: 0.95rem;
+    font-weight: 600;
     color: var(--ice);
+    text-align: center;
     white-space: nowrap;
     text-shadow: 0 2px 6px rgba(0,0,0,0.6);
     pointer-events: none;
@@ -381,6 +419,7 @@ section { max-width: 1180px; margin: 0 auto; padding: 70px 24px; }
     .mondeo-back .car-svg { width: 28px; height: 18px; }
     .nav { margin-top: 44px; }
     .mountain-field { gap: 3px; min-height: 220px; }
+    .peak-label { font-size: 0.7rem; }
     .ski-popup { width: 178px; padding: 12px 14px; }
     section { padding: 50px 18px; }
     .gallery-grid { grid-template-columns: 1fr; height: auto; }
@@ -450,6 +489,37 @@ section { max-width: 1180px; margin: 0 auto; padding: 70px 24px; }
 </nav>
 
 <header class="hero" id="hero">
+    <div class="aurora-layer" aria-hidden="true">
+<svg class="aurora-svg" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+            <filter id="auroraBlur" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="17"/></filter>
+            <filter id="pleatBlur" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="1.6"/></filter>
+            <pattern id="pleats" width="15" height="15" patternUnits="userSpaceOnUse">
+                <rect width="15" height="15" fill="transparent"/>
+                <rect x="0" y="0" width="3.4" height="15" fill="#ffffff" opacity="0.55"/>
+            </pattern>
+            <linearGradient id="grad-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(95,191,149,0)"/><stop offset="12%" stop-color="rgba(95,191,149,0.16)"/><stop offset="42%" stop-color="rgba(95,191,149,0.46)"/><stop offset="75%" stop-color="rgba(95,191,149,0.24)"/><stop offset="100%" stop-color="rgba(95,191,149,0)"/></linearGradient>
+<clipPath id="clip-a"><path d="M -120.0 147.7 C -93.3 156.9, -13.3 190.2, 40.0 202.9 C 93.3 215.6, 146.7 227.0, 200.0 224.1 C 253.3 221.2, 306.7 200.5, 360.0 185.5 C 413.3 170.5, 466.7 142.9, 520.0 134.1 C 573.3 125.3, 626.7 124.4, 680.0 132.5 C 733.3 140.6, 786.7 167.5, 840.0 182.7 C 893.3 197.8, 946.7 219.7, 1000.0 223.5 C 1053.3 227.2, 1106.7 217.5, 1160.0 205.3 C 1213.3 193.0, 1293.3 159.4, 1320.0 150.2 L 1320.0 553.0 C 1293.3 552.4, 1213.3 561.7, 1160.0 549.4 C 1106.7 537.1, 1053.3 486.4, 1000.0 479.2 C 946.7 472.0, 893.3 496.4, 840.0 506.1 C 786.7 515.8, 733.3 544.6, 680.0 537.5 C 626.7 530.3, 573.3 479.2, 520.0 463.1 C 466.7 447.0, 413.3 424.0, 360.0 440.6 C 306.7 457.2, 253.3 535.0, 200.0 562.7 C 146.7 590.4, 93.3 623.7, 40.0 606.9 C -13.3 590.0, -93.3 485.9, -120.0 461.7 Z"/></clipPath>
+<linearGradient id="grad-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(79,178,196,0)"/><stop offset="18%" stop-color="rgba(79,178,196,0.36)"/><stop offset="55%" stop-color="rgba(79,178,196,0.18)"/><stop offset="100%" stop-color="rgba(79,178,196,0)"/></linearGradient>
+<clipPath id="clip-b"><path d="M -120.0 285.7 C -93.3 284.5, -13.3 291.8, 40.0 278.5 C 93.3 265.1, 146.7 222.5, 200.0 205.6 C 253.3 188.7, 306.7 172.0, 360.0 177.1 C 413.3 182.1, 466.7 216.6, 520.0 236.0 C 573.3 255.3, 626.7 288.9, 680.0 293.4 C 733.3 297.9, 786.7 279.9, 840.0 262.7 C 893.3 245.5, 946.7 203.1, 1000.0 190.2 C 1053.3 177.3, 1106.7 174.4, 1160.0 185.3 C 1213.3 196.2, 1293.3 243.7, 1320.0 255.4 L 1320.0 445.5 C 1293.3 446.7, 1213.3 444.8, 1160.0 452.6 C 1106.7 460.4, 1053.3 489.1, 1000.0 492.4 C 946.7 495.6, 893.3 469.4, 840.0 472.2 C 786.7 475.0, 733.3 497.7, 680.0 509.3 C 626.7 520.9, 573.3 553.8, 520.0 541.7 C 466.7 529.5, 413.3 460.7, 360.0 436.4 C 306.7 412.1, 253.3 377.5, 200.0 395.8 C 146.7 414.0, 93.3 513.8, 40.0 545.8 C -13.3 577.8, -93.3 580.9, -120.0 587.9 Z"/></clipPath>
+<linearGradient id="grad-c" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(155,127,199,0)"/><stop offset="25%" stop-color="rgba(155,127,199,0.22)"/><stop offset="65%" stop-color="rgba(155,127,199,0.09)"/><stop offset="100%" stop-color="rgba(155,127,199,0)"/></linearGradient>
+<clipPath id="clip-c"><path d="M -120.0 131.8 C -93.3 123.2, -13.3 84.8, 40.0 80.3 C 93.3 75.7, 146.7 91.5, 200.0 104.5 C 253.3 117.4, 306.7 152.4, 360.0 158.2 C 413.3 164.0, 466.7 151.6, 520.0 139.2 C 573.3 126.7, 626.7 90.6, 680.0 83.6 C 733.3 76.6, 786.7 85.6, 840.0 97.3 C 893.3 109.1, 946.7 146.2, 1000.0 154.3 C 1053.3 162.3, 1106.7 156.9, 1160.0 145.9 C 1213.3 134.9, 1293.3 97.8, 1320.0 88.2 L 1320.0 222.4 C 1293.3 243.5, 1213.3 326.2, 1160.0 349.2 C 1106.7 372.2, 1053.3 379.8, 1000.0 360.2 C 946.7 340.7, 893.3 245.9, 840.0 231.9 C 786.7 217.9, 733.3 256.0, 680.0 276.3 C 626.7 296.6, 573.3 350.5, 520.0 353.8 C 466.7 357.1, 413.3 307.4, 360.0 296.1 C 306.7 284.7, 253.3 284.9, 200.0 285.8 C 146.7 286.6, 93.3 303.0, 40.0 301.3 C -13.3 299.6, -93.3 279.8, -120.0 275.5 Z"/></clipPath>
+        </defs>
+        <g class="aurora-band band-a">
+        <path d="M -120.0 147.7 C -93.3 156.9, -13.3 190.2, 40.0 202.9 C 93.3 215.6, 146.7 227.0, 200.0 224.1 C 253.3 221.2, 306.7 200.5, 360.0 185.5 C 413.3 170.5, 466.7 142.9, 520.0 134.1 C 573.3 125.3, 626.7 124.4, 680.0 132.5 C 733.3 140.6, 786.7 167.5, 840.0 182.7 C 893.3 197.8, 946.7 219.7, 1000.0 223.5 C 1053.3 227.2, 1106.7 217.5, 1160.0 205.3 C 1213.3 193.0, 1293.3 159.4, 1320.0 150.2 L 1320.0 553.0 C 1293.3 552.4, 1213.3 561.7, 1160.0 549.4 C 1106.7 537.1, 1053.3 486.4, 1000.0 479.2 C 946.7 472.0, 893.3 496.4, 840.0 506.1 C 786.7 515.8, 733.3 544.6, 680.0 537.5 C 626.7 530.3, 573.3 479.2, 520.0 463.1 C 466.7 447.0, 413.3 424.0, 360.0 440.6 C 306.7 457.2, 253.3 535.0, 200.0 562.7 C 146.7 590.4, 93.3 623.7, 40.0 606.9 C -13.3 590.0, -93.3 485.9, -120.0 461.7 Z" fill="url(#grad-a)" filter="url(#auroraBlur)"/>
+        <path d="M -120.0 147.7 C -93.3 156.9, -13.3 190.2, 40.0 202.9 C 93.3 215.6, 146.7 227.0, 200.0 224.1 C 253.3 221.2, 306.7 200.5, 360.0 185.5 C 413.3 170.5, 466.7 142.9, 520.0 134.1 C 573.3 125.3, 626.7 124.4, 680.0 132.5 C 733.3 140.6, 786.7 167.5, 840.0 182.7 C 893.3 197.8, 946.7 219.7, 1000.0 223.5 C 1053.3 227.2, 1106.7 217.5, 1160.0 205.3 C 1213.3 193.0, 1293.3 159.4, 1320.0 150.2 L 1320.0 553.0 C 1293.3 552.4, 1213.3 561.7, 1160.0 549.4 C 1106.7 537.1, 1053.3 486.4, 1000.0 479.2 C 946.7 472.0, 893.3 496.4, 840.0 506.1 C 786.7 515.8, 733.3 544.6, 680.0 537.5 C 626.7 530.3, 573.3 479.2, 520.0 463.1 C 466.7 447.0, 413.3 424.0, 360.0 440.6 C 306.7 457.2, 253.3 535.0, 200.0 562.7 C 146.7 590.4, 93.3 623.7, 40.0 606.9 C -13.3 590.0, -93.3 485.9, -120.0 461.7 Z" fill="url(#pleats)" opacity="0.22" clip-path="url(#clip-a)" filter="url(#pleatBlur)" class="aurora-pleats" transform="rotate(3 600 350)"/>
+    </g>
+<g class="aurora-band band-b">
+        <path d="M -120.0 285.7 C -93.3 284.5, -13.3 291.8, 40.0 278.5 C 93.3 265.1, 146.7 222.5, 200.0 205.6 C 253.3 188.7, 306.7 172.0, 360.0 177.1 C 413.3 182.1, 466.7 216.6, 520.0 236.0 C 573.3 255.3, 626.7 288.9, 680.0 293.4 C 733.3 297.9, 786.7 279.9, 840.0 262.7 C 893.3 245.5, 946.7 203.1, 1000.0 190.2 C 1053.3 177.3, 1106.7 174.4, 1160.0 185.3 C 1213.3 196.2, 1293.3 243.7, 1320.0 255.4 L 1320.0 445.5 C 1293.3 446.7, 1213.3 444.8, 1160.0 452.6 C 1106.7 460.4, 1053.3 489.1, 1000.0 492.4 C 946.7 495.6, 893.3 469.4, 840.0 472.2 C 786.7 475.0, 733.3 497.7, 680.0 509.3 C 626.7 520.9, 573.3 553.8, 520.0 541.7 C 466.7 529.5, 413.3 460.7, 360.0 436.4 C 306.7 412.1, 253.3 377.5, 200.0 395.8 C 146.7 414.0, 93.3 513.8, 40.0 545.8 C -13.3 577.8, -93.3 580.9, -120.0 587.9 Z" fill="url(#grad-b)" filter="url(#auroraBlur)"/>
+        <path d="M -120.0 285.7 C -93.3 284.5, -13.3 291.8, 40.0 278.5 C 93.3 265.1, 146.7 222.5, 200.0 205.6 C 253.3 188.7, 306.7 172.0, 360.0 177.1 C 413.3 182.1, 466.7 216.6, 520.0 236.0 C 573.3 255.3, 626.7 288.9, 680.0 293.4 C 733.3 297.9, 786.7 279.9, 840.0 262.7 C 893.3 245.5, 946.7 203.1, 1000.0 190.2 C 1053.3 177.3, 1106.7 174.4, 1160.0 185.3 C 1213.3 196.2, 1293.3 243.7, 1320.0 255.4 L 1320.0 445.5 C 1293.3 446.7, 1213.3 444.8, 1160.0 452.6 C 1106.7 460.4, 1053.3 489.1, 1000.0 492.4 C 946.7 495.6, 893.3 469.4, 840.0 472.2 C 786.7 475.0, 733.3 497.7, 680.0 509.3 C 626.7 520.9, 573.3 553.8, 520.0 541.7 C 466.7 529.5, 413.3 460.7, 360.0 436.4 C 306.7 412.1, 253.3 377.5, 200.0 395.8 C 146.7 414.0, 93.3 513.8, 40.0 545.8 C -13.3 577.8, -93.3 580.9, -120.0 587.9 Z" fill="url(#pleats)" opacity="0.18" clip-path="url(#clip-b)" filter="url(#pleatBlur)" class="aurora-pleats" transform="rotate(-4 600 350)"/>
+    </g>
+<g class="aurora-band band-c">
+        <path d="M -120.0 131.8 C -93.3 123.2, -13.3 84.8, 40.0 80.3 C 93.3 75.7, 146.7 91.5, 200.0 104.5 C 253.3 117.4, 306.7 152.4, 360.0 158.2 C 413.3 164.0, 466.7 151.6, 520.0 139.2 C 573.3 126.7, 626.7 90.6, 680.0 83.6 C 733.3 76.6, 786.7 85.6, 840.0 97.3 C 893.3 109.1, 946.7 146.2, 1000.0 154.3 C 1053.3 162.3, 1106.7 156.9, 1160.0 145.9 C 1213.3 134.9, 1293.3 97.8, 1320.0 88.2 L 1320.0 222.4 C 1293.3 243.5, 1213.3 326.2, 1160.0 349.2 C 1106.7 372.2, 1053.3 379.8, 1000.0 360.2 C 946.7 340.7, 893.3 245.9, 840.0 231.9 C 786.7 217.9, 733.3 256.0, 680.0 276.3 C 626.7 296.6, 573.3 350.5, 520.0 353.8 C 466.7 357.1, 413.3 307.4, 360.0 296.1 C 306.7 284.7, 253.3 284.9, 200.0 285.8 C 146.7 286.6, 93.3 303.0, 40.0 301.3 C -13.3 299.6, -93.3 279.8, -120.0 275.5 Z" fill="url(#grad-c)" filter="url(#auroraBlur)"/>
+        <path d="M -120.0 131.8 C -93.3 123.2, -13.3 84.8, 40.0 80.3 C 93.3 75.7, 146.7 91.5, 200.0 104.5 C 253.3 117.4, 306.7 152.4, 360.0 158.2 C 413.3 164.0, 466.7 151.6, 520.0 139.2 C 573.3 126.7, 626.7 90.6, 680.0 83.6 C 733.3 76.6, 786.7 85.6, 840.0 97.3 C 893.3 109.1, 946.7 146.2, 1000.0 154.3 C 1053.3 162.3, 1106.7 156.9, 1160.0 145.9 C 1213.3 134.9, 1293.3 97.8, 1320.0 88.2 L 1320.0 222.4 C 1293.3 243.5, 1213.3 326.2, 1160.0 349.2 C 1106.7 372.2, 1053.3 379.8, 1000.0 360.2 C 946.7 340.7, 893.3 245.9, 840.0 231.9 C 786.7 217.9, 733.3 256.0, 680.0 276.3 C 626.7 296.6, 573.3 350.5, 520.0 353.8 C 466.7 357.1, 413.3 307.4, 360.0 296.1 C 306.7 284.7, 253.3 284.9, 200.0 285.8 C 146.7 286.6, 93.3 303.0, 40.0 301.3 C -13.3 299.6, -93.3 279.8, -120.0 275.5 Z" fill="url(#pleats)" opacity="0.12" clip-path="url(#clip-c)" filter="url(#pleatBlur)" class="aurora-pleats" transform="rotate(6 600 350)"/>
+    </g>
+    </svg>
+        <div class="aurora-fade"></div>
+    </div>
     <span class="hero-kicker">Zimní trip autem za svíčkovým světlem a sněhem</span>
     <h1>Kam vyrazit, když <em>zamrzne</em> první vodopád</h1>
     <p class="lede">Šest zimních destinací pro nás — tři na jeden den, tři s přespáním v soukromé chaloupce s krbem. Jen mráz, ticho a psí packy pokryté jinovatkou.</p>
@@ -474,7 +544,7 @@ section { max-width: 1180px; margin: 0 auto; padding: 70px 24px; }
     <g class="snow-spray sp2" style="--sx:6px; --sy:14px;"><circle cx="30" cy="210" r="3.2" fill="#E4EDF2"/></g>
     <g class="snow-spray sp3" style="--sx:-4px; --sy:16px;"><circle cx="30" cy="210" r="3" fill="#F7F5F2"/></g>
 </svg>
-            <span class="peak-label">Mšenské Pokličky</span>
+            <span class="peak-label">Poklice</span>
             <div class="ski-popup">
                 <strong class="ski-name">🇨🇿 Mšenské Pokličky</strong>
                 <span class="ski-text">Zasněžené homolovité skály kousek od Prahy. (60 km, ~1:00)</span>
@@ -501,7 +571,7 @@ section { max-width: 1180px; margin: 0 auto; padding: 70px 24px; }
     <g class="snow-spray sp2" style="--sx:6px; --sy:14px;"><circle cx="30" cy="210" r="3.2" fill="#E4EDF2"/></g>
     <g class="snow-spray sp3" style="--sx:-4px; --sy:16px;"><circle cx="30" cy="210" r="3" fill="#F7F5F2"/></g>
 </svg>
-            <span class="peak-label">Milešovka</span>
+            <span class="peak-label">Mileš</span>
             <div class="ski-popup">
                 <strong class="ski-name">🇨🇿 Milešovka</strong>
                 <span class="ski-text">Moře mraků pod vrcholem, pokud bude štěstí. (80 km, ~1:00)</span>
@@ -528,7 +598,7 @@ section { max-width: 1180px; margin: 0 auto; padding: 70px 24px; }
     <g class="snow-spray sp2" style="--sx:6px; --sy:14px;"><circle cx="30" cy="210" r="3.2" fill="#E4EDF2"/></g>
     <g class="snow-spray sp3" style="--sx:-4px; --sy:16px;"><circle cx="30" cy="210" r="3" fill="#F7F5F2"/></g>
 </svg>
-            <span class="peak-label">Podtrosecká údolí</span>
+            <span class="peak-label">Trosky</span>
             <div class="ski-popup">
                 <strong class="ski-name">🇨🇿 Podtrosecká údolí</strong>
                 <span class="ski-text">Rovinatá procházka kolem zamrzlých rybníků. (100 km, ~1:20)</span>
@@ -555,7 +625,7 @@ section { max-width: 1180px; margin: 0 auto; padding: 70px 24px; }
     <g class="snow-spray sp2" style="--sx:6px; --sy:14px;"><circle cx="30" cy="210" r="3.2" fill="#E4EDF2"/></g>
     <g class="snow-spray sp3" style="--sx:-4px; --sy:16px;"><circle cx="30" cy="210" r="3" fill="#F7F5F2"/></g>
 </svg>
-            <span class="peak-label">Krkonoše — Harrachov</span>
+            <span class="peak-label">Krakonoš</span>
             <div class="ski-popup">
                 <strong class="ski-name">🇨🇿 Krkonoše — Harrachov</strong>
                 <span class="ski-text">Mumlavský vodopád zamrzlý v soše. (133 km, ~1:45)</span>
@@ -582,7 +652,7 @@ section { max-width: 1180px; margin: 0 auto; padding: 70px 24px; }
     <g class="snow-spray sp2" style="--sx:6px; --sy:14px;"><circle cx="30" cy="210" r="3.2" fill="#E4EDF2"/></g>
     <g class="snow-spray sp3" style="--sx:-4px; --sy:16px;"><circle cx="30" cy="210" r="3" fill="#F7F5F2"/></g>
 </svg>
-            <span class="peak-label">Jeseníky — Praděd</span>
+            <span class="peak-label">Praděda</span>
             <div class="ski-popup">
                 <strong class="ski-name">🇨🇿 Jeseníky — Praděd</strong>
                 <span class="ski-text">Kamzíci na sněhu a ledová homole. (352 km, ~3:50)</span>
@@ -609,7 +679,7 @@ section { max-width: 1180px; margin: 0 auto; padding: 70px 24px; }
     <g class="snow-spray sp2" style="--sx:6px; --sy:14px;"><circle cx="30" cy="210" r="3.2" fill="#E4EDF2"/></g>
     <g class="snow-spray sp3" style="--sx:-4px; --sy:16px;"><circle cx="30" cy="210" r="3" fill="#F7F5F2"/></g>
 </svg>
-            <span class="peak-label">Beskydy — Pustevny</span>
+            <span class="peak-label">Pustevník</span>
             <div class="ski-popup">
                 <strong class="ski-name">🇨🇿 Beskydy — Pustevny</strong>
                 <span class="ski-text">Hřebenovka na Radhošť, sáňky vítány. (355 km, ~3:50)</span>
