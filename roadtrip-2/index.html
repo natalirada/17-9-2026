@@ -701,7 +701,7 @@ section { max-width: 1180px; margin: 0 auto; padding: 70px 24px; }
             </div>
         </button>
     </div>
-    <div class="hero-hint"><i class="fa-solid fa-hand-pointer"></i>Najeď myší (nebo přejeď prstem přes všech 6 hor) na lyžaře a přečti si o place, klikni a nech toho chudáka sjet dolů.</div>
+    <div class="hero-hint"><i class="fa-solid fa-hand-pointer"></i>Najeď myší na lyžaře a přečti si o place, klikni a nech toho chudáka sjet dolů. (Na mobilu: přejeď prstem přes všech 6 hor, prvním ťuknutím se ukáže popis, druhým ho pošleš dolů.)</div>
 </header>
 
 <section class="map-section" id="mapa">
@@ -1279,26 +1279,46 @@ try {
 // ============ MOUNTAIN HERO INTERACTIONS ============
 const mountainField = document.getElementById('mountainField');
 const peaks = document.querySelectorAll('.peak');
+const peaksSupportHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+function clearPeakPreview() {
+    mountainField.classList.remove('has-hover');
+    peaks.forEach(p => p.classList.remove('is-hovered'));
+}
 
 peaks.forEach(peak => {
-    peak.addEventListener('mouseenter', () => {
-        mountainField.classList.add('has-hover');
-        peak.classList.add('is-hovered');
-    });
-    peak.addEventListener('mouseleave', () => {
-        mountainField.classList.remove('has-hover');
-        peak.classList.remove('is-hovered');
-    });
-    peak.addEventListener('focus', () => {
-        mountainField.classList.add('has-hover');
-        peak.classList.add('is-hovered');
-    });
-    peak.addEventListener('blur', () => {
-        mountainField.classList.remove('has-hover');
-        peak.classList.remove('is-hovered');
-    });
-    peak.addEventListener('click', () => {
+    // Mouse hover / keyboard focus only make sense as a "preview" gesture on
+    // devices that actually have a mouse — on touch, focus fires on tap too
+    // and would skip straight past the two-tap preview logic below.
+    if (peaksSupportHover) {
+        peak.addEventListener('mouseenter', () => {
+            mountainField.classList.add('has-hover');
+            peak.classList.add('is-hovered');
+        });
+        peak.addEventListener('mouseleave', () => {
+            mountainField.classList.remove('has-hover');
+            peak.classList.remove('is-hovered');
+        });
+        peak.addEventListener('focus', () => {
+            mountainField.classList.add('has-hover');
+            peak.classList.add('is-hovered');
+        });
+        peak.addEventListener('blur', () => {
+            mountainField.classList.remove('has-hover');
+            peak.classList.remove('is-hovered');
+        });
+    }
+    peak.addEventListener('click', (e) => {
         if (peak.classList.contains('is-skiing')) return;
+        // On touch devices (no real hover), first tap just reveals the preview
+        // bubble; the ride down only starts on a second tap on the same peak.
+        if (!peaksSupportHover && !peak.classList.contains('is-hovered')) {
+            e.preventDefault();
+            clearPeakPreview();
+            mountainField.classList.add('has-hover');
+            peak.classList.add('is-hovered');
+            return;
+        }
         peak.classList.add('is-skiing');
         const targetId = peak.getAttribute('data-target');
         setTimeout(() => {
@@ -1308,6 +1328,12 @@ peaks.forEach(peak => {
         setTimeout(() => { peak.classList.remove('is-skiing'); }, 2200);
     });
 });
+
+if (!peaksSupportHover) {
+    document.addEventListener('click', (e) => {
+        if (!mountainField.contains(e.target)) clearPeakPreview();
+    });
+}
 
 // ============ SCROLL TOP BUTTON (snowflake) ============
 window.addEventListener('scroll', () => {

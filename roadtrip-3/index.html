@@ -665,7 +665,7 @@ section { max-width: 1180px; margin: 0 auto; padding: 70px 24px; }
         </button>
 
     </div>
-    <div class="hero-hint"><i class="fa-solid fa-hand-pointer"></i>Najeď myší na kytku a přečti si hádanku, klikni a nech ji rozkvést.</div>
+    <div class="hero-hint"><i class="fa-solid fa-hand-pointer"></i>Najeď myší na kytku a přečti si hádanku, klikni a nech ji rozkvést. (Na mobilu: prvním ťuknutím se ukáže hádanka, druhým ji necháš rozkvést.)</div>
 </header>
 
 <section class="map-section" id="mapa">
@@ -1191,26 +1191,46 @@ try {
 // ============ FLOWER HERO INTERACTIONS ============
 const flowerField = document.getElementById('flowerField');
 const flowers = document.querySelectorAll('.flower');
+const flowersSupportHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+function clearFlowerPreview() {
+    flowerField.classList.remove('has-hover');
+    flowers.forEach(f => f.classList.remove('is-hovered'));
+}
 
 flowers.forEach(flower => {
-    flower.addEventListener('mouseenter', () => {
-        flowerField.classList.add('has-hover');
-        flower.classList.add('is-hovered');
-    });
-    flower.addEventListener('mouseleave', () => {
-        flowerField.classList.remove('has-hover');
-        flower.classList.remove('is-hovered');
-    });
-    flower.addEventListener('focus', () => {
-        flowerField.classList.add('has-hover');
-        flower.classList.add('is-hovered');
-    });
-    flower.addEventListener('blur', () => {
-        flowerField.classList.remove('has-hover');
-        flower.classList.remove('is-hovered');
-    });
-    flower.addEventListener('click', () => {
+    // Mouse hover / keyboard focus only make sense as a "preview" gesture on
+    // devices that actually have a mouse — on touch, focus fires on tap too
+    // and would skip straight past the two-tap preview logic below.
+    if (flowersSupportHover) {
+        flower.addEventListener('mouseenter', () => {
+            flowerField.classList.add('has-hover');
+            flower.classList.add('is-hovered');
+        });
+        flower.addEventListener('mouseleave', () => {
+            flowerField.classList.remove('has-hover');
+            flower.classList.remove('is-hovered');
+        });
+        flower.addEventListener('focus', () => {
+            flowerField.classList.add('has-hover');
+            flower.classList.add('is-hovered');
+        });
+        flower.addEventListener('blur', () => {
+            flowerField.classList.remove('has-hover');
+            flower.classList.remove('is-hovered');
+        });
+    }
+    flower.addEventListener('click', (e) => {
         if (flower.classList.contains('is-blooming')) return;
+        // On touch devices (no real hover), first tap just reveals the riddle
+        // bubble; it only blooms and navigates on a second tap on the same flower.
+        if (!flowersSupportHover && !flower.classList.contains('is-hovered')) {
+            e.preventDefault();
+            clearFlowerPreview();
+            flowerField.classList.add('has-hover');
+            flower.classList.add('is-hovered');
+            return;
+        }
         flower.classList.add('is-blooming');
         const targetId = flower.getAttribute('data-target');
         setTimeout(() => {
@@ -1220,6 +1240,12 @@ flowers.forEach(flower => {
         setTimeout(() => { flower.classList.remove('is-blooming'); }, 2200);
     });
 });
+
+if (!flowersSupportHover) {
+    document.addEventListener('click', (e) => {
+        if (!flowerField.contains(e.target)) clearFlowerPreview();
+    });
+}
 
 // ============ SCROLL TOP BUTTON (sprout) ============
 window.addEventListener('scroll', () => {
