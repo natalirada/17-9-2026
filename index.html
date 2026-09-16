@@ -155,21 +155,52 @@
         display: block;
     }
 
-    .card-scrim {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(180deg, rgba(34, 22, 9, 0) 45%, rgba(34, 22, 9, 0.92) 100%);
-        pointer-events: none;
+    .trip-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        min-width: 0;
     }
 
-    .card-body {
-        position: relative;
+    .trip-col .trip-card {
+        width: 100%;
+    }
+
+    .cta {
+        position: absolute;
+        top: 18px;
+        left: 50%;
+        transform: translateX(-50%);
         z-index: 2;
-        padding: 22px 24px 26px;
-        display: flex;
+        display: inline-flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 10px;
+        gap: 8px;
+        padding: 9px 20px;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 0.86rem;
+        color: var(--text-main);
+        background: rgba(34, 22, 9, 0.55);
+        border: 1px solid rgba(227, 245, 248, 0.28);
+        backdrop-filter: blur(6px);
+        transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .trip-card:hover .cta {
+        color: var(--ice-blue);
+        background: rgba(34, 22, 9, 0.78);
+        border-color: var(--ice-blue);
+        transform: translateX(-50%) translateY(3px);
+    }
+
+    .trip-card:hover .cta i {
+        transform: translateX(4px);
+    }
+
+    .cta i {
+        transition: transform 0.25s ease;
+        font-size: 0.78rem;
     }
 
     .tag {
@@ -207,28 +238,6 @@
         border: 1px solid rgba(255, 255, 255, 0.12);
     }
 
-    .cta {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-weight: 700;
-        font-size: 0.88rem;
-        color: var(--text-main);
-    }
-
-    .trip-card:hover .cta {
-        color: var(--ice-blue);
-    }
-
-    .trip-card:hover .cta i {
-        transform: translateX(4px);
-    }
-
-    .cta i {
-        transition: transform 0.25s ease;
-        font-size: 0.8rem;
-    }
-
     footer {
         text-align: center;
         margin-top: 70px;
@@ -261,32 +270,29 @@
     </div>
 
     <section class="trips">
-        <a class="trip-card" href="autumn-2026/">
-            <canvas class="card-canvas" data-scene="autumn"></canvas>
-            <div class="card-scrim"></div>
-            <div class="card-body">
-                <span class="tag tag-live">Live</span>
+        <div class="trip-col">
+            <a class="trip-card" href="autumn-2026/">
+                <canvas class="card-canvas" data-scene="autumn"></canvas>
                 <span class="cta">Show me <i class="fa-solid fa-arrow-right"></i></span>
-            </div>
-        </a>
+            </a>
+            <span class="tag tag-live">Live</span>
+        </div>
 
-        <a class="trip-card" href="roadtrip-2/">
-            <canvas class="card-canvas" data-scene="winter"></canvas>
-            <div class="card-scrim"></div>
-            <div class="card-body">
-                <span class="tag tag-live">Live</span>
+        <div class="trip-col">
+            <a class="trip-card" href="roadtrip-2/">
+                <canvas class="card-canvas" data-scene="winter"></canvas>
                 <span class="cta">Show me <i class="fa-solid fa-arrow-right"></i></span>
-            </div>
-        </a>
+            </a>
+            <span class="tag tag-live">Live</span>
+        </div>
 
-        <a class="trip-card" href="roadtrip-3/">
-            <canvas class="card-canvas" data-scene="spring"></canvas>
-            <div class="card-scrim"></div>
-            <div class="card-body">
-                <span class="tag tag-live">Live</span>
+        <div class="trip-col">
+            <a class="trip-card" href="roadtrip-3/">
+                <canvas class="card-canvas" data-scene="spring"></canvas>
                 <span class="cta">Show me <i class="fa-solid fa-arrow-right"></i></span>
-            </div>
-        </a>
+            </a>
+            <span class="tag tag-live">Live</span>
+        </div>
     </section>
 
     <footer>
