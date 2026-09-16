@@ -1,30 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cs">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ford Mondeo Roadtrips</title>
+<title>Pojeď se mnou autem</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧭</text></svg>">
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,600&display=swap" rel="stylesheet">
 <!-- FontAwesome icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
     :root {
-        --bg-deep: #0b0d12;
-        --bg-panel: #14171f;
-        --line: rgba(255, 255, 255, 0.08);
-        --amber: #D99B26;
-        --amber-soft: #C87D43;
-        --text-main: #F3EFE7;
-        --text-muted: #A7A39B;
+        --wood-dark: #221609;
+        --wood-panel: #35240F;
+        --wood-mid: #6B4A2C;
+        --wood-warm: #B08752;
+        --ice-blue: #8FD6E8;
+        --ice-pale: #E3F5F8;
+        --text-main: #F4EADA;
+        --text-muted: #C7B296;
         --radius-lg: 28px;
         --radius-md: 18px;
-        --font-heading: 'Playfair Display', serif;
+        --font-heading: 'Fraunces', serif;
         --font-body: 'Plus Jakarta Sans', sans-serif;
     }
 
@@ -34,26 +35,26 @@
 
     body {
         font-family: var(--font-body);
-        background-color: var(--bg-deep);
+        background-color: var(--wood-dark);
         color: var(--text-main);
         min-height: 100vh;
         position: relative;
         overflow-x: hidden;
     }
 
-    /* Ambient background glow */
+    /* Wood-grain ambient background */
     .bg-glow {
         position: fixed;
         inset: 0;
         z-index: 0;
         pointer-events: none;
         background:
-            radial-gradient(60% 50% at 15% 0%, rgba(217, 155, 38, 0.18) 0%, rgba(217, 155, 38, 0) 60%),
-            radial-gradient(50% 40% at 90% 15%, rgba(200, 125, 67, 0.12) 0%, rgba(200, 125, 67, 0) 60%),
-            linear-gradient(180deg, #0b0d12 0%, #12141b 55%, #0b0d12 100%);
+            radial-gradient(55% 45% at 12% -5%, rgba(143, 214, 232, 0.14) 0%, rgba(143, 214, 232, 0) 60%),
+            radial-gradient(45% 35% at 95% 10%, rgba(176, 135, 82, 0.16) 0%, rgba(176, 135, 82, 0) 60%),
+            repeating-linear-gradient(95deg, rgba(255, 235, 210, 0.025) 0px, rgba(255, 235, 210, 0.025) 1px, transparent 1px, transparent 5px),
+            linear-gradient(180deg, #241708 0%, #2C1D0D 45%, #201404 100%);
     }
 
-    /* Decorative dashed "road" line */
     .road-line {
         position: fixed;
         top: 0;
@@ -61,8 +62,8 @@
         width: 100%;
         height: 4px;
         z-index: 1;
-        background-image: repeating-linear-gradient(90deg, var(--amber) 0px, var(--amber) 28px, transparent 28px, transparent 56px);
-        opacity: 0.55;
+        background-image: repeating-linear-gradient(90deg, var(--wood-warm) 0px, var(--wood-warm) 28px, transparent 28px, transparent 56px);
+        opacity: 0.5;
     }
 
     main {
@@ -83,7 +84,7 @@
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        color: var(--amber);
+        color: var(--ice-blue);
         font-weight: 700;
         letter-spacing: 3px;
         text-transform: uppercase;
@@ -95,13 +96,13 @@
         content: '';
         width: 24px;
         height: 1px;
-        background: var(--amber-soft);
-        opacity: 0.7;
+        background: var(--ice-blue);
+        opacity: 0.6;
     }
 
     h1 {
         font-family: var(--font-heading);
-        font-weight: 800;
+        font-weight: 700;
         font-size: clamp(2.2rem, 5vw, 3.4rem);
         line-height: 1.15;
         margin-bottom: 22px;
@@ -109,7 +110,7 @@
 
     h1 em {
         font-style: italic;
-        color: var(--amber);
+        color: var(--ice-blue);
     }
 
     .hero p {
@@ -129,52 +130,46 @@
         position: relative;
         display: flex;
         flex-direction: column;
+        justify-content: flex-end;
+        height: 360px;
         border-radius: var(--radius-lg);
         overflow: hidden;
         text-decoration: none;
         color: inherit;
-        background: var(--bg-panel);
-        border: 1px solid var(--line);
+        background: var(--wood-panel);
+        border: 1px solid rgba(176, 135, 82, 0.35);
         transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
     }
 
     .trip-card:hover {
         transform: translateY(-8px);
-        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
-        border-color: rgba(217, 155, 38, 0.4);
+        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.55);
+        border-color: var(--ice-blue);
     }
 
-    .card-media {
-        height: 220px;
-        background-size: cover;
-        background-position: center;
-        position: relative;
-    }
-
-    .card-media::after {
-        content: '';
+    .card-canvas {
         position: absolute;
         inset: 0;
-        background: linear-gradient(180deg, rgba(11, 13, 18, 0) 30%, rgba(11, 13, 18, 0.85) 100%);
+        width: 100%;
+        height: 100%;
+        display: block;
     }
 
-    .soon-media {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2.6rem;
-        color: rgba(255, 255, 255, 0.35);
+    .card-scrim {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(34, 22, 9, 0) 45%, rgba(34, 22, 9, 0.92) 100%);
+        pointer-events: none;
     }
-
-    .soon-media.winter { background: linear-gradient(150deg, #1c2733, #10151d); }
-    .soon-media.summer { background: linear-gradient(150deg, #1f2a1e, #10151d); }
 
     .card-body {
-        padding: 26px 26px 30px;
+        position: relative;
+        z-index: 2;
+        padding: 22px 24px 26px;
         display: flex;
-        flex-direction: column;
-        gap: 6px;
-        flex: 1;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
     }
 
     .tag {
@@ -188,12 +183,13 @@
         text-transform: uppercase;
         padding: 5px 12px;
         border-radius: 20px;
-        margin-bottom: 10px;
+        backdrop-filter: blur(4px);
     }
 
     .tag-live {
-        background: rgba(217, 155, 38, 0.15);
-        color: var(--amber);
+        background: rgba(143, 214, 232, 0.16);
+        color: var(--ice-pale);
+        border: 1px solid rgba(143, 214, 232, 0.4);
     }
 
     .tag-live::before {
@@ -201,39 +197,27 @@
         width: 6px;
         height: 6px;
         border-radius: 50%;
-        background: var(--amber);
-        box-shadow: 0 0 0 3px rgba(217, 155, 38, 0.25);
+        background: var(--ice-blue);
+        box-shadow: 0 0 0 3px rgba(143, 214, 232, 0.25);
     }
 
     .tag-soon {
-        background: rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.08);
         color: var(--text-muted);
-    }
-
-    .card-body h2 {
-        font-family: var(--font-heading);
-        font-weight: 700;
-        font-size: 1.35rem;
-    }
-
-    .card-body .region {
-        color: var(--text-muted);
-        font-size: 0.92rem;
-        margin-bottom: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
     }
 
     .cta {
-        margin-top: auto;
         display: inline-flex;
         align-items: center;
         gap: 8px;
         font-weight: 700;
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         color: var(--text-main);
     }
 
     .trip-card:hover .cta {
-        color: var(--amber);
+        color: var(--ice-blue);
     }
 
     .trip-card:hover .cta i {
@@ -244,8 +228,6 @@
         transition: transform 0.25s ease;
         font-size: 0.8rem;
     }
-
-    .trip-card.soon .card-body { opacity: 0.85; }
 
     footer {
         text-align: center;
@@ -258,10 +240,11 @@
         gap: 6px;
     }
 
-    footer i { color: var(--amber-soft); }
+    footer i { color: var(--wood-warm); }
 
     @media (max-width: 900px) {
         .trips { grid-template-columns: 1fr; }
+        .trip-card { height: 300px; }
     }
 </style>
 </head>
@@ -272,48 +255,387 @@
 
 <main>
     <div class="hero">
-        <span class="kicker"><i class="fa-solid fa-compass"></i> Ford Mondeo Roadtrips</span>
+        <span class="kicker"><i class="fa-solid fa-compass"></i> Poznávání nových míst na čtyřech kolech</span>
         <h1>Chasing horizons,<br><em>one tank at a time.</em></h1>
-        <p>A growing collection of road trips across Europe — every route mapped, every stop photographed, and every camp spot noted for next time. Pick a trip below to start exploring.</p>
+        <p>Nadyho návrhy na společné dobrodružství — vyber, platím. Můžeš začít explorovat obsah.</p>
     </div>
 
     <section class="trips">
         <a class="trip-card" href="autumn-2026/">
-            <div class="card-media" style="background-image: url('autumn-2026/images/orseg1.jpg');"></div>
+            <canvas class="card-canvas" data-scene="autumn"></canvas>
+            <div class="card-scrim"></div>
             <div class="card-body">
                 <span class="tag tag-live">Live</span>
-                <h2>Autumn Roadtrip 2026</h2>
-                <p class="region">Slovenia · Austria · Hungary</p>
-                <span class="cta">Explore the trip <i class="fa-solid fa-arrow-right"></i></span>
+                <span class="cta">Vyrazit na trip <i class="fa-solid fa-arrow-right"></i></span>
             </div>
         </a>
 
-        <a class="trip-card soon" href="roadtrip-2/">
-            <div class="card-media soon-media winter"><i class="fa-solid fa-snowflake"></i></div>
+        <a class="trip-card" href="roadtrip-2/">
+            <canvas class="card-canvas" data-scene="winter"></canvas>
+            <div class="card-scrim"></div>
             <div class="card-body">
-                <span class="tag tag-soon">In progress</span>
-                <h2>Winter Roadtrip</h2>
-                <p class="region">Coming soon</p>
-                <span class="cta">Take a peek <i class="fa-solid fa-arrow-right"></i></span>
+                <span class="tag tag-live">Live</span>
+                <span class="cta">Vyrazit na trip <i class="fa-solid fa-arrow-right"></i></span>
             </div>
         </a>
 
         <a class="trip-card" href="roadtrip-3/">
-            <div class="card-media" style="background-image: url('roadtrip-3/images/podyji.jpg');"></div>
+            <canvas class="card-canvas" data-scene="spring"></canvas>
+            <div class="card-scrim"></div>
             <div class="card-body">
                 <span class="tag tag-live">Live</span>
-                <h2>Jarní Roadtrip 2026</h2>
-                <p class="region">Podyjí · Bílé Karpaty · Šumava · Adršpach</p>
-                <span class="cta">Explore the trip <i class="fa-solid fa-arrow-right"></i></span>
+                <span class="cta">Vyrazit na trip <i class="fa-solid fa-arrow-right"></i></span>
             </div>
         </a>
     </section>
 
     <footer>
-        <span><i class="fa-solid fa-car-side"></i> Ford Mondeo Roadtrips · built one trip at a time</span>
+        <span><i class="fa-solid fa-car-side"></i> Ford Mondeo Roadtrips · budováno jeden výlet po druhém</span>
         <span>© 2026</span>
     </footer>
 </main>
+
+<script>
+(function () {
+    "use strict";
+
+    function rand(a, b) { return a + Math.random() * (b - a); }
+
+    /* ---------- shared canvas bootstrap ---------- */
+    function setupCanvas(canvas) {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        function resize() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = Math.max(1, Math.round(rect.width * dpr));
+            canvas.height = Math.max(1, Math.round(rect.height * dpr));
+            canvas.style.width = rect.width + "px";
+            canvas.style.height = rect.height + "px";
+        }
+        resize();
+        window.addEventListener("resize", resize);
+        return { ctx: canvas.getContext("2d"), dpr, resize };
+    }
+
+    /* ---------- AUTUMN: hills + falling leaves ---------- */
+    function initAutumn(canvas) {
+        const { ctx } = setupCanvas(canvas);
+        const leafColors = ["#D97D3D", "#B5482E", "#E8B84B", "#8B5A2B", "#C9632F"];
+        let leaves = [];
+        function seed() {
+            const w = canvas.width, h = canvas.height;
+            leaves = [];
+            const n = Math.round((w * h) / 26000) + 14;
+            for (let i = 0; i < n; i++) {
+                leaves.push({
+                    x: rand(0, w), y: rand(-h, h),
+                    size: rand(5, 11) * (canvas.width / 400 > 1 ? canvas.width / 400 : 1) * 0.6 + 4,
+                    rot: rand(0, Math.PI * 2), rotSpeed: rand(-0.02, 0.02),
+                    swayAmp: rand(10, 34), swayPhase: rand(0, 10),
+                    speed: rand(0.35, 0.9),
+                    color: leafColors[(Math.random() * leafColors.length) | 0]
+                });
+            }
+        }
+        seed();
+        window.addEventListener("resize", () => seed());
+
+        function drawBackground() {
+            const w = canvas.width, h = canvas.height;
+            const sky = ctx.createLinearGradient(0, 0, 0, h);
+            sky.addColorStop(0, "#4A2E1A");
+            sky.addColorStop(0.55, "#7A4426");
+            sky.addColorStop(1, "#3A2211");
+            ctx.fillStyle = sky;
+            ctx.fillRect(0, 0, w, h);
+
+            // far hill
+            ctx.fillStyle = "rgba(30, 18, 8, 0.55)";
+            ctx.beginPath();
+            ctx.moveTo(0, h * 0.72);
+            ctx.quadraticCurveTo(w * 0.25, h * 0.6, w * 0.5, h * 0.7);
+            ctx.quadraticCurveTo(w * 0.78, h * 0.82, w, h * 0.66);
+            ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath(); ctx.fill();
+
+            // near hill
+            ctx.fillStyle = "rgba(20, 12, 5, 0.85)";
+            ctx.beginPath();
+            ctx.moveTo(0, h * 0.86);
+            ctx.quadraticCurveTo(w * 0.3, h * 0.74, w * 0.55, h * 0.85);
+            ctx.quadraticCurveTo(w * 0.8, h * 0.95, w, h * 0.82);
+            ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath(); ctx.fill();
+
+            // a few rounded tree silhouettes on the ridge
+            ctx.fillStyle = "rgba(15, 9, 4, 0.85)";
+            const trees = [0.18, 0.4, 0.63, 0.85];
+            trees.forEach((t, i) => {
+                const tx = w * t, ty = h * (0.85 - (i % 2) * 0.03);
+                const th = h * 0.1;
+                ctx.beginPath();
+                ctx.moveTo(tx - th * 0.06, ty);
+                ctx.lineTo(tx - th * 0.06, ty - th * 0.55);
+                ctx.lineTo(tx + th * 0.06, ty - th * 0.55);
+                ctx.lineTo(tx + th * 0.06, ty);
+                ctx.closePath(); ctx.fill();
+                ctx.beginPath();
+                ctx.arc(tx, ty - th * 0.72, th * 0.4, 0, Math.PI * 2);
+                ctx.arc(tx - th * 0.32, ty - th * 0.58, th * 0.3, 0, Math.PI * 2);
+                ctx.arc(tx + th * 0.32, ty - th * 0.58, th * 0.3, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        function drawLeaf(l) {
+            ctx.save();
+            ctx.translate(l.x, l.y);
+            ctx.rotate(l.rot);
+            ctx.fillStyle = l.color;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, l.size, l.size * 0.6, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        let t = 0;
+        function frame() {
+            t += 1;
+            const w = canvas.width, h = canvas.height;
+            drawBackground();
+            for (const l of leaves) {
+                l.y += l.speed * (canvas.height / 360);
+                l.x += Math.sin(t * 0.01 + l.swayPhase) * (l.swayAmp / 300);
+                l.rot += l.rotSpeed;
+                if (l.y - l.size > h) { l.y = -l.size; l.x = rand(0, w); }
+                drawLeaf(l);
+            }
+            requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+    }
+
+    /* ---------- WINTER: snowy hills + falling snow ---------- */
+    function initWinter(canvas) {
+        const { ctx } = setupCanvas(canvas);
+        let flakes = [];
+        function seed() {
+            const w = canvas.width, h = canvas.height;
+            flakes = [];
+            const n = Math.round((w * h) / 15000) + 24;
+            for (let i = 0; i < n; i++) {
+                const layer = Math.random();
+                flakes.push({
+                    x: rand(0, w), y: rand(0, h),
+                    r: layer < 0.5 ? rand(1, 2.2) : rand(2.2, 4.2),
+                    speed: layer < 0.5 ? rand(0.25, 0.55) : rand(0.6, 1.15),
+                    drift: rand(-0.3, 0.3), phase: rand(0, 10),
+                    opacity: layer < 0.5 ? rand(0.35, 0.6) : rand(0.7, 1)
+                });
+            }
+        }
+        seed();
+        window.addEventListener("resize", () => seed());
+
+        function drawBackground() {
+            const w = canvas.width, h = canvas.height;
+            const sky = ctx.createLinearGradient(0, 0, 0, h);
+            sky.addColorStop(0, "#3E5C72");
+            sky.addColorStop(0.5, "#7BA8BC");
+            sky.addColorStop(1, "#E3F2F5");
+            ctx.fillStyle = sky;
+            ctx.fillRect(0, 0, w, h);
+
+            ctx.fillStyle = "rgba(148, 190, 204, 0.7)";
+            ctx.beginPath();
+            ctx.moveTo(0, h * 0.75);
+            ctx.quadraticCurveTo(w * 0.28, h * 0.6, w * 0.52, h * 0.72);
+            ctx.quadraticCurveTo(w * 0.8, h * 0.85, w, h * 0.68);
+            ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath(); ctx.fill();
+
+            ctx.fillStyle = "rgba(245, 251, 252, 0.96)";
+            ctx.beginPath();
+            ctx.moveTo(0, h * 0.9);
+            ctx.quadraticCurveTo(w * 0.32, h * 0.76, w * 0.58, h * 0.88);
+            ctx.quadraticCurveTo(w * 0.82, h * 0.97, w, h * 0.84);
+            ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath(); ctx.fill();
+
+            // simple snow-capped pines on the near ridge
+            const pines = [0.2, 0.45, 0.7, 0.88];
+            pines.forEach((p) => {
+                const px = w * p, py = h * 0.92, ph = h * 0.18, pw = ph * 0.42;
+                ctx.fillStyle = "#2E4632";
+                ctx.beginPath();
+                ctx.moveTo(px, py - ph);
+                ctx.lineTo(px - pw, py - ph * 0.35);
+                ctx.lineTo(px - pw * 0.55, py - ph * 0.35);
+                ctx.lineTo(px - pw * 0.9, py);
+                ctx.lineTo(px + pw * 0.9, py);
+                ctx.lineTo(px + pw * 0.55, py - ph * 0.35);
+                ctx.lineTo(px + pw, py - ph * 0.35);
+                ctx.closePath(); ctx.fill();
+                ctx.fillStyle = "#F4FAFB";
+                ctx.beginPath();
+                ctx.moveTo(px, py - ph);
+                ctx.lineTo(px - pw * 0.4, py - ph * 0.62);
+                ctx.lineTo(px + pw * 0.4, py - ph * 0.62);
+                ctx.closePath(); ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(px, py - ph * 0.5);
+                ctx.lineTo(px - pw * 0.62, py - ph * 0.1);
+                ctx.lineTo(px + pw * 0.62, py - ph * 0.1);
+                ctx.closePath(); ctx.fill();
+            });
+        }
+
+        let t = 0;
+        function frame() {
+            t += 1;
+            const w = canvas.width, h = canvas.height;
+            drawBackground();
+            ctx.fillStyle = "#FFFFFF";
+            for (const f of flakes) {
+                f.y += f.speed * (canvas.height / 360);
+                f.x += Math.sin(t * 0.008 + f.phase) * (f.drift);
+                if (f.y - f.r > h) { f.y = -f.r; f.x = rand(0, w); }
+                if (f.x < -5) f.x = w + 5; if (f.x > w + 5) f.x = -5;
+                ctx.globalAlpha = f.opacity;
+                ctx.beginPath();
+                ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+            requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+    }
+
+    /* ---------- SPRING: meadow, swaying flowers, butterflies ---------- */
+    function initSpring(canvas) {
+        const { ctx } = setupCanvas(canvas);
+        let flowers = [];
+        let butterflies = [];
+        const petalColors = ["#F6A6C1", "#F7E07C", "#FFFFFF", "#E7A6F0"];
+        function seed() {
+            const w = canvas.width, h = canvas.height;
+            flowers = [];
+            const n = Math.round(w / 26) + 6;
+            for (let i = 0; i < n; i++) {
+                flowers.push({
+                    x: rand(0, w), y: rand(h * 0.62, h * 0.94),
+                    size: rand(5, 10), phase: rand(0, 10),
+                    color: petalColors[(Math.random() * petalColors.length) | 0]
+                });
+            }
+            butterflies = [];
+            for (let i = 0; i < 3; i++) {
+                butterflies.push({
+                    baseX: rand(w * 0.2, w * 0.8), baseY: rand(h * 0.25, h * 0.55),
+                    ampX: rand(w * 0.18, w * 0.32), ampY: rand(h * 0.08, h * 0.16),
+                    freqX: rand(0.15, 0.3), freqY: rand(0.25, 0.45),
+                    phase: rand(0, 10), size: rand(6, 9),
+                    hue: i % 2 === 0 ? "#F7E07C" : "#F6A6C1"
+                });
+            }
+        }
+        seed();
+        window.addEventListener("resize", () => seed());
+
+        function drawBackground() {
+            const w = canvas.width, h = canvas.height;
+            const sky = ctx.createLinearGradient(0, 0, 0, h);
+            sky.addColorStop(0, "#F4E9C9");
+            sky.addColorStop(0.5, "#DCE9B8");
+            sky.addColorStop(1, "#8FBE7A");
+            ctx.fillStyle = sky;
+            ctx.fillRect(0, 0, w, h);
+
+            ctx.fillStyle = "rgba(102, 138, 74, 0.55)";
+            ctx.beginPath();
+            ctx.moveTo(0, h * 0.72);
+            ctx.quadraticCurveTo(w * 0.3, h * 0.6, w * 0.55, h * 0.7);
+            ctx.quadraticCurveTo(w * 0.8, h * 0.8, w, h * 0.66);
+            ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath(); ctx.fill();
+
+            ctx.fillStyle = "rgba(76, 110, 52, 0.85)";
+            ctx.beginPath();
+            ctx.moveTo(0, h * 0.9);
+            ctx.quadraticCurveTo(w * 0.3, h * 0.78, w * 0.58, h * 0.88);
+            ctx.quadraticCurveTo(w * 0.82, h * 0.96, w, h * 0.85);
+            ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath(); ctx.fill();
+        }
+
+        function drawFlower(f, t) {
+            const sway = Math.sin(t * 0.02 + f.phase) * 0.35;
+            ctx.save();
+            ctx.translate(f.x, f.y);
+            ctx.rotate(sway);
+            ctx.strokeStyle = "rgba(60, 90, 40, 0.8)";
+            ctx.lineWidth = Math.max(1, f.size * 0.12);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(0, f.size * 1.6);
+            ctx.stroke();
+            ctx.fillStyle = f.color;
+            for (let p = 0; p < 5; p++) {
+                const ang = (p / 5) * Math.PI * 2;
+                ctx.beginPath();
+                ctx.ellipse(Math.cos(ang) * f.size * 0.55, Math.sin(ang) * f.size * 0.55, f.size * 0.45, f.size * 0.28, ang, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.fillStyle = "#E8C24A";
+            ctx.beginPath();
+            ctx.arc(0, 0, f.size * 0.3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function drawButterfly(b, t) {
+            const x = b.baseX + Math.sin(t * b.freqX + b.phase) * b.ampX;
+            const y = b.baseY + Math.sin(t * b.freqY + b.phase * 1.7) * b.ampY;
+            const flap = Math.abs(Math.sin(t * 6 + b.phase));
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.fillStyle = b.hue;
+            ctx.globalAlpha = 0.92;
+            ctx.save(); ctx.scale(flap, 1);
+            ctx.beginPath();
+            ctx.ellipse(-b.size * 0.55, 0, b.size * 0.55, b.size * 0.8, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+            ctx.save(); ctx.scale(flap, 1);
+            ctx.beginPath();
+            ctx.ellipse(b.size * 0.55, 0, b.size * 0.55, b.size * 0.8, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+            ctx.globalAlpha = 1;
+            ctx.restore();
+        }
+
+        let t = 0;
+        function frame() {
+            t += 0.02;
+            drawBackground();
+            for (const f of flowers) drawFlower(f, t * 50);
+            for (const b of butterflies) drawButterfly(b, t);
+            requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+    }
+
+    function boot() {
+        document.querySelectorAll(".card-canvas").forEach((canvas) => {
+            const scene = canvas.dataset.scene;
+            if (scene === "autumn") initAutumn(canvas);
+            else if (scene === "winter") initWinter(canvas);
+            else if (scene === "spring") initSpring(canvas);
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", boot);
+    } else {
+        boot();
+    }
+})();
+</script>
 
 </body>
 </html>
