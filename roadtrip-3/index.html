@@ -295,6 +295,32 @@ img { max-width: 100%; display: block; }
     color: var(--hotpink);
 }
 
+/* mobile preview sheet: replaces the floating riddle-popup on touch devices,
+   where the flower's own hover-scale transform would otherwise trap a
+   position:fixed popup instead of letting it anchor to the viewport */
+#mobilePreviewSheet {
+    display: none;
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    z-index: 200;
+    background: var(--card-bg);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
+    box-shadow: var(--shadow-hover);
+    text-align: left;
+    cursor: pointer;
+    transform: translateY(140%);
+    transition: transform 0.3s cubic-bezier(.34,1.2,.64,1);
+}
+#mobilePreviewSheet.is-visible { transform: translateY(0); }
+@media (hover: none) {
+    #mobilePreviewSheet { display: block; }
+    .riddle-popup { display: none; }
+}
+
 /* ============ SECTION SHELLS ============ */
 section { max-width: 1180px; margin: 0 auto; padding: 70px 24px; }
 .section-head { text-align: center; max-width: 640px; margin: 0 auto 40px; }
@@ -664,6 +690,11 @@ section { max-width: 1180px; margin: 0 auto; padding: 70px 24px; }
             </div>
         </button>
 
+    </div>
+    <div class="mobile-preview-sheet" id="mobilePreviewSheet">
+        <strong class="riddle-name" id="mpsName"></strong>
+        <span class="riddle-text" id="mpsText"></span>
+        <span class="riddle-cta" id="mpsCta"></span>
     </div>
     <div class="hero-hint"><i class="fa-solid fa-hand-pointer"></i>Najeď myší na kytku a přečti si hádanku, klikni a nech ji rozkvést. (Na mobilu: prvním ťuknutím se ukáže hádanka, druhým ji necháš rozkvést.)</div>
 </header>
@@ -1192,10 +1223,38 @@ try {
 const flowerField = document.getElementById('flowerField');
 const flowers = document.querySelectorAll('.flower');
 const flowersSupportHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+const mobilePreviewSheet = document.getElementById('mobilePreviewSheet');
+const mpsName = document.getElementById('mpsName');
+const mpsText = document.getElementById('mpsText');
+const mpsCta = document.getElementById('mpsCta');
+let activePreviewFlower = null;
+
+function sendFlowerBlooming(flower) {
+    flower.classList.add('is-blooming');
+    const targetId = flower.getAttribute('data-target');
+    setTimeout(() => {
+        const target = document.getElementById(targetId);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 750);
+    setTimeout(() => { flower.classList.remove('is-blooming'); }, 2200);
+}
 
 function clearFlowerPreview() {
     flowerField.classList.remove('has-hover');
     flowers.forEach(f => f.classList.remove('is-hovered'));
+    mobilePreviewSheet.classList.remove('is-visible');
+    activePreviewFlower = null;
+}
+
+// On touch devices, mirror the tapped flower's riddle into a single sheet
+// pinned near the bottom of the viewport instead of the floating bubble —
+// the flower's own hover-scale transform would otherwise trap a fixed-
+// position popup inside itself instead of anchoring it to the screen.
+if (!flowersSupportHover) {
+    mobilePreviewSheet.addEventListener('click', () => {
+        if (activePreviewFlower) sendFlowerBlooming(activePreviewFlower);
+        clearFlowerPreview();
+    });
 }
 
 flowers.forEach(flower => {
@@ -1229,21 +1288,21 @@ flowers.forEach(flower => {
             clearFlowerPreview();
             flowerField.classList.add('has-hover');
             flower.classList.add('is-hovered');
+            mpsName.textContent = flower.querySelector('.riddle-name').textContent;
+            mpsText.textContent = flower.querySelector('.riddle-text').textContent;
+            mpsCta.innerHTML = flower.querySelector('.riddle-cta').innerHTML;
+            mobilePreviewSheet.classList.add('is-visible');
+            activePreviewFlower = flower;
             return;
         }
-        flower.classList.add('is-blooming');
-        const targetId = flower.getAttribute('data-target');
-        setTimeout(() => {
-            const target = document.getElementById(targetId);
-            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 750);
-        setTimeout(() => { flower.classList.remove('is-blooming'); }, 2200);
+        sendFlowerBlooming(flower);
+        if (!flowersSupportHover) clearFlowerPreview();
     });
 });
 
 if (!flowersSupportHover) {
     document.addEventListener('click', (e) => {
-        if (!flowerField.contains(e.target)) clearFlowerPreview();
+        if (!flowerField.contains(e.target) && !mobilePreviewSheet.contains(e.target)) clearFlowerPreview();
     });
 }
 

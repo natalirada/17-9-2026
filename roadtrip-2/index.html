@@ -300,6 +300,33 @@ img { max-width: 100%; display: block; }
     background: var(--amber); padding: 6px 12px; border-radius: 20px;
 }
 
+/* mobile preview sheet: replaces the floating ski-popup on touch devices,
+   where a tall mountain would otherwise push its popup off-screen */
+#mobilePreviewSheet {
+    display: none;
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    z-index: 200;
+    background: var(--card-bg);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
+    box-shadow: var(--shadow-hover);
+    text-align: left;
+    cursor: pointer;
+    transform: translateY(140%);
+    transition: transform 0.3s cubic-bezier(.34,1.2,.64,1);
+}
+#mobilePreviewSheet.is-visible { transform: translateY(0); }
+@media (hover: none) {
+    #mobilePreviewSheet { display: block; }
+    /* the floating bubble is replaced by the sheet above on touch devices —
+       on a tall mountain it would otherwise open partly or fully off-screen */
+    .ski-popup { display: none; }
+}
+
 /* ============ SECTION SHELLS ============ */
 section { max-width: 1180px; margin: 0 auto; padding: 70px 24px; }
 .section-head { text-align: center; max-width: 640px; margin: 0 auto 40px; }
@@ -700,6 +727,11 @@ section { max-width: 1180px; margin: 0 auto; padding: 70px 24px; }
                 <span class="ski-cta">Fine, Let's Send It <i class="fa-solid fa-mountain-sun"></i></span>
             </div>
         </button>
+    </div>
+    <div class="mobile-preview-sheet" id="mobilePreviewSheet">
+        <strong class="ski-name" id="mpsName"></strong>
+        <span class="ski-text" id="mpsText"></span>
+        <span class="ski-cta" id="mpsCta"></span>
     </div>
     <div class="hero-hint"><i class="fa-solid fa-hand-pointer"></i>Najeď myší na lyžaře a přečti si o place, klikni a nech toho chudáka sjet dolů. (Na mobilu: přejeď prstem přes všech 6 hor, prvním ťuknutím se ukáže popis, druhým ho pošleš dolů.)</div>
 </header>
@@ -1280,10 +1312,39 @@ try {
 const mountainField = document.getElementById('mountainField');
 const peaks = document.querySelectorAll('.peak');
 const peaksSupportHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+const mobilePreviewSheet = document.getElementById('mobilePreviewSheet');
+const mpsName = document.getElementById('mpsName');
+const mpsText = document.getElementById('mpsText');
+const mpsCta = document.getElementById('mpsCta');
+let activePreviewPeak = null;
+
+function sendPeakDownhill(peak) {
+    peak.classList.add('is-skiing');
+    const targetId = peak.getAttribute('data-target');
+    setTimeout(() => {
+        const target = document.getElementById(targetId);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 750);
+    setTimeout(() => { peak.classList.remove('is-skiing'); }, 2200);
+}
 
 function clearPeakPreview() {
     mountainField.classList.remove('has-hover');
     peaks.forEach(p => p.classList.remove('is-hovered'));
+    mobilePreviewSheet.classList.remove('is-visible');
+    activePreviewPeak = null;
+}
+
+// On tall mountains the floating popup (which opens upward from the peak)
+// would land partly or fully above the screen on a small phone. On touch
+// devices we instead mirror the tapped peak's text into a single sheet
+// pinned near the bottom of the viewport, so it's always fully visible
+// regardless of how tall that particular mountain is.
+if (!peaksSupportHover) {
+    mobilePreviewSheet.addEventListener('click', () => {
+        if (activePreviewPeak) sendPeakDownhill(activePreviewPeak);
+        clearPeakPreview();
+    });
 }
 
 peaks.forEach(peak => {
@@ -1317,21 +1378,21 @@ peaks.forEach(peak => {
             clearPeakPreview();
             mountainField.classList.add('has-hover');
             peak.classList.add('is-hovered');
+            mpsName.textContent = peak.querySelector('.ski-name').textContent;
+            mpsText.textContent = peak.querySelector('.ski-text').textContent;
+            mpsCta.innerHTML = peak.querySelector('.ski-cta').innerHTML;
+            mobilePreviewSheet.classList.add('is-visible');
+            activePreviewPeak = peak;
             return;
         }
-        peak.classList.add('is-skiing');
-        const targetId = peak.getAttribute('data-target');
-        setTimeout(() => {
-            const target = document.getElementById(targetId);
-            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 750);
-        setTimeout(() => { peak.classList.remove('is-skiing'); }, 2200);
+        sendPeakDownhill(peak);
+        if (!peaksSupportHover) clearPeakPreview();
     });
 });
 
 if (!peaksSupportHover) {
     document.addEventListener('click', (e) => {
-        if (!mountainField.contains(e.target)) clearPeakPreview();
+        if (!mountainField.contains(e.target) && !mobilePreviewSheet.contains(e.target)) clearPeakPreview();
     });
 }
 
